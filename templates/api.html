@@ -1,0 +1,13 @@
+<h1>Link Count API</h1>
+<h2>Parameters</h2>
+<ul>
+    <li>page - The title to get the link count for</li>
+    <li>project - The project the page is in, default en.wikipedia.org</li>
+</ul>
+<h2>Examples</h2>
+<ul>
+    {% for example in examples %}
+        <li><a href="{{request.url}}?{{example}}">{{request.url}}?{{example}}</a></li>
+    {% endfor %}
+</ul>
+<a href="{{url_for('index')}}">&larr; Back</a>
