@@ -32,15 +32,16 @@ class Fetcher:
 		self.namespace = namespace
 		self.title = title
 
-	def fetch(self, table, ns_key, title_key, no_redirects = False):
+	def fetch(self, table, ns_key, title_key, no_indirects = False):
 		self.cur.execute(
 			'SELECT COUNT(*) FROM %s WHERE %s=%%s AND %s=%%s'
 			% (table, ns_key, title_key),
 			(self.namespace, self.title)
 		)
+
 		count = self.cur.fetchone()[0]
 
-		if not no_redirects:
+		if not no_indirects:
 			self.cur.execute(
 				'SELECT COUNT(*) FROM redirect '
 				'JOIN page ON rd_from=page_id '
@@ -50,20 +51,23 @@ class Fetcher:
 				(self.namespace, self.title)
 			)
 
-			redirectcount = self.cur.fetchone()[0]
-			return (count, count + redirectcount)
+			return {
+				'direct': count,
+				'all': count + self.cur.fetchone()[0]
+			}
 
 		return count
 
-	def fetch_wo_ns(self, table, to_key, no_redirects = False):
+	def fetch_wo_ns(self, table, to_key, no_indirects = False):
 		self.cur.execute(
 			'SELECT COUNT(*) FROM %s WHERE %s=%%s'
 			% (table, to_key),
 			(self.title,)
 		)
+	
 		count = self.cur.fetchone()[0]
 
-		if not no_redirects:
+		if not no_indirects:
 			self.cur.execute(
 				'SELECT COUNT(*) FROM redirect '
 				'JOIN page ON rd_from=page_id '
@@ -71,8 +75,14 @@ class Fetcher:
 				'WHERE rd_namespace=%%s AND rd_title=%%s'
 				% (table, to_key), (self.namespace, self.title)
 			)
-			redirectcount = self.cur.fetchone()[0]
-			return (count, count + redirectcount)
+
+			indirectcount = self.cur.fetchone()[0]
+
+			return {
+				'direct': count,
+				'indirect': indirectcount,
+				'all': count + indirectcount
+			}
 
 		return count
 
@@ -152,37 +162,14 @@ def main():
 	cur.execute('USE %s_p' % dbname)
 
 	fetcher = Fetcher(cur, namespace, title)
-	total = [0, 0]
-
 	pagelinks = fetcher.fetch('pagelinks', 'pl_namespace', 'pl_title')
-	total[0] += pagelinks[0]
-	total[1] += pagelinks[1]
-
+	# Don't count double redirects, redirects are included in pagelinks
 	redirects = fetcher.fetch('redirect', 'rd_namespace', 'rd_title', True)
-	total[0] += redirects
-	total[1] += redirects
-	# Don't count double redirects
-
-	wikilinks = (pagelinks[0] - redirects, pagelinks[1] - redirects)
-
+	wikilinks = {'direct': pagelinks['direct'] - redirects, 'all': pagelinks['all'] - redirects}
 	transclusions = fetcher.fetch('templatelinks', 'tl_namespace', 'tl_title')
-	total[0] += transclusions[0]
-	total[1] += transclusions[1]
-
-	filelinks = False
-
-	if namespace == 6:
-		filelinks = fetcher.fetch_wo_ns('imagelinks', 'il_to', True)
-		total[0] += filelinks
-		total[1] += filelinks
-		# Images links from redirects are also added to the imagelinks table under the redirect target
-
-	categorylinks = False
-
-	if namespace == 14:
-		categorylinks = fetcher.fetch_wo_ns('categorylinks', 'cl_to')
-		total[0] += categorylinks[0]
-		total[1] += categorylinks[1]
+	# Images links from redirects are also added to the imagelinks table under the redirect target
+	filelinks = fetcher.fetch_wo_ns('imagelinks', 'il_to', True) if namespace == 6 else None
+	categorylinks = fetcher.fetch_wo_ns('categorylinks', 'cl_to') if namespace == 14 else None
 
 	cur.close()
 	db.close()
@@ -192,18 +179,56 @@ def main():
 		'page': page,
 		'project': project,
 		'results': True,
-		'total': total,
-		'pagelinks': pagelinks,
+		'filelinks': filelinks,
+		'categorylinks': categorylinks,
 		'wikilinks': wikilinks,
 		'redirects': redirects,
 		'transclusions': transclusions,
-		'filelinks': filelinks,
-		'categorylinks': categorylinks,
 	}
 
 @app.route('/', methods=['GET'])
 def index():
-	return render_template('main.html', **main())
+	data = main()
+
+	return render_template(
+		'main.html',
+		title = data['title'],
+		errors = data.get('errors'),
+		fields = [
+			{
+				'name': 'page',
+				'label': 'Page Name',
+				'value': data.get('page', '')
+			},
+			{
+				'name': 'project',
+				'label': 'Project',
+				'value': data.get('project', '')
+			}
+		],
+		values = [
+			{
+				'name': 'File links',
+				'value': data['filelinks']
+			},
+			{
+				'name': 'Category links',
+				'value': data['categorylinks']
+			},
+			{
+				'name': 'Wikilinks',
+				'value': data['wikilinks']
+			},
+			{
+				'name': 'Redirects',
+				'value': data['redirects']
+			},
+			{
+				'name': 'Transclusions',
+				'value': data['transclusions']
+			}
+		] if data['results'] else None
+	)
 
 @app.route('/api', methods=['GET'])
 def api():
@@ -212,15 +237,7 @@ def api():
 
 	def add_item(name):
 		if data[name]:
-			output[name] = data[name][0]
-
-	def add_single_item(name):
-		if data[name]:
 			output[name] = data[name]
-
-	def add_redirect_item(name):
-		if data[name]:
-			output['withredirects'][name] = data[name][1]
 
 	if 'page' not in data and 'project' not in data:
 		return render_template(
@@ -236,20 +253,11 @@ def api():
 	if 'errors' in data:
 		output['errors'] = data['errors']
 	else:
-		add_item('total')
-		add_single_item('filelinks')
+		add_item('filelinks')
 		add_item('categorylinks')
-		add_item('pagelinks')
 		add_item('wikilinks')
-		add_single_item('redirects')
+		add_item('redirects')
 		add_item('transclusions')
-
-		output['withredirects'] = OrderedDict()
-		add_redirect_item('total')
-		add_redirect_item('categorylinks')
-		add_redirect_item('pagelinks')
-		add_redirect_item('wikilinks')
-		add_redirect_item('transclusions')
 
 	return json.dumps(output)
 

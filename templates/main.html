@@ -10,50 +10,30 @@
 		<h1>{{title}}</h1>
 		<main>
 			<form>
-				<div class="oo-ui-layout oo-ui-labelElement oo-ui-fieldLayout oo-ui-fieldLayout-align-top">
-					<div class="oo-ui-fieldLayout-body">
-						<span class="oo-ui-fieldLayout-header">
-							<label class="oo-ui-labelElement-label" for="page">Page name</label>
-						</span>
-						<div class="oo-ui-fieldLayout-field">
-							<div class="oo-ui-widget oo-ui-widget-enabled oo-ui-inputWidget oo-ui-textInputWidget oo-ui-textInputWidget-type-text">
-								<input type="text" class="oo-ui-inputWidget-input" value="{{page}}" name="page" id="page">
-							</div>
-						</div>
-					</div>
-				</div>
-				{% if errors and 'page' in errors %}
+				{% for field in fields %}
 					<div class="oo-ui-layout oo-ui-labelElement oo-ui-fieldLayout oo-ui-fieldLayout-align-top">
 						<div class="oo-ui-fieldLayout-body">
-							<div class="oo-ui-widget oo-ui-widget-enabled oo-ui-labelElement oo-ui-flaggedElement-error oo-ui-iconElement oo-ui-messageWidget">
-								<span class="oo-ui-iconElement-icon oo-ui-icon-error oo-ui-image-error"></span>
-								<span class="oo-ui-labelElement-label">{{errors.page}}</span>
+							<span class="oo-ui-fieldLayout-header">
+								<label class="oo-ui-labelElement-label" for="{{field.name}}">{{field.label}}</label>
+							</span>
+							<div class="oo-ui-fieldLayout-field">
+								<div class="oo-ui-widget oo-ui-widget-enabled oo-ui-inputWidget oo-ui-textInputWidget oo-ui-textInputWidget-type-text">
+									<input type="text" class="oo-ui-inputWidget-input" value="{{field.value}}" name="{{field.name}}" id="{{field.name}}">
+								</div>
 							</div>
 						</div>
 					</div>
-				{% endif %}
-				<div class="oo-ui-layout oo-ui-labelElement oo-ui-fieldLayout oo-ui-fieldLayout-align-top">
-					<div class="oo-ui-fieldLayout-body">
-						<span class="oo-ui-fieldLayout-header">
-							<label class="oo-ui-labelElement-label" for="project">Project</label>
-						</span>
-						<div class="oo-ui-fieldLayout-field">
-							<div class="oo-ui-widget oo-ui-widget-enabled oo-ui-inputWidget oo-ui-textInputWidget oo-ui-textInputWidget-type-text">
-								<input type="text" class="oo-ui-inputWidget-input" placeholder="en.wikipedia.org" value="{{project}}" name="project" id="project">
+					{% if errors and field.name in errors %}
+						<div class="oo-ui-layout oo-ui-labelElement oo-ui-fieldLayout oo-ui-fieldLayout-align-top">
+							<div class="oo-ui-fieldLayout-body">
+								<div class="oo-ui-widget oo-ui-widget-enabled oo-ui-labelElement oo-ui-flaggedElement-error oo-ui-iconElement oo-ui-messageWidget">
+									<span class="oo-ui-iconElement-icon oo-ui-icon-error oo-ui-image-error"></span>
+									<span class="oo-ui-labelElement-label">{{errors[field.name]}}</span>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				{% if errors and 'project' in errors %}
-					<div class="oo-ui-layout oo-ui-labelElement oo-ui-fieldLayout oo-ui-fieldLayout-align-top">
-						<div class="oo-ui-fieldLayout-body">
-							<div class="oo-ui-widget oo-ui-widget-enabled oo-ui-labelElement oo-ui-flaggedElement-error oo-ui-iconElement oo-ui-messageWidget">
-								<span class="oo-ui-iconElement-icon oo-ui-icon-error oo-ui-image-error"></span>
-								<span class="oo-ui-labelElement-label">{{errors.project}}</span>
-							</div>
-						</div>
-					</div>
-				{% endif %}
+					{% endif %}
+				{% endfor %}
 				<div class="oo-ui-layout oo-ui-labelElement oo-ui-fieldLayout oo-ui-fieldLayout-align-top">
 					<div class="oo-ui-fieldLayout-body">
 						<span class="oo-ui-widget oo-ui-widget-enabled oo-ui-inputWidget oo-ui-buttonElement oo-ui-buttonElement-framed oo-ui-labelElement oo-ui-flaggedElement-primary oo-ui-flaggedElement-progressive oo-ui-buttonInputWidget">
@@ -64,76 +44,36 @@
 					</div>
 				</div>
 			</form>
-			{% if results %}
+			{% if values %}
 				<div>
-					<div>
-						<div id="total" class="out">
-							<div>
-								<div>Total links</div>
-								<div class="num">{{total[0]|sepnum}}</div>
-								<div>(<b>{{total[1]|sepnum}}</b> counting redirects<sup>1</sup>)</div>
+					{% for value in values %}
+						{% if value.value is mapping %}
+							<div class="out left">
+								<div>
+									<div>Direct {{value.name.lower()}}</div>
+									<div class="num">{{value.value.direct|sepnum}}</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					{% if filelinks %}
-						<div id="filelinks" class="out">
-							<div>
-								<div>File links</div>
-								<div class="num">{{filelinks|sepnum}}</div>
+							<div class="out right">
+								<div>
+									<div>All {{value.name.lower()}}</div>
+									<div class="num">{{value.value.all|sepnum}}</div>
+								</div>
 							</div>
-						</div>
-					{% elif categorylinks %}
-						<div id="categorylinks" class="out">
-							<div>
-								<div>Category links</div>
-								<div class="num">{{categorylinks[0]|sepnum}}</div>
-								<div>(<b>{{categorylinks[1]|sepnum}}</b> counting redirects<sup>1</sup>)</div>
+							<div style="clear:both;"></div>
+						{% elif value.value is integer %}
+							<div class="out">
+								<div>
+									<div>{{value.name.capitalize()}}</div>
+									<div class="num">{{value.value|sepnum}}</div>
+								</div>
 							</div>
-						</div>
-					{% endif %}
-					<div id="pagelinks" class="out left">
-						<div>
-							<div>Pagelinks<sup>2</sup></div>
-							<div class="num">{{pagelinks[0]|sepnum}}</div>
-							<div>(<b>{{pagelinks[1]|sepnum}}</b> counting redirects<sup>1</sup>)</div>
-						</div>
-					</div>
-					<div id="wikilinks" class="out right">
-						<div>
-							<div>Wikilinks</div>
-							<div class="num">{{wikilinks[0]|sepnum}}</div>
-							<div>(<b>{{wikilinks[1]|sepnum}}</b> counting redirects<sup>1</sup>)</div>
-						</div>
-					</div>
-					<div style="clear:both;"></div>
-					<div id="transclusions" class="out left">
-						<div>
-							<div>Transclusions</div>
-							<div class="num">{{transclusions[0]|sepnum}}</div>
-							<div>(<b>{{transclusions[1]|sepnum}}</b> counting redirects<sup>1</sup>)</div>
-						</div>
-					</div>
-					<div id="redirects" class="out right">
-						<div>
-							<div>Redirects</div>
-							<div class="num">{{redirects|sepnum}}</div>
-							<br>
-						</div>
-					</div>
-					<div style="clear:both;"></div>
+						{% endif %}
+					{% endfor %}
 				</div>
 			{% endif %}
 			<footer>
-				{% if results %}
-					<details>
-						<summary>Notes</summary>
-						<ol>
-							<li>Counting links to pages that redirect to this page</li>
-							<li>Pagelinks includes both wikilinks and redirects</li>
-						</ol>
-					</details>
-				{% endif %}
-				Also checkout the <a href="{{url_for('api')}}">API</a>.
+				Also checkout the <a href="{{url_for('api')}}">API</a>. Created by <a href="https://en.wikipedia.org/wiki/User:BrandonXLF">BrandonXLF</a>.
 			</footer>
 		</main>
 	</body>
