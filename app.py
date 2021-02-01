@@ -95,7 +95,8 @@ def main():
 	if not page:
 		errors['page'] = 'Page name is required.'
 	else:
-		title = page.replace(' ', '_').capitalize()
+		title = page.replace(' ', '_')
+		title = title[0].upper() + title[1:]
  
 	if project.endswith('_p'):
 		project = project[:-2]
