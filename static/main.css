@@ -9,31 +9,28 @@ main > * {
 }
 .out {
 	box-sizing: border-box;
-	padding: 0.25em 0;
+	padding: 0.5em 0.25em;
 	text-align: center;
 	font-size: 125%;
-}
-.out > div {
 	border: 1px solid #a2a9b1;
-	border-radius: 2px;
-	padding: 0.25em;
+	margin: 5px 0;
 }
-.out > div > .num {
+.num {
 	font-size: 150%;
 	line-height: 1.25;
 }
-h1, h2 {
+h1 {
 	text-align: center;
 }
-sup {
-	font-size: 70%;
-	line-height: 0;
-}
-li {
-	margin-bottom: 0.5em;
-}
-br {
-	display: none;
+
+@media (max-width: 499px) {
+	.out.left {
+		margin: 10px 0 0;
+	}
+	.out.right {
+		margin: 0 0 10px;
+		border-top: 0;
+	}
 }
 
 @media (min-width: 500px) {
@@ -46,8 +43,6 @@ br {
 		padding-left: 0.25em;
 		float: right;
 		width: 50%;
-	}
-	br {
-		display: block;
+		border-left: 0;
 	}
 }

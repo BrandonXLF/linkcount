@@ -49,24 +49,18 @@
 					{% for value in values %}
 						{% if value.value is mapping %}
 							<div class="out left">
-								<div>
-									<div>Direct {{value.name.lower()}}</div>
-									<div class="num">{{value.value.direct|sepnum}}</div>
-								</div>
+								<div>Direct {{value.name.lower()}}</div>
+								<div class="num">{{value.value.direct|sepnum}}</div>
 							</div>
 							<div class="out right">
-								<div>
-									<div>All {{value.name.lower()}}</div>
-									<div class="num">{{value.value.all|sepnum}}</div>
-								</div>
+								<div>All {{value.name.lower()}}</div>
+								<div class="num">{{value.value.all|sepnum}}</div>
 							</div>
 							<div style="clear:both;"></div>
 						{% elif value.value is integer %}
 							<div class="out">
-								<div>
-									<div>{{value.name.capitalize()}}</div>
-									<div class="num">{{value.value|sepnum}}</div>
-								</div>
+								<div>{{value.name.capitalize()}}</div>
+								<div class="num">{{value.value|sepnum}}</div>
 							</div>
 						{% endif %}
 					{% endfor %}
