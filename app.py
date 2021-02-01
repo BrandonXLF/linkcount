@@ -253,8 +253,4 @@ def api():
 	return json.dumps(output)
 
 if __name__ == '__main__':
-	app.run(debug=True)
-
-@app.route('/static/oojs-ui.css', methods=['GET'])
-def oojs_ui_css():
-	return send_from_directory('node_modules', 'oojs-ui/dist/oojs-ui-wikimediaui.min.css')
+	app.run()
