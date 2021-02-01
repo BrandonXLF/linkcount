@@ -39,7 +39,7 @@ class Fetcher:
 			(self.namespace, self.title)
 		)
 
-		count = self.cur.fetchone()[0] - substract
+		count = self.cur.fetchone()[0] - subtract
 
 		if indirects:
 			self.cur.execute(
