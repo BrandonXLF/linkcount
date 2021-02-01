@@ -1,19 +1,25 @@
 main {
-	max-width: 650px;
-	margin: auto;
-	font-family: sans-serif;
-	line-height: 1.5;
+    max-width: 650px;
+    margin: 2em auto;
+    font-family: sans-serif;
+    line-height: 1.5;
+    border-radius: 2px;
+    border: 1px solid #a2a9b1;
+    padding: 1em;
+    background: #f6f6f6;
 }
 main > * {
-	margin-bottom: 1em;
+	margin-bottom: 2em;
 }
 .out {
-	box-sizing: border-box;
-	padding: 0.5em 0.25em;
-	text-align: center;
-	font-size: 125%;
-	border: 1px solid #a2a9b1;
-	margin: 5px 0;
+    box-sizing: border-box;
+    padding: 0.5em 0.25em;
+    text-align: center;
+    font-size: 125%;
+    border: 1px solid #a2a9b1;
+    margin: 0.25em 0;
+    border-radius: 2px;
+    background: #fff;
 }
 .num {
 	font-size: 150%;
@@ -21,15 +27,19 @@ main > * {
 }
 h1 {
 	text-align: center;
+	font-size: 2em;
+	margin: 0 0 1em;
 }
 
 @media (max-width: 499px) {
 	.out.left {
-		margin: 10px 0 0;
+		margin: 0.5em 0 0;
+		border-radius: 2px 2px 0 0;
 	}
 	.out.right {
-		margin: 0 0 10px;
+		margin: 0 0 0.5em;
 		border-top: 0;
+		border-radius: 0 0 2px 2px;
 	}
 }
 
@@ -38,11 +48,13 @@ h1 {
 		float: left;
 		width: 50%;
 		padding-right: 0.25em;
+		border-radius: 2px 0 0 2px;
 	}
 	.out.right {
 		padding-left: 0.25em;
 		float: right;
 		width: 50%;
 		border-left: 0;
+		border-radius: 0 2px 2px 0;
 	}
 }
