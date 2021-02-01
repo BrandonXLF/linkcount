@@ -1,3 +1,6 @@
+body {
+	margin: 0 2em;
+}
 main {
     max-width: 650px;
     margin: 2em auto;
@@ -5,7 +8,7 @@ main {
     line-height: 1.5;
     border-radius: 2px;
     border: 1px solid #a2a9b1;
-    padding: 2em;
+    padding: 1em 2em;
     background: #f6f6f6;
 }
 main > * {
@@ -28,7 +31,7 @@ main > * {
 h1 {
 	text-align: center;
 	font-size: 2em;
-	margin: 0 0 1em;
+	margin: 0.5em 0 0.5em;
 }
 
 @media (max-width: 499px) {
@@ -43,6 +46,10 @@ h1 {
 	}
 	main {
 		padding: 1em;
+		margin: 1em auto;
+	}
+	body {
+		margin: 0 1em;
 	}
 }
 
