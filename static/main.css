@@ -12,7 +12,7 @@ main {
     background: #f6f6f6;
 }
 main > * {
-	margin-bottom: 2em;
+	margin: 1em 0 1em;
 }
 .out {
     box-sizing: border-box;
@@ -34,6 +34,16 @@ h1 {
 	margin: 0.5em 0 0.5em;
 }
 
+@media (max-width: 599px) {
+	main {
+		padding: 1em;
+		margin: 1em auto;
+	}
+	body {
+		margin: 0 1em;
+	}
+}
+
 @media (max-width: 499px) {
 	.out.left {
 		margin: 0.5em 0 0;
@@ -43,13 +53,6 @@ h1 {
 		margin: 0 0 0.5em;
 		border-top: 0;
 		border-radius: 0 0 2px 2px;
-	}
-	main {
-		padding: 1em;
-		margin: 1em auto;
-	}
-	body {
-		margin: 0 1em;
 	}
 }
 
