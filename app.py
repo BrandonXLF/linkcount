@@ -51,9 +51,12 @@ class Fetcher:
 				(self.namespace, self.title)
 			)
 
+			indirectcount = self.cur.fetchone()[0]
+
 			return {
 				'direct': count,
-				'all': count + self.cur.fetchone()[0]
+				'indirect': indirectcount,
+				'all': count + indirectcount
 			}
 
 		return count
