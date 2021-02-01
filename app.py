@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import json
 import requests
 from collections import OrderedDict 
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, request
 import MySQLdb
 
 app = Flask(__name__)
@@ -32,16 +32,16 @@ class Fetcher:
 		self.namespace = namespace
 		self.title = title
 
-	def fetch(self, table, ns_key, title_key, no_indirects = False):
+	def fetch(self, table, ns_key, title_key, indirects = True, subtract = 0):
 		self.cur.execute(
 			'SELECT COUNT(*) FROM %s WHERE %s=%%s AND %s=%%s'
 			% (table, ns_key, title_key),
 			(self.namespace, self.title)
 		)
 
-		count = self.cur.fetchone()[0]
+		count = self.cur.fetchone()[0] - substract
 
-		if not no_indirects:
+		if indirects:
 			self.cur.execute(
 				'SELECT COUNT(*) FROM redirect '
 				'JOIN page ON rd_from=page_id '
@@ -61,7 +61,7 @@ class Fetcher:
 
 		return count
 
-	def fetch_wo_ns(self, table, to_key, no_indirects = False):
+	def fetch_wo_ns(self, table, to_key, indirects = True):
 		self.cur.execute(
 			'SELECT COUNT(*) FROM %s WHERE %s=%%s'
 			% (table, to_key),
@@ -70,7 +70,7 @@ class Fetcher:
 	
 		count = self.cur.fetchone()[0]
 
-		if not no_indirects:
+		if indirects:
 			self.cur.execute(
 				'SELECT COUNT(*) FROM redirect '
 				'JOIN page ON rd_from=page_id '
@@ -165,13 +165,12 @@ def main():
 	cur.execute('USE %s_p' % dbname)
 
 	fetcher = Fetcher(cur, namespace, title)
-	pagelinks = fetcher.fetch('pagelinks', 'pl_namespace', 'pl_title')
-	# Don't count double redirects, redirects are included in pagelinks
-	redirects = fetcher.fetch('redirect', 'rd_namespace', 'rd_title', True)
-	wikilinks = {'direct': pagelinks['direct'] - redirects, 'all': pagelinks['all'] - redirects}
+	# Don't count double redirects
+	redirects = fetcher.fetch('redirect', 'rd_namespace', 'rd_title', indirects = False)
+	wikilinks = fetcher.fetch('pagelinks', 'pl_namespace', 'pl_title', subtract = redirects)
 	transclusions = fetcher.fetch('templatelinks', 'tl_namespace', 'tl_title')
 	# Images links from redirects are also added to the imagelinks table under the redirect target
-	filelinks = fetcher.fetch_wo_ns('imagelinks', 'il_to', True) if namespace == 6 else None
+	filelinks = fetcher.fetch_wo_ns('imagelinks', 'il_to', indirects = False) if namespace == 6 else None
 	categorylinks = fetcher.fetch_wo_ns('categorylinks', 'cl_to') if namespace == 14 else None
 
 	cur.close()
