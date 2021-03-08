@@ -1,8 +1,46 @@
-<html>
+<?php
+
+require '../includes/global.php';
+
+$data = get_link_counts();
+$out = [];
+
+if ($_SERVER['QUERY_STRING']) {
+	if (isset($data['error'])) {
+		$out['error'] = $data['error'];
+	}
+	
+	if (isset($data['counts'])) {
+		foreach ($data['counts'] as $key => $val) {
+			if ($val !== null) $out[$key] = $val;
+		}
+	}
+
+    header('Content-Type: application/json');
+    header('Access-Control-Allow-Origin: *');
+    die(json_encode($out));
+}
+
+$url = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+$examples = [
+    'page=Main_Page&project=en.wikipedia.org',
+    'page=Wikipédia:Accueil_principal&project=fr.wikipedia.org',
+    'page=Category:Main Page&project=en.wikipedia.org',
+    'page=File:Example.png&project=en.wikipedia.org'
+];
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<title>Link Count API</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" type="image/png" href="../static/icon.png">
 		<style>
+			body {
+				font-family: sans-serif;
+			}
 			td, th {
 				border: 1px solid black;
 				padding: 0.5em 1em;
@@ -105,10 +143,10 @@
 		</table>
 		<h2>Examples</h2>
 		<ul>
-			{% for example in examples %}
-				<li><a href="{{request.url}}?{{example}}">{{request.url}}?{{example}}</a></li>
-			{% endfor %}
+            <?php foreach ($examples as $example) { ?>
+                <li><a href="<?php echo $url . '?' . $example ?>"><?php echo $url . '?' . $example ?></a></li>
+            <?php } ?>
 		</ul>
-		<a href="{{url_for('index')}}">&larr; Back</a>
+		<a href="..">&larr; Back</a>
 	</body>
 </html>

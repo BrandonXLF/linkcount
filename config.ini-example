@@ -1,0 +1,5 @@
+user = # user from replica.my.cnf]
+password = # password from replica.my.cnf]
+port = 3306 # change if needed
+server = metawiki.web.db.svc.eqiad.wmflabs # database to connect to
+table = meta_p # first table to connect to

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "oojs/oojs-ui": "^0.41.1"
+    }
+}

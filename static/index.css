@@ -1,19 +1,29 @@
 body {
-	margin: 0 2em;
-}
-main {
-    max-width: 650px;
-    margin: 2em auto;
     font-family: sans-serif;
-    line-height: 1.5;
-    border-radius: 2px;
-    border: 1px solid #a2a9b1;
-    padding: 1em 2em;
-    background: #f6f6f6;
+	line-height: 1.5;
 }
-main > * {
-	margin: 1em 0 1em;
+
+main, footer {
+    max-width: 650px;
+    margin: 0 auto;
 }
+
+footer, .links {
+    margin-top: 1em;
+}
+.num {
+	font-size: 150%;
+	line-height: 1.25;
+}
+
+.error {
+	color: #e00000;
+}
+
+.links {
+	float: left;
+}
+
 .out {
     box-sizing: border-box;
     padding: 0.5em 0.25em;
@@ -23,25 +33,14 @@ main > * {
     margin: 0.25em 0;
     border-radius: 2px;
     background: #fff;
-}
-.num {
-	font-size: 150%;
-	line-height: 1.25;
-}
-h1 {
-	text-align: center;
-	font-size: 2em;
-	margin: 0.5em 0 0.5em;
+	float: right;
+	clear: both;
+	width: 100%;
 }
 
-@media (max-width: 599px) {
-	main {
-		padding: 1em;
-		margin: 1em auto;
-	}
-	body {
-		margin: 0 1em;
-	}
+.oo-ui-widget.oo-ui-progressBarWidget {
+    border-radius: 2px;
+    box-shadow: none;
 }
 
 @media (max-width: 499px) {
@@ -59,14 +58,16 @@ h1 {
 @media (min-width: 500px) {
 	.out.left {
 		float: left;
+		clear: left;
 		width: 50%;
 		padding-right: 0.25em;
 		border-radius: 2px 0 0 2px;
 	}
 	.out.right {
-		padding-left: 0.25em;
 		float: right;
+		clear: right;
 		width: 50%;
+		padding-left: 0.25em;
 		border-left: 0;
 		border-radius: 0 2px 2px 0;
 	}
