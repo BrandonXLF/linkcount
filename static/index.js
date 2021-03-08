@@ -26,6 +26,7 @@ function getNamespaceOptions(project) {
         namespacesSelect.clearItems().getMenu().clearItems();
 
         for (var id in re.query.namespaces) {
+            if (id < 0) continue; // Ignore virtual namespaces
             var info = re.query.namespaces[id];
             namespacesSelect.addOptions([{
                 data: info.id,
