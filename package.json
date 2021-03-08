@@ -1,17 +1,8 @@
 {
-  "name": "linkcount",
-  "version": "1.0.0",
-  "description": "`ssh -N USERNAME@dev.toolforge.org -L 3306:metawiki.web.db.svc.eqiad.wmflabs:3306`",
-  "main": "index.js",
-  "dependencies": {
-    "jquery": "^3.5.1",
-    "oojs": "^5.0.0",
-    "oojs-ui": "^0.41.1",
-    "wikimedia-ui-base": "^0.18.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+    "dependencies": {
+        "jquery": "^3.5.1",
+        "oojs": "^5.0.0",
+        "oojs-ui": "^0.41.1",
+        "wikimedia-ui-base": "^0.18.0"
+    }
 }
