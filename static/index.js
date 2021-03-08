@@ -72,7 +72,7 @@ button.on('click', function() {
 
     outLayout.$element.replaceWith(progressLayout.$element);
 
-    $.get('output?' + search).always(function() {
+    $.get('output/?' + search).always(function() {
         progressLayout.$element.replaceWith(outLayout.$element);
     }).done(function(res) {
         outWidget.$element.html(res);

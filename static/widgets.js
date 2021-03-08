@@ -13,7 +13,7 @@ OO.inheritClass(ProjectLookupWidget, OO.ui.TextInputWidget);
 OO.mixinClass(ProjectLookupWidget, OO.ui.mixin.LookupElement);
 
 ProjectLookupWidget.prototype.getLookupRequest = function() {
-    return $.get('projects', {
+    return $.get('projects/', {
         project: this.getValue()
     });
 };

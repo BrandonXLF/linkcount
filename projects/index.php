@@ -1,6 +1,6 @@
 <?php
 
-require '../global.php';
+require '../includes/global.php';
 
 $project = $_GET['project'] ?? '';
 $projects = [];
