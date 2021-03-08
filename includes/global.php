@@ -210,7 +210,7 @@ function get_output_html() {
             $out .= create_out('All ' . $type, $count['all'], 'right');
         }
     
-        $link = "https://{$data['project']}/wiki/Special:WhatLinksHere/{$_GET['page']}";
+        $link = "{$data['project']}/wiki/Special:WhatLinksHere/{$_GET['page']}";
         $out .= "<div class=\"links\"><a href=\"$link\">What links here</a></div>";
     }
     
