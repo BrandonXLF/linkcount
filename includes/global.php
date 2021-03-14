@@ -199,7 +199,7 @@ function get_output_html() {
     
     if (isset($data['counts'])) {
         foreach ($data['counts'] as $type => $count) {
-            if (!$count) continue;
+            if ($count === null) continue;
             
             if (is_int($count)) {
                 $out .= create_out(ucfirst($type), $count);
