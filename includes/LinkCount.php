@@ -64,7 +64,7 @@ class LinkCount {
         
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => $this->project_url . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . urlencode($this->title),
+            CURLOPT_URL => $this->project_url . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->title),
             CURLOPT_RETURNTRANSFER => true,
         ]);
         $info = json_decode(curl_exec($curl));
@@ -185,7 +185,7 @@ class LinkCount {
                 $out .= $this->create_out("All $type", $count['all'], 'right');
             }
         
-            $link = $this->project_url . '/wiki/Special:WhatLinksHere/' . urlencode($_GET['page']);
+            $link = $this->project_url . '/wiki/Special:WhatLinksHere/' . rawurlencode($_GET['page']);
             $out .= "<div class=\"links\"><a href=\"$link\">What links here</a></div>";
         }
         
