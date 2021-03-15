@@ -201,7 +201,7 @@ class LinkCount {
         
         if (isset($this->counts)) {
             foreach ($this->counts as $type => $count) {
-                if ($type === null) continue;
+                if ($count === null) continue;
 
                 $out[$type] = $count;
             }

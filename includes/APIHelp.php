@@ -12,7 +12,7 @@ class APIHelp {
     }
 
     public static function html() {
-        $prefix = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+        $prefix = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
         $examples = [
             'page=Main_Page&project=en.wikipedia.org',
