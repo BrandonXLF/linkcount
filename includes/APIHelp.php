@@ -12,7 +12,7 @@ class APIHelp {
     }
 
     public static function html() {
-        $url = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+        $prefix = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
         $examples = [
             'page=Main_Page&project=en.wikipedia.org',
@@ -30,112 +30,52 @@ class APIHelp {
         <style>
             body {
                 font-family: sans-serif;
+                line-height: 1.5;
             }
-            td, th {
-                border: 1px solid black;
-                padding: 0.5em 1em;
-                text-align: left;
+            h2, h3 {
+                margin: 0 0 10px;
+            }
+            ul {
+                margin: 0 0 20px
+            }
+            li {
+                padding: 2px 0;
+            }
+            code {
+                background: #eee;
+                font-family: inherit;
+                padding: 1px 3px;
             }
         </style>
     </head>
     <body>
         <h1>Link Count API</h1>
-        <h2>Parameters</h2>
-        <table>
-            <tr>
-                <th>Key</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td>page</td>
-                <td>string</td>
-                <td>required</td>
-                <td>The name of the page get the link count for</td>
-            </tr>
-            <tr>
-                <td>project</td>
-                <td>string</td>
-                <td>optional</td>
-                <td>
-                    <div>The project the page is in</div>
-                    <div>Default is en.wikipedia.org</div>
-                    <div>Accepts site domain, name, or database</div>
-                </td>
-            </tr>
-        </table>
-        <h2>Response</h2>
-        <table>
-            <tr>
-                <th>Key</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td>filelinks</td>
-                <td>integer</td>
-                <td>optional</td>
-                <td>Number of pages that show the file</td>
-            </tr>
-            <tr>
-                <td>categorylinks</td>
-                <td>LinkCountObject</td>
-                <td>optional</td>
-                <td>Number of category links</td>
-            </tr>
-            <tr>
-                <td>wikilinks</td>
-                <td>LinkCountObject</td>
-                <td>required</td>
-                <td>Number of wikilinks</td>
-            </tr>
-            <tr>
-                <td>redirects</td>
-                <td>integer</td>
-                <td>required</td>
-                <td>Number of redirects to the page</td>
-            </tr>
-            <tr>
-                <td>transclusions</td>
-                <td>LinkCountObject</td>
-                <td>required</td>
-                <td>Number of page that transclude the page</td>
-            </tr>
-        </table>
-        <h3>LinkCountObject</h3>
-        <table>
-            <tr>
-                <th>Key</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td>direct</td>
-                <td>integer</td>
-                <td>required</td>
-                <td>Number of links the directly link to the page</td>
-            </tr>
-            <tr>
-                <td>indirect</td>
-                <td>integer</td>
-                <td>required</td>
-                <td>Number of links that link to the page through a redirect</td>
-            </tr>
-            <tr>
-                <td>all</td>
-                <td>integer</td>
-                <td>required</td>
-                <td>Sum of direct and indirect links</td>
-            </tr>
-        </table>
+        <?php
+            echo '<h2>Request</h2>' . self::defineObject(
+                ['page', 'string', 'required', 'The name of the page get the link count for.'],
+                ['project', 'string', 'optional', 'The project (domain, name, or database) the page is in, default is en.wikipedia.org.']
+            );
+            
+            echo '<h2>Response</h2>' . self::defineObject(
+                ['filelinks', 'integer', 'optional', 'Number of pages that show the file.'],
+                ['categorylinks', 'LinkCountObject', 'optional', 'Number of category links.'],
+                ['wikilinks', 'LinkCountObject', 'required', 'Number of wikilinks.'],
+                ['redirects', 'integer', 'required', 'Number of redirects to the page.'],
+                ['transclusions', 'LinkCountObject', 'required', 'Number of page that transclude the page.']
+            );
+            
+            echo '<h3>LinkCountObject</h3>' . self::defineObject(
+                ['direct', 'integer', 'required', 'Number of links the directly link to the page.'],
+                ['indirect', 'integer', 'required', 'Number of links that link to the page through a redirect.'],
+                ['all', 'integer', 'required', 'Sum of direct and indirect links.']
+            );
+        ?>
         <h2>Examples</h2>
         <ul>
-            <?php foreach ($examples as $example) { ?>
-                <li><a href="<?php echo $url . '?' . $example ?>"><?php echo $url . '?' . $example ?></a></li>
-            <?php } ?>
+            <?php foreach ($examples as $example) {
+                $url = $prefix . '?' . $example;
+                echo "<li><a href=\"$url\">$url</a></li>";
+            } ?>
         </ul>
         <a href="..">&larr; Back</a>
     </body>
