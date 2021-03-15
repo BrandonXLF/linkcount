@@ -11,7 +11,8 @@ var projectLookup = OO.ui.infuse($('#project')),
     }),
     outWidget = OO.ui.infuse($('#out')),
     outLayout = OO.ui.infuse($('#out-layout')),
-    nsQueue = namespacesInput.getValue() ? namespacesInput.getValue().split(',') : [];
+    nsQueue = namespacesInput.getValue() ? namespacesInput.getValue().split(',') : [],
+    request = undefined;
 
 function getNamespaceOptions(project) {
     $.get('https://' + project + '/w/api.php', {
@@ -70,10 +71,12 @@ button.on('click', function() {
     search = search.join('&');
     history.replaceState(null, null, location.pathname + (search ? '?' : '') + search);
     if (!search) return;
+    
+    if (request) request.abort();
 
     outLayout.$element.replaceWith(progressLayout.$element);
 
-    $.get('output/?' + search).always(function() {
+    request = $.get('output/?' + search).always(function() {
         progressLayout.$element.replaceWith(outLayout.$element);
     }).done(function(res) {
         outWidget.$element.html(res);
