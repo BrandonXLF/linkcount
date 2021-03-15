@@ -1,5 +1,4 @@
 <?php
 
-require '../includes/global.php';
-
-echo get_output_html();
+require __DIR__ . '/../includes/LinkCount.php';
+echo (new LinkCount())->html();

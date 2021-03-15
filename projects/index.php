@@ -1,11 +1,11 @@
 <?php
 
-require '../includes/global.php';
+require __DIR__ . '/../includes/Database.php';
 
 $project = $_GET['project'] ?? '';
 $projects = [];
 
-$db = db_connect();
+$db = new Database();
 
 $stmt = $db->prepare('SELECT url FROM wiki WHERE url LIKE ?');
 $projectSQL = 'https://' . $project . '%';
