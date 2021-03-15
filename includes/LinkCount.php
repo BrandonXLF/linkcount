@@ -66,6 +66,7 @@ class LinkCount {
         curl_setopt_array($curl, [
             CURLOPT_URL => $this->project_url . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->title),
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_USERAGENT => 'LinkCount (https://linkcount.toolforge.org/)'
         ]);
         $info = json_decode(curl_exec($curl));
         curl_close($curl);
