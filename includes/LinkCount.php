@@ -95,17 +95,25 @@ class LinkCount {
 			$this->title = explode(':', $this->title, 2)[1];
 		}
 
-		$redirects = $this->fetch('redirect', 'rd', null, NO_FROM_NAMESPACE | HAS_INTERWIKI | EXCLUDE_INDIRECT);
+		$redirects = $this->fetch('redirect', 'rd', NO_FROM_NAMESPACE | HAS_INTERWIKI | EXCLUDE_INDIRECT);
 
 		$this->counts = [
 			// The filelinks table counts links to redirects twice
-			'filelinks' => $this->namespace != 6 ? null : $this->fetch('imagelinks', 'il', fn($d, $i) => [$d - $i, $i], SINGLE_NAMESPACE),
-			'categorylinks' => $this->namespace != 14 ? null : $this->fetch('categorylinks', 'cl', fn($d, $i) => [$d, $i], SINGLE_NAMESPACE | NO_FROM_NAMESPACE),
+			'filelinks' => $this->namespace != 6 ? null : $this->fetch('imagelinks', 'il', SINGLE_NAMESPACE, function($direct, $indirect) {
+				return [$direct - $indirect, $indirect];
+			}),
+			'categorylinks' => $this->namespace != 14 ? null : $this->fetch('categorylinks', 'cl', SINGLE_NAMESPACE | NO_FROM_NAMESPACE, function($direct, $indirect) {
+				return [$direct, $indirect];
+			}),
 			// Redirects are included in the wikilinks table
-			'wikilinks' => $this->fetch('pagelinks', 'pl', fn($d, $i) => [$d - $redirects, $i]),
+			'wikilinks' => $this->fetch('pagelinks', 'pl', 0, function($direct, $indirect) use ($redirects) {
+				return [$direct - $redirects, $indirect];
+			}),
 			'redirects' => $redirects,
 			// The transclusions table counts links to redirects twice
-			'transclusions' => $this->fetch('templatelinks', 'tl', fn($d, $i) => [$d - $i, $i])
+			'transclusions' => $this->fetch('templatelinks', 'tl', 0, function($direct, $indirect) {
+				return [$direct - $indirect, $indirect];
+			})
 		];
 	}
 
@@ -122,7 +130,7 @@ class LinkCount {
 		return (int) $stmt->fetch()[0];
 	}
 
-	private function fetch($table, $prefix, $calc, $flags = 0) {
+	private function fetch($table, $prefix, $flags, $calc = null) {
 		$title_column = $prefix . '_' . ($flags & SINGLE_NAMESPACE ? 'to' : 'title');
 		$escaped_title = $this->db->quote($this->title);
 		$escaped_ns = $this->db->quote($this->namespace);
@@ -163,12 +171,12 @@ class LinkCount {
 			return $this->get_count($direct);
 		}
 
-		list($d, $i) = $calc($this->get_count($direct), $this->get_count($indirect));
+		list($direct_count, $indirect_count) = $calc($this->get_count($direct), $this->get_count($indirect));
 
 		return [
-			'direct' => $d,
-			'indirect' => $i,
-			'all' => $d + $i
+			'direct' => $direct_count,
+			'indirect' => $indirect_count,
+			'all' => $direct_count + $indirect_count
 		];;
 	}
 
