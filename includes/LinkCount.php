@@ -56,8 +56,7 @@ class LinkCount {
 		}
 
 		$this->namespaces = $namespaces;
-		$this->page = str_replace(' ', '_', $page);
-		$this->page = ucfirst($this->page);
+		$this->page = $page;
 
 		if (substr($project, 0, 8) === 'https://') {
 			$project = substr($project, 8);
@@ -88,7 +87,7 @@ class LinkCount {
 		curl_close($curl);
 
 		$this->namespace = $info->query->pages[0]->ns;
-		$this->title = $info->query->pages[0]->title;
+		$this->title = str_replace(' ', '_', $info->query->pages[0]->title);
 		$this->db = new Database("$dbname.web.db.svc.wikimedia.cloud", "{$dbname}_p");
 
 		if ($this->namespace != 0) {
