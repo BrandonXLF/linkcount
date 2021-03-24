@@ -16,7 +16,7 @@ $res = $stmt->get_result();
 $stmt->close();
 
 foreach ($res->fetch_all() as $row) {
-    $projects[] = substr($row[0], 8);
+	$projects[] = substr($row[0], 8);
 }
 
 header('Content-Type: application/json');

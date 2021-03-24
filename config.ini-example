@@ -2,4 +2,4 @@ user = # user from replica.my.cnf
 password = # password from replica.my.cnf
 # port = 3306
 # server = metawiki.web.db.svc.eqiad.wmflabs
-# table = meta_p 
+# table = meta_p

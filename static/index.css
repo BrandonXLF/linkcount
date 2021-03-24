@@ -1,75 +1,75 @@
 body {
-    font-family: sans-serif;
-    line-height: 1.5;
-    background: #f0f0f0;
+	font-family: sans-serif;
+	line-height: 1.5;
+	background: #f0f0f0;
 }
 
 main, footer {
-    max-width: 650px;
-    margin: 0 auto;
+	max-width: 650px;
+	margin: 0 auto;
 }
 
 footer, .links {
-    margin-top: 1em;
+	margin-top: 1em;
 }
 .num {
-    font-size: 150%;
-    line-height: 1.25;
+	font-size: 150%;
+	line-height: 1.25;
 }
 
 .error {
-    color: #e00000;
+	color: #e00000;
 }
 
 .links {
-    float: left;
+	float: left;
 }
 
 .out {
-    box-sizing: border-box;
-    padding: 0.5em 0.25em;
-    text-align: center;
-    font-size: 125%;
-    border: 1px solid #a2a9b1;
-    margin: 0.25em 0;
-    border-radius: 2px;
-    background: #fff;
-    float: right;
-    clear: both;
-    width: 100%;
+	box-sizing: border-box;
+	padding: 0.5em 0.25em;
+	text-align: center;
+	font-size: 125%;
+	border: 1px solid #a2a9b1;
+	margin: 0.25em 0;
+	border-radius: 2px;
+	background: #fff;
+	float: right;
+	clear: both;
+	width: 100%;
 }
 
 .oo-ui-widget.oo-ui-progressBarWidget {
-    border-radius: 2px;
-    box-shadow: none;
+	border-radius: 2px;
+	box-shadow: none;
 }
 
 @media (max-width: 499px) {
-    .out.left {
-        margin: 0.5em 0 0;
-        border-radius: 2px 2px 0 0;
-    }
-    .out.right {
-        margin: 0 0 0.5em;
-        border-top: 0;
-        border-radius: 0 0 2px 2px;
-    }
+	.out.left {
+		margin: 0.5em 0 0;
+		border-radius: 2px 2px 0 0;
+	}
+	.out.right {
+		margin: 0 0 0.5em;
+		border-top: 0;
+		border-radius: 0 0 2px 2px;
+	}
 }
 
 @media (min-width: 500px) {
-    .out.left {
-        float: left;
-        clear: left;
-        width: 50%;
-        padding-right: 0.25em;
-        border-radius: 2px 0 0 2px;
-    }
-    .out.right {
-        float: right;
-        clear: right;
-        width: 50%;
-        padding-left: 0.25em;
-        border-left: 0;
-        border-radius: 0 2px 2px 0;
-    }
+	.out.left {
+		float: left;
+		clear: left;
+		width: 50%;
+		padding-right: 0.25em;
+		border-radius: 2px 0 0 2px;
+	}
+	.out.right {
+		float: right;
+		clear: right;
+		width: 50%;
+		padding-left: 0.25em;
+		border-left: 0;
+		border-radius: 0 2px 2px 0;
+	}
 }
