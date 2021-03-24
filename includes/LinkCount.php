@@ -18,6 +18,20 @@ class LinkCount {
 	private $page;
 	private $namespaces;
 
+	private $meta = [
+		'directfilelinks' => ['Direct file links', '/wiki/Special:WhatLinksHere/PAGE?hideredirs=1&hidetrans=1&hidelinks=1'],
+		'allfilelinks' => ['All file links', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1'],
+		// WhatLinksHere doesn't show category links
+		'directcategorylinks' => ['Direct category links', '/wiki/PAGE'],
+		// Show redirects so they can be clicked to see their category links, or something like that...
+		'allcategorylinks' => ['All category links', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'],
+		'directwikilinks' => ['Direct wikilinks', '/wiki/Special:WhatLinksHere/PAGE?hideredirs=1&hidetrans=1&hideimages=1'],
+		'allwikilinks' => ['All wikilinks', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1'],
+		'redirects' => ['Redirects', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'],
+		'directtransclusions' => ['Direct transclusions', '/wiki/Special:WhatLinksHere/PAGE?hideredirs=1&hidelinks=1&hideimages=1'],
+		'alltransclusions' => ['All transclusions', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1']
+	];
+
 	public function __construct($page, $project, $namespaces) {
 		global $cnf;
 
@@ -158,9 +172,11 @@ class LinkCount {
 		];;
 	}
 
-	private function create_out($label, $num, $class = '') {
+	private function create_out($key, $num, $class = '') {
 		$formatted = number_format($num);
-		return "<div class=\"out $class\"><div>$label </div><div class=\"num\">$formatted</div></div>";
+		$class = $class ? " $class" : '';
+		$label = '<a href="' . $this->project_url . str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]) . "\">{$this->meta[$key][0]}</a>";
+		return "<div class=\"out$class\"><h2>$label</h2><div class=\"num\">$formatted</div></div>";
 	}
 
 	public function html() {
@@ -175,11 +191,12 @@ class LinkCount {
 				if ($count === null) continue;
 
 				if (is_int($count)) {
-					$out .= $this->create_out(ucfirst($type), $count);
+					$out .= $this->create_out($type, $count);
 					continue;
 				}
-				$out .= $this->create_out("Direct $type", $count['direct'], 'left');
-				$out .= $this->create_out("All $type", $count['all'], 'right');
+
+				$out .= $this->create_out("direct$type", $count['direct'], 'left');
+				$out .= $this->create_out("all$type", $count['all'], 'right');
 			}
 
 			$link = $this->project_url . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);

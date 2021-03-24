@@ -4,6 +4,19 @@ body {
 	background: #f0f0f0;
 }
 
+h2 {
+	font-size: inherit;
+	font-weight: inherit;
+	margin: 0;
+}
+h2 > a {
+	text-decoration: none;
+}
+
+h2 > a:hover {
+	text-decoration: underline;
+}
+
 main, footer {
 	max-width: 650px;
 	margin: 0 auto;
