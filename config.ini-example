@@ -1,5 +1,5 @@
 user = # user from replica.my.cnf
 password = # password from replica.my.cnf
-# port = 3306
-# server = metawiki.web.db.svc.eqiad.wmflabs
-# table = meta_p
+# server = # server to always connect to
+# database = # database to always connect to
+# useragent = # useragent to use when making API request to the wiki

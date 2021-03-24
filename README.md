@@ -10,10 +10,6 @@ To run you will need to install the PHP dependencies using `composer install` an
 
 Copy the file `config.ini-example` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file.
 
-## Database
+## Testing
 
-To use the tool, you will need a connection to the Wikimedia replica database.
-
-To connect to the database on your computer you can use the command `ssh -N USERNAME@dev.toolforge.org -L 3306:metawiki.web.db.svc.eqiad.wmflabs:3306` and add `127.0.0.1 metawiki.web.db.svc.eqiad.wmflabs` to your `hosts` file. Replace `USERNAME` with your toolforge username.
-
-You also may need to replace the first number with a different port along with `port` in your `config.ini` file if you're already using port 3306.
+Test are run using `composer test`. When testing, the `linkcounttest` table is created. You can also run `composer db` to create the `linkcounttest` table for manual testing from a browser. When manual testing, `en.wikipedia.org` is linked to the `linkcounttest` database. Wikis with a url starting with `e` are also added to the `wiki` table to allow for testing of the project input autocomplete.

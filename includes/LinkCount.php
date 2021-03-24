@@ -3,26 +3,26 @@
 require __DIR__ . '/Database.php';
 
 define('SINGLE_NAMESPACE', 1);
-define('NO_INDIRECTS', 2);
-define('NO_FROM_NAMESPACE', 4);
+define('HAS_INTERWIKI', 2);
+define('EXCLUDE_INDIRECT', 4);
+define('NO_FROM_NAMESPACE', 8);
 
 class LinkCount {
-	private $counts;
-	private $error;
-	private $project_url;
+	public $counts;
+	public $error;
 
+	private $project_url;
 	private $db;
 	private $namespace;
 	private $title;
+	private $page;
 	private $namespaces;
 
-	public function __construct() {
-		$page = $_GET['page'] ?? '';
-		$project = $_GET['project'] ?? '';
-		$namespaces = $_GET['namespaces'] ?? '';
+	public function __construct($page, $project, $namespaces) {
+		global $cnf;
 
-		if (!$page && !$project) {
-			return [];
+		if (!$page && !$project && $namespaces === '') {
+			return;
 		}
 
 		if (!$page) {
@@ -34,131 +34,128 @@ class LinkCount {
 			$project = 'en.wikipedia.org';
 		}
 
-		$this->namespaces = $namespaces ? explode(',', $namespaces) : [];
-		$this->title = str_replace(' ', '_', $page);
-		$this->title = ucfirst($this->title);
+		foreach ($namespaces ? explode(',', $namespaces) : [] as $rawNamespace) {
+			if (!is_numeric($rawNamespace)) {
+				$this->error = 'Invalid namespace IDs.';
+				return;
+			}
+		}
 
-		if (substr($project, -2) === '_p') {
-			$project = substr($project, 0, -2);
-		} elseif (substr($project, 0, 8) === 'https://') {
+		$this->namespaces = $namespaces;
+		$this->page = str_replace(' ', '_', $page);
+		$this->page = ucfirst($this->page);
+
+		if (substr($project, 0, 8) === 'https://') {
 			$project = substr($project, 8);
 		} elseif (substr($project, 0, 7) === 'http://') {
 			$project = substr($project, 7);
 		}
 
 		$maybe_project_url = 'https://' . $project;
-		$this->db = new Database();
+		$this->db = new Database('metawiki.web.db.svc.wikimedia.cloud', 'meta_p');
 
 		$stmt = $this->db->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
-		$stmt->bind_param('ss', $project, $maybe_project_url);
-		$stmt->execute();
-		$res = $stmt->get_result();
-		$stmt->close();
+		$stmt->execute([$project, $maybe_project_url]);
 
-		if (!$res->num_rows) {
+		if (!$stmt->rowCount()) {
 			$this->error = 'That project does not exist..';
 			return;
 		}
 
-		list($dbname, $this->project_url) = $res->fetch_row();
+		list($dbname, $this->project_url) = $stmt->fetch();
 
 		$curl = curl_init();
 		curl_setopt_array($curl, [
-			CURLOPT_URL => $this->project_url . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->title),
+			CURLOPT_URL => $this->project_url . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->page),
 			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_USERAGENT => 'LinkCount (https://linkcount.toolforge.org/)'
+			CURLOPT_USERAGENT => $cnf['useragent']
 		]);
 		$info = json_decode(curl_exec($curl));
 		curl_close($curl);
 
 		$this->namespace = $info->query->pages[0]->ns;
+		$this->title = $info->query->pages[0]->title;
+		$this->db = new Database("$dbname.web.db.svc.wikimedia.cloud", "{$dbname}_p");
 
 		if ($this->namespace != 0) {
 			$this->title = explode(':', $this->title, 2)[1];
 		}
 
-		$this->db->select_db("{$dbname}_p");
-
-		$redirects = $this->fetch('redirect', 'rd', NO_INDIRECTS | NO_FROM_NAMESPACE);
-		$wikilinks = $this->fetch('pagelinks', 'pl', 0, $redirects);
-		$transclusions = $this->fetch('templatelinks', 'tl');
-		# Images links from redirects are also added to the imagelinks table under the redirect target
-		$filelinks = $this->namespace == 6 ? $this->fetch('imagelinks', 'il', NO_INDIRECTS | SINGLE_NAMESPACE) : null;
-		$categorylinks = $this->namespace == 14 ? $this->fetch('categorylinks', 'cl', SINGLE_NAMESPACE | NO_FROM_NAMESPACE) : null;
+		$redirects = $this->fetch('redirect', 'rd', null, NO_FROM_NAMESPACE | HAS_INTERWIKI | EXCLUDE_INDIRECT);
 
 		$this->counts = [
-			'filelinks' => $filelinks,
-			'categorylinks' => $categorylinks,
-			'wikilinks' => $wikilinks,
+			// The filelinks table counts links to redirects twice
+			'filelinks' => $this->namespace != 6 ? null : $this->fetch('imagelinks', 'il', fn($d, $i) => [$d - $i, $i], SINGLE_NAMESPACE),
+			'categorylinks' => $this->namespace != 14 ? null : $this->fetch('categorylinks', 'cl', fn($d, $i) => [$d, $i], SINGLE_NAMESPACE | NO_FROM_NAMESPACE),
+			// Redirects are included in the wikilinks table
+			'wikilinks' => $this->fetch('pagelinks', 'pl', fn($d, $i) => [$d - $redirects, $i]),
 			'redirects' => $redirects,
-			'transclusions' => $transclusions
+			// The transclusions table counts links to redirects twice
+			'transclusions' => $this->fetch('templatelinks', 'tl', fn($d, $i) => [$d - $i, $i])
 		];
 	}
 
-	private function fetch($table, $prefix, $flags = 0, $subtract = 0) {
+	private function get_count($conds) {
+		$tables = [];
+		$where = [];
+
+		foreach ($conds as $table => $cond) {
+			$tables[] = $table;
+			$where = array_merge($where, $cond);
+		}
+
+		$stmt = $this->db->query('SELECT COUNT(*) FROM ' . implode(', ',  $tables) . ' WHERE ' . implode(' AND ', $where));
+		return (int) $stmt->fetch()[0];
+	}
+
+	private function fetch($table, $prefix, $calc, $flags = 0) {
 		$title_column = $prefix . '_' . ($flags & SINGLE_NAMESPACE ? 'to' : 'title');
+		$escaped_title = $this->db->quote($this->title);
+		$escaped_ns = $this->db->quote($this->namespace);
+		$escaped_blank = $this->db->quote('');
 
-		$d_tables = [$table];
-		$d_where = ["$title_column=?"];
-		$d_types = 's';
-		$d_params = [$this->title];
+		$direct = [
+			$table => ["$title_column = $escaped_title"]
+		];
 
-		$i_tables = [$table, 'redirect', 'page p1'];
-		$i_where = ['rd_from=p1.page_id', "p1.page_title=$title_column", 'rd_namespace=?', 'rd_title=?'];
-		$i_types = 'is';
-		$i_params = [$this->namespace, $this->title];
+		$indirect = [
+			'redirect' => ["rd_namespace = $escaped_ns", "rd_title = $escaped_title", "(rd_interwiki IS NULL OR rd_interwiki = $escaped_blank)"],
+			'page AS target' => ['target.page_id = rd_from'],
+			$table => ["$title_column = target.page_title"]
+		];
 
-		# Check if the link targets the namespace of this page
 		if (~$flags & SINGLE_NAMESPACE) {
-			$d_where[] = "{$prefix}_namespace=?";
-			$d_params[] = $this->namespace;
-			$d_types .= 'i';
-
-			$i_where[] = "{$prefix}_namespace=p1.page_namespace";
+			$direct[$table][] = "{$prefix}_namespace = $escaped_ns";
+			$indirect[$table][] = "{$prefix}_namespace = target.page_namespace";
 		}
 
-		# Check if link comes from one of the selected namespaces
-		if ($this->namespaces) {
-			$ns_match = implode(',', array_fill(0, count($this->namespaces), '?'));
-			$ns_type = str_repeat('i', count($this->namespaces));
-
-			$d_types .= $ns_type;
-			$i_types .= $ns_type;
-
-			foreach ($this->namespaces as $namespace) {
-				$d_params[] = $i_params[] = $namespace;
-			}
-
+		// Check if link comes from one of the selected namespaces
+		if ($this->namespaces !== '') {
 			if ($flags & NO_FROM_NAMESPACE) {
-				$d_tables[] = $i_tables[] = 'page p2';
-				$d_where[] = $i_where[] = "{$prefix}_from=p2.page_id";
-				$d_where[] = $i_where[] = "p2.page_namespace IN ($ns_match)";
+				$direct['page AS source'] = $indirect['page AS source'] = [
+					"source.page_id = {$prefix}_from",
+					"source.page_namespace IN ({$this->namespaces})"
+				];
 			} else {
-				$d_where[] = $i_where[] = "{$prefix}_from_namespace IN ($ns_match)";
+				$direct[$table][] = $indirect[$table][] = "{$prefix}_from_namespace IN ({$this->namespaces})";
 			}
 		}
 
-		$stmt = $this->db->prepare('SELECT COUNT(*) FROM ' . implode(',', $d_tables) . ' WHERE ' . implode(' AND ', $d_where));
-		$stmt->bind_param($d_types, ...$d_params);
-		$stmt->execute();
-		$d_count = $stmt->get_result()->fetch_row()[0] - $subtract;
-		$stmt->close();
-
-		if (~$flags & NO_INDIRECTS) {
-			$stmt = $this->db->prepare('SELECT COUNT(*) FROM ' . implode(',', $i_tables) . ' WHERE ' . implode(' AND ', $i_where));
-			$stmt->bind_param($i_types, ...$i_params);
-			$stmt->execute();
-			$i_count = $stmt->get_result()->fetch_row()[0];
-			$stmt->close();
-
-			return [
-				'direct' => $d_count,
-				'indirect' => $i_count,
-				'all' => $d_count + $i_count
-			];
+		if ($flags & HAS_INTERWIKI) {
+			$direct[$table][] = "({$prefix}_interwiki IS NULL OR {$prefix}_interwiki = $escaped_blank)";
 		}
 
-		return $d_count;
+		if ($flags & EXCLUDE_INDIRECT) {
+			return $this->get_count($direct);
+		}
+
+		list($d, $i) = $calc($this->get_count($direct), $this->get_count($indirect));
+
+		return [
+			'direct' => $d,
+			'indirect' => $i,
+			'all' => $d + $i
+		];;
 	}
 
 	private function create_out($label, $num, $class = '') {
@@ -181,19 +178,18 @@ class LinkCount {
 					$out .= $this->create_out(ucfirst($type), $count);
 					continue;
 				}
-
 				$out .= $this->create_out("Direct $type", $count['direct'], 'left');
 				$out .= $this->create_out("All $type", $count['all'], 'right');
 			}
 
-			$link = $this->project_url . '/wiki/Special:WhatLinksHere/' . rawurlencode($_GET['page']);
+			$link = $this->project_url . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);
 			$out .= "<div class=\"links\"><a href=\"$link\">What links here</a></div>";
 		}
 
 		return $out;
 	}
 
-	public function json() {
+	public function json($headers = true) {
 		$out = [];
 
 		if (isset($this->error)) {
@@ -202,14 +198,14 @@ class LinkCount {
 
 		if (isset($this->counts)) {
 			foreach ($this->counts as $type => $count) {
-				if ($count === null) continue;
-
 				$out[$type] = $count;
 			}
 		}
 
-		header('Content-Type: application/json');
-		header('Access-Control-Allow-Origin: *');
+		if ($headers) {
+			header('Content-Type: application/json');
+			header('Access-Control-Allow-Origin: *');
+		}
 
 		return json_encode($out);
 	}

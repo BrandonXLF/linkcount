@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/Config.php';
 require __DIR__ . '/LinkCount.php';
 require __DIR__ . '/Widgets.php';
 
@@ -63,7 +64,7 @@ class Form {
 		$out .= new OOUI\FieldLayout(
 			new HTMLWidget([
 				'id' => 'out',
-				'html' => (new LinkCount())->html(),
+				'html' => (new LinkCount($_GET['page'] ?? '', $_GET['project'] ?? '', $_GET['namespaces'] ?? ''))->html(),
 				'infusable' => true
 			]), [
 				'id' => 'out-layout',

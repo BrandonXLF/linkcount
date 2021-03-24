@@ -1,21 +1,17 @@
 <?php
 
+require __DIR__ . '/../includes/Config.php';
 require __DIR__ . '/../includes/Database.php';
 
 $project = $_GET['project'] ?? '';
 $projects = [];
 
-$db = new Database();
+$db = new Database('metawiki.web.db.svc.wikimedia.cloud', 'meta');
 
-$stmt = $db->prepare('SELECT url FROM wiki WHERE url LIKE ?');
-$projectSQL = 'https://' . $project . '%';
-$stmt->bind_param('s', $projectSQL);
+$stmt = $db->prepare('SELECT url FROM wiki WHERE url LIKE ? OR dbname LIKE ?');
+$stmt->execute(['https://' . $project . '%', $project . '%']);
 
-$stmt->execute();
-$res = $stmt->get_result();
-$stmt->close();
-
-foreach ($res->fetch_all() as $row) {
+foreach ($stmt->fetchAll() as $row) {
 	$projects[] = substr($row[0], 8);
 }
 

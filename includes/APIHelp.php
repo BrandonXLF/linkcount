@@ -57,7 +57,7 @@ class APIHelp {
 			);
 
 			echo '<h2>Response</h2>' . self::defineObject(
-				['filelinks', 'integer', 'optional', 'Number of pages that show the file.'],
+				['filelinks', 'LinkCountObject', 'optional', 'Number of pages that show the file.'],
 				['categorylinks', 'LinkCountObject', 'optional', 'Number of category links.'],
 				['wikilinks', 'LinkCountObject', 'required', 'Number of wikilinks.'],
 				['redirects', 'integer', 'required', 'Number of redirects to the page.'],
