@@ -11,7 +11,7 @@ class LinkCount {
 	public $counts;
 	public $error;
 
-	private $project_url;
+	private $projectURL;
 	private $db;
 	private $namespace;
 	private $title;
@@ -65,22 +65,22 @@ class LinkCount {
 			$project = substr($project, 7);
 		}
 
-		$maybe_project_url = 'https://' . $project;
+		$maybeProjectURL = 'https://' . $project;
 		$this->db = new Database('metawiki.web.db.svc.wikimedia.cloud', 'meta_p');
 
 		$stmt = $this->db->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
-		$stmt->execute([$project, $maybe_project_url]);
+		$stmt->execute([$project, $maybeProjectURL]);
 
 		if (!$stmt->rowCount()) {
 			$this->error = 'That project does not exist..';
 			return;
 		}
 
-		list($dbname, $this->project_url) = $stmt->fetch();
+		list($dbname, $this->projectURL) = $stmt->fetch();
 
 		$curl = curl_init();
 		curl_setopt_array($curl, [
-			CURLOPT_URL => $this->project_url . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->page),
+			CURLOPT_URL => $this->projectURL . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->page),
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_USERAGENT => $cnf['useragent']
 		]);
@@ -131,23 +131,23 @@ class LinkCount {
 	}
 
 	private function fetch($table, $prefix, $flags, $calc = null) {
-		$title_column = $prefix . '_' . ($flags & SINGLE_NAMESPACE ? 'to' : 'title');
-		$escaped_title = $this->db->quote($this->title);
-		$escaped_ns = $this->db->quote($this->namespace);
-		$escaped_blank = $this->db->quote('');
+		$titleColumn = $prefix . '_' . ($flags & SINGLE_NAMESPACE ? 'to' : 'title');
+		$escapedTitle = $this->db->quote($this->title);
+		$escapedNS = $this->db->quote($this->namespace);
+		$escapedBlank = $this->db->quote('');
 
 		$direct = [
-			$table => ["$title_column = $escaped_title"]
+			$table => ["$titleColumn = $escapedTitle"]
 		];
 
 		$indirect = [
-			'redirect' => ["rd_namespace = $escaped_ns", "rd_title = $escaped_title", "(rd_interwiki IS NULL OR rd_interwiki = $escaped_blank)"],
+			'redirect' => ["rd_namespace = $escapedNS", "rd_title = $escapedTitle", "(rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)"],
 			'page AS target' => ['target.page_id = rd_from'],
-			$table => ["$title_column = target.page_title"]
+			$table => ["$titleColumn = target.page_title"]
 		];
 
 		if (~$flags & SINGLE_NAMESPACE) {
-			$direct[$table][] = "{$prefix}_namespace = $escaped_ns";
+			$direct[$table][] = "{$prefix}_namespace = $escapedNS";
 			$indirect[$table][] = "{$prefix}_namespace = target.page_namespace";
 		}
 
@@ -164,7 +164,7 @@ class LinkCount {
 		}
 
 		if ($flags & HAS_INTERWIKI) {
-			$direct[$table][] = "({$prefix}_interwiki IS NULL OR {$prefix}_interwiki = $escaped_blank)";
+			$direct[$table][] = "({$prefix}_interwiki IS NULL OR {$prefix}_interwiki = $escapedBlank)";
 		}
 
 		if ($flags & EXCLUDE_INDIRECT) {
@@ -183,7 +183,7 @@ class LinkCount {
 	private function create_out($key, $num, $class = '') {
 		$formatted = number_format($num);
 		$class = $class ? " $class" : '';
-		$label = '<a href="' . $this->project_url . str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]) . "\">{$this->meta[$key][0]}</a>";
+		$label = '<a href="' . $this->projectURL . str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]) . "\">{$this->meta[$key][0]}</a>";
 		return "<div class=\"out$class\"><h2>$label</h2><div class=\"num\">$formatted</div></div>";
 	}
 
@@ -207,7 +207,7 @@ class LinkCount {
 				$out .= $this->create_out("all$type", $count['all'], 'right');
 			}
 
-			$link = $this->project_url . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);
+			$link = $this->projectURL . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);
 			$out .= "<div class=\"links\"><a href=\"$link\">What links here</a></div>";
 		}
 
