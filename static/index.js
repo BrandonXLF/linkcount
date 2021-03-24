@@ -70,7 +70,11 @@ button.on('click', function() {
 
 	search = search.join('&');
 	history.replaceState(null, null, location.pathname + (search ? '?' : '') + search);
-	if (!search) return;
+
+	if (!search) {
+		outWidget.$element.html('');
+		return;
+	}
 
 	if (request) request.abort();
 
