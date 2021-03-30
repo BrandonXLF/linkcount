@@ -344,6 +344,45 @@ class LinkCountTest extends TestCase {
 				]
 			],
 
+			'transclusion of redirect content' => [
+				[
+					'redirects+pagelinks' => [
+						[10, 'Redirect', 10, 'Template']
+					],
+					'templatelinks' => [
+						[0, 'Link', 10, 'Redirect']
+					]
+				],
+				[
+					'Template:Redirect' => [
+						'transclusions' => [1,1,0]
+					],
+					'Template:Template' => [
+						'transclusions' => [0,0,0],
+						'redirects' => 1
+					]
+				]
+			],
+			'file link to redirect content' => [
+				[
+					'redirects+pagelinks' => [
+						[6, 'Redirect.png', 6, 'Image.png']
+					],
+					'imagelinks' => [
+						[0, 'Link', 'Redirect.png']
+					]
+				],
+				[
+					'File:Redirect.png' => [
+						'filelinks' => [1,1,0]
+					],
+					'File:Image.png' => [
+						'filelinks' => [0,0,0],
+						'redirects' => 1
+					]
+				]
+			],
+
 			'wikilinks to two redirects' => [
 				[
 					'redirects+pagelinks' => [
