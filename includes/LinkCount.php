@@ -17,20 +17,15 @@ class LinkCount {
 	private $namespaces;
 
 	private $meta = [
-		'directfilelinks' => ['Direct file links', '/wiki/Special:WhatLinksHere/PAGE?hideredirs=1&hidetrans=1&hidelinks=1'],
-		'allfilelinks' => ['All file links', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1'],
+		'filelinks' => ['File links', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1'],
 		// WhatLinksHere doesn't show category links
-		'directcategorylinks' => ['Direct category links', '/wiki/PAGE'],
-		// Show redirects so they can be clicked to see their category links, or something like that...
-		'allcategorylinks' => ['All category links', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'],
-		'directwikilinks' => ['Direct wikilinks', '/wiki/Special:WhatLinksHere/PAGE?hideredirs=1&hidetrans=1&hideimages=1'],
-		'allwikilinks' => ['All wikilinks', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1'],
+		'categorylinks' => ['Category links', '/wiki/PAGE'],
+		'wikilinks' => ['Wikilinks', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1'],
 		'redirects' => ['Redirects', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'],
-		'directtransclusions' => ['Direct transclusions', '/wiki/Special:WhatLinksHere/PAGE?hideredirs=1&hidelinks=1&hideimages=1'],
-		'alltransclusions' => ['All transclusions', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1']
+		'transclusions' => ['Transclusions', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1']
 	];
 
-	public function __construct($page, $project, $namespaces) {
+	public function __construct($page, $project, $namespaces = '') {
 		if (!$page && !$project && $namespaces === '') {
 			return;
 		}
@@ -82,7 +77,7 @@ class LinkCount {
 		$info = json_decode(curl_exec($curl));
 		curl_close($curl);
 
-		$this->namespace = $info->query->pages[0]->ns;
+		$this->namespace =(int) $info->query->pages[0]->ns;
 		$this->title = str_replace(' ', '_', $info->query->pages[0]->title);
 		$this->db = new Database("$dbname.web.db.svc.wikimedia.cloud", "{$dbname}_p");
 
@@ -90,96 +85,54 @@ class LinkCount {
 			$this->title = explode(':', $this->title, 2)[1];
 		}
 
-		$redirects = $this->fetch('redirect', 'rd', NO_FROM_NAMESPACE | HAS_INTERWIKI | EXCLUDE_INDIRECT);
-
 		$this->counts = [
-			// The filelinks table counts links to redirects twice
-			'filelinks' => $this->namespace != 6 ? null : $this->fetch('imagelinks', 'il', SINGLE_NAMESPACE, function($direct, $indirect) {
-				return [$direct - $indirect, $indirect];
-			}),
-			'categorylinks' => $this->namespace != 14 ? null : $this->fetch('categorylinks', 'cl', SINGLE_NAMESPACE | NO_FROM_NAMESPACE, function($direct, $indirect) {
-				return [$direct, $indirect];
-			}),
-			// Redirects are included in the wikilinks table
-			'wikilinks' => $this->fetch('pagelinks', 'pl', 0, function($direct, $indirect) use ($redirects) {
-				return [$direct - $redirects, $indirect];
-			}),
-			'redirects' => $redirects,
-			// The transclusions table counts links to redirects twice
-			'transclusions' => $this->fetch('templatelinks', 'tl', 0, function($direct, $indirect) {
-				return [$direct - $indirect, $indirect];
-			})
+			'filelinks' => $this->namespace === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,
+			'categorylinks' => $this->namespace === 14 ? $this->counts('categorylinks', 'cl', 'link', true, true) : null,
+			'wikilinks' => $this->counts('pagelinks', 'pl'),
+			'redirects' => $this->counts('redirect', 'rd', 'redirect', false, true),
+			'transclusions' => $this->counts('templatelinks', 'tl', 'transclusion')
 		];
+
+		// Redirects are included in the wikilinks table
+		$this->counts['wikilinks']['all'] -= $this->counts['redirects'];
+		$this->counts['wikilinks']['direct'] -= $this->counts['redirects'];
 	}
 
-	private function get_count($conds) {
-		$tables = [];
-		$where = [];
-
-		foreach ($conds as $table => $cond) {
-			$tables[] = $table;
-			$where = array_merge($where, $cond);
-		}
-
-		$stmt = $this->db->query('SELECT COUNT(*) FROM ' . implode(', ',  $tables) . ' WHERE ' . implode(' AND ', $where));
-		return (int) $stmt->fetch()[0];
-	}
-
-	private function fetch($table, $prefix, $flags, $calc = null) {
-		$titleColumn = $prefix . '_' . ($flags & SINGLE_NAMESPACE ? 'to' : 'title');
+	private function counts($table, $prefix, $mode = 'link', $singleNS = false, $noFromNamespace = false) {
 		$escapedTitle = $this->db->quote($this->title);
-		$escapedNS = $this->db->quote($this->namespace);
 		$escapedBlank = $this->db->quote('');
+		$titleColumn = $prefix . '_' . ($singleNS ? 'to' : 'title');
 
-		$direct = [
-			$table => ["$titleColumn = $escapedTitle"]
-		];
+		$where = $this->namespaces !== '' && !$noFromNamespace ? " AND {$prefix}_from_namespace IN ({$this->namespaces})" : '';
+		$join = $this->namespaces !== '' && $noFromNamespace ? " JOIN page AS source ON source.page_id = {$prefix}_from AND source.page_namespace IN ({$this->namespaces})" : '';
 
-		$indirect = [
-			'redirect' => ["rd_namespace = $escapedNS", "rd_title = $escapedTitle", "(rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)"],
-			'page AS target' => ['target.page_id = rd_from'],
-			$table => ["$titleColumn = target.page_title"]
-		];
+		$directCond = "$join WHERE $titleColumn = $escapedTitle" . ($singleNS ? '' : " AND {$prefix}_namespace = {$this->namespace}") . $where;
+		$indirectCond = "JOIN page AS target ON target.page_id = rd_from"
+			. " JOIN $table ON $titleColumn = target.page_title" . ($singleNS ? '' : " AND {$prefix}_namespace = target.page_namespace") . "$where$join"
+			. " WHERE rd_title = $escapedTitle AND rd_namespace = {$this->namespace} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)";
 
-		if (~$flags & SINGLE_NAMESPACE) {
-			$direct[$table][] = "{$prefix}_namespace = $escapedNS";
-			$indirect[$table][] = "{$prefix}_namespace = target.page_namespace";
+		if ($mode == 'redirect') {
+			$query = "SELECT COUNT(rd_from) FROM redirect"
+				. " $directCond AND ({$prefix}_interwiki is NULl or {$prefix}_interwiki = $escapedBlank)";
+		} elseif ($mode == 'transclusion') {
+			// Transclusions of a redirect that actually follow the redirect are also added as a transclusion of the redirect target
+			// If a page transcludes a redirect to a page and the page itself, only the transclusion of the redirect is counted
+			$query = "SELECT COUNT({$prefix}_from), COUNT({$prefix}_from) - COUNT(indirect_from), COUNT(indirect_from) FROM $table"
+				. " LEFT JOIN (SELECT DISTINCT {$prefix}_from AS indirect_from FROM redirect $indirectCond) AS temp ON {$prefix}_from = indirect_from $directCond";
+		} else {
+			$query = "SELECT COUNT(DISTINCT {$prefix}_from), SUM(NOT indirect), SUM(indirect) FROM"
+				. " (SELECT DISTINCT {$prefix}_from, 1 AS indirect FROM redirect $indirectCond UNION ALL SELECT {$prefix}_from, 0 AS indirect FROM $table $directCond) AS temp";
 		}
 
-		// Check if link comes from one of the selected namespaces
-		if ($this->namespaces !== '') {
-			if ($flags & NO_FROM_NAMESPACE) {
-				$direct['page AS source'] = $indirect['page AS source'] = [
-					"source.page_id = {$prefix}_from",
-					"source.page_namespace IN ({$this->namespaces})"
-				];
-			} else {
-				$direct[$table][] = $indirect[$table][] = "{$prefix}_from_namespace IN ({$this->namespaces})";
-			}
-		}
+		$res = $this->db->query($query)->fetch();
 
-		if ($flags & HAS_INTERWIKI) {
-			$direct[$table][] = "({$prefix}_interwiki IS NULL OR {$prefix}_interwiki = $escapedBlank)";
-		}
-
-		if ($flags & EXCLUDE_INDIRECT) {
-			return $this->get_count($direct);
-		}
-
-		list($direct_count, $indirect_count) = $calc($this->get_count($direct), $this->get_count($indirect));
-
-		return [
-			'direct' => $direct_count,
-			'indirect' => $indirect_count,
-			'all' => $direct_count + $indirect_count
-		];;
-	}
-
-	private function create_out($key, $num, $class = '') {
-		$formatted = number_format($num);
-		$class = $class ? " $class" : '';
-		$label = '<a href="' . $this->projectURL . str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]) . "\">{$this->meta[$key][0]}</a>";
-		return "<div class=\"out$class\"><h2>$label</h2><div class=\"num\">$formatted</div></div>";
+		return $mode == 'redirect'
+			? (int) $res[0]
+			: [
+				'all' => (int) $res[0],
+				'direct' => (int) $res[1],
+				'indirect' => (int) $res[2]
+			];
 	}
 
 	public function html() {
@@ -190,16 +143,24 @@ class LinkCount {
 		}
 
 		if (isset($this->counts)) {
-			foreach ($this->counts as $type => $count) {
+			foreach ($this->counts as $key => $count) {
 				if ($count === null) continue;
 
+				$sublink = str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]);
+				$label = "<a href=\"{$this->projectURL}$sublink\">{$this->meta[$key][0]}</a>";
+				$data = '';
+
 				if (is_int($count)) {
-					$out .= $this->create_out($type, $count);
-					continue;
+					$all = number_format($count);
+					$data .= "<span class=\"main\">$all</span>";
+				} else {
+					$all = number_format($count['all']);
+					$direct = number_format($count['direct']);
+					$indirect = number_format($count['indirect']);
+					$data .= "<span class=\"main\">$all</span> <span class=\"sub\">($direct direct, $indirect indirect)</span>";
 				}
 
-				$out .= $this->create_out("direct$type", $count['direct'], 'left');
-				$out .= $this->create_out("all$type", $count['all'], 'right');
+				$out .= "<div class=\"out\"><h2>$label</h2><div class=\"num\">$data</div></div>";
 			}
 
 			$link = $this->projectURL . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);

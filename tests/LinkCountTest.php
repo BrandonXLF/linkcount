@@ -97,9 +97,9 @@ class LinkCountTest extends TestCase {
 		foreach ($expected as $key => $val) {
 			if (is_array($val)) {
 				$expected[$key] = [
+					'all' => $val[0],
 					'direct' => $val[1],
-					'indirect' => $val[2],
-					'all' => $val[0]
+					'indirect' => $val[2]
 				];
 			}
 		}
@@ -363,7 +363,7 @@ class LinkCountTest extends TestCase {
 						'wikilinks' => [1,1,0]
 					],
 					'Page' => [
-						'wikilinks' => [2,0,2],
+						'wikilinks' => [1,0,1],
 						'redirects' => 2,
 					]
 				]
@@ -387,7 +387,7 @@ class LinkCountTest extends TestCase {
 						'categorylinks' => [1,1,0]
 					],
 					'Category:Category' => [
-						'categorylinks' => [2,0,2],
+						'categorylinks' => [1,0,1],
 						'redirects' => 2,
 					]
 				]
@@ -413,7 +413,7 @@ class LinkCountTest extends TestCase {
 						'transclusions' => [1,1,0]
 					],
 					'Template:Template' => [
-						'transclusions' => [1, -1, 2],
+						'transclusions' => [1,0,1],
 						'redirects' => 2,
 					]
 				]
@@ -439,7 +439,7 @@ class LinkCountTest extends TestCase {
 						'filelinks' => [1,1,0]
 					],
 					'File:Image.png' => [
-						'filelinks' => [1, -1, 2],
+						'filelinks' => [1,0,1],
 						'redirects' => 2,
 					]
 				]
@@ -460,7 +460,7 @@ class LinkCountTest extends TestCase {
 						'wikilinks' => [1,1,0]
 					],
 					'Page' => [
-						'wikilinks' => [2,1,1],
+						'wikilinks' => [1,1,1],
 						'redirects' => 1,
 					]
 				]
@@ -480,7 +480,7 @@ class LinkCountTest extends TestCase {
 						'categorylinks' => [1,1,0]
 					],
 					'Category:Category' => [
-						'categorylinks' => [2,1,1],
+						'categorylinks' => [1,1,1],
 						'redirects' => 1,
 					]
 				]
@@ -858,23 +858,23 @@ class LinkCountTest extends TestCase {
 		return [
 			'main namespace' => [
 				'Page',
-				'<div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hideredirs=1&hidetrans=1&hideimages=1">Direct wikilinks</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidetrans=1&hideimages=1">All wikilinks</a></h2><div class="num">0</div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num">0</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hideredirs=1&hidelinks=1&hideimages=1">Direct transclusions</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&hideimages=1">All transclusions</a></h2><div class="num">0</div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page">What links here</a></div>'
+				'<div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidetrans=1&hideimages=1">Wikilinks</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num"><span class="main">0</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&hideimages=1">Transclusions</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page">What links here</a></div>'
 			],
 			'talk namespace' => [
 				'Talk:Page',
-				'<div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hideredirs=1&hidetrans=1&hideimages=1">Direct wikilinks</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidetrans=1&hideimages=1">All wikilinks</a></h2><div class="num">0</div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num">0</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hideredirs=1&hidelinks=1&hideimages=1">Direct transclusions</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&hideimages=1">All transclusions</a></h2><div class="num">0</div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage">What links here</a></div>'
+				'<div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidetrans=1&hideimages=1">Wikilinks</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num"><span class="main">0</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&hideimages=1">Transclusions</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage">What links here</a></div>'
 			],
 			'category namespace' => [
 				'Category:Category',
-				'<div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Category%3ACategory">Direct category links</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&hidetrans=1&hideimages=1">All category links</a></h2><div class="num">0</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hideredirs=1&hidetrans=1&hideimages=1">Direct wikilinks</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidetrans=1&hideimages=1">All wikilinks</a></h2><div class="num">0</div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num">0</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hideredirs=1&hidelinks=1&hideimages=1">Direct transclusions</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&hideimages=1">All transclusions</a></h2><div class="num">0</div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory">What links here</a></div>'
+				'<div class="out"><h2><a href="https://en.wikipedia.org/wiki/Category%3ACategory">Category links</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidetrans=1&hideimages=1">Wikilinks</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num"><span class="main">0</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&hideimages=1">Transclusions</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory">What links here</a></div>'
 			],
 			'file namespace' => [
 				'File:Image.png',
-				'<div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hideredirs=1&hidetrans=1&hidelinks=1">Direct file links</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&hidelinks=1">All file links</a></h2><div class="num">3</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hideredirs=1&hidetrans=1&hideimages=1">Direct wikilinks</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&hideimages=1">All wikilinks</a></h2><div class="num">0</div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num">1</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hideredirs=1&hidelinks=1&hideimages=1">Direct transclusions</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&hideimages=1">All transclusions</a></h2><div class="num">0</div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png">What links here</a></div>'
+				'<div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&hidelinks=1">File links</a></h2><div class="num"><span class="main">3</span> <span class="sub">(0 direct, 3 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&hideimages=1">Wikilinks</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num"><span class="main">1</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&hideimages=1">Transclusions</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png">What links here</a></div>'
 			],
 			'? in title' => [
 				'?',
-				'<div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hideredirs=1&hidetrans=1&hideimages=1">Direct wikilinks</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidetrans=1&hideimages=1">All wikilinks</a></h2><div class="num">0</div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num">0</div></div><div class="out left"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hideredirs=1&hidelinks=1&hideimages=1">Direct transclusions</a></h2><div class="num">0</div></div><div class="out right"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&hideimages=1">All transclusions</a></h2><div class="num">0</div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F">What links here</a></div>'
+				'<div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidetrans=1&hideimages=1">Wikilinks</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&hidetrans=1&hideimages=1">Redirects</a></h2><div class="num"><span class="main">0</span></div></div><div class="out"><h2><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&hideimages=1">Transclusions</a></h2><div class="num"><span class="main">0</span> <span class="sub">(0 direct, 0 indirect)</span></div></div><div class="links"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F">What links here</a></div>'
 			]
 		];
 	}
@@ -890,19 +890,19 @@ class LinkCountTest extends TestCase {
 		return [
 			'main namespace' => [
 				'Page',
-				'{"filelinks":null,"categorylinks":null,"wikilinks":{"direct":0,"indirect":0,"all":0},"redirects":0,"transclusions":{"direct":0,"indirect":0,"all":0}}'
+				'{"filelinks":null,"categorylinks":null,"wikilinks":{"all":0,"direct":0,"indirect":0},"redirects":0,"transclusions":{"all":0,"direct":0,"indirect":0}}'
 			],
 			'talk namespace' => [
 				'Talk:Page',
-				'{"filelinks":null,"categorylinks":null,"wikilinks":{"direct":0,"indirect":0,"all":0},"redirects":0,"transclusions":{"direct":0,"indirect":0,"all":0}}'
+				'{"filelinks":null,"categorylinks":null,"wikilinks":{"all":0,"direct":0,"indirect":0},"redirects":0,"transclusions":{"all":0,"direct":0,"indirect":0}}'
 			],
 			'category namespace' => [
 				'Category:Category',
-				'{"filelinks":null,"categorylinks":{"direct":0,"indirect":0,"all":0},"wikilinks":{"direct":0,"indirect":0,"all":0},"redirects":0,"transclusions":{"direct":0,"indirect":0,"all":0}}'
+				'{"filelinks":null,"categorylinks":{"all":0,"direct":0,"indirect":0},"wikilinks":{"all":0,"direct":0,"indirect":0},"redirects":0,"transclusions":{"all":0,"direct":0,"indirect":0}}'
 			],
 			'file namespace' => [
 				'File:Image.png',
-				'{"filelinks":{"direct":0,"indirect":3,"all":3},"categorylinks":null,"wikilinks":{"direct":0,"indirect":0,"all":0},"redirects":1,"transclusions":{"direct":0,"indirect":0,"all":0}}'
+				'{"filelinks":{"all":3,"direct":0,"indirect":3},"categorylinks":null,"wikilinks":{"all":0,"direct":0,"indirect":0},"redirects":1,"transclusions":{"all":0,"direct":0,"indirect":0}}'
 			]
 		];
 	}
