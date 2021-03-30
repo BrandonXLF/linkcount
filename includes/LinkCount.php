@@ -104,13 +104,13 @@ class LinkCount {
 			$ids = [];
 			$caseSensitive = [];
 
-			foreach($info->query->namespaces as $namespace) {
+			foreach ($info->query->namespaces as $namespace) {
 				$name = strtolower($namespace->name);
 				$ids[$name] = $namespace->id;
 				$caseSensitive[$namespace->id] = $namespace->case;
 			}
 
-			foreach($info->query->namespacealiases as $namespace) {
+			foreach ($info->query->namespacealiases as $namespace) {
 				$name = strtolower($namespace->alias);
 				$ids[$name] = $namespace->id;
 			}
@@ -176,13 +176,11 @@ class LinkCount {
 
 		$res = $this->db->query($query)->fetch();
 
-		return $mode == 'redirect'
-			? (int) $res[0]
-			: [
-				'all' => (int) $res[0],
-				'direct' => (int) $res[1],
-				'indirect' => (int) $res[2]
-			];
+		return $mode == 'redirect' ? (int) $res[0] : [
+			'all' => (int) $res[0],
+			'direct' => (int) $res[1],
+			'indirect' => (int) $res[2]
+		];
 	}
 
 	public function html() {
