@@ -2,8 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 
-Config::set('server', 'localhost');
-Config::set('database', 'linkcounttest');
+Config::set('db-host', 'localhost');
+Config::set('db-name', 'linkcounttest');
 
 class LinkCountTest extends TestCase {
 	private static $db;
@@ -903,6 +903,79 @@ class LinkCountTest extends TestCase {
 			'file namespace' => [
 				'File:Image.png',
 				'{"filelinks":{"all":3,"direct":0,"indirect":3},"categorylinks":null,"wikilinks":{"all":0,"direct":0,"indirect":0},"redirects":1,"transclusions":{"all":0,"direct":0,"indirect":0}}'
+			]
+		];
+	}
+
+	/**
+	 * @dataProvider provideDBInfo
+	 */
+	public function testDBInfo($page, $expected) {
+		$actual = LinkCount::getDBInfo('linkcounttest', 'https://en.wikipedia.org', $page);
+		$this->assertEquals($expected, $actual);
+	}
+
+	public function provideDBInfo() {
+		return [
+			'main namespace' => [
+				'Foo',
+				[0, 'Foo']
+			],
+			'main namespace with colon' => [
+				':Foo',
+				[0, 'Foo']
+			],
+			'talk namespace' => [
+				'Talk:Foo',
+				[1, 'Foo']
+			],
+			'namespace with space' => [
+				'Template talk:Foo',
+				[11, 'Foo']
+			],
+			'namespace with underscores' => [
+				'Template_talk:Foo',
+				[11, 'Foo']
+			],
+			'page with spaces' => [
+				'Foo bar baz',
+				[0, 'Foo_bar_baz']
+			],
+			'page with underscores' => [
+				'Foo_bar_baz',
+				[0, 'Foo_bar_baz']
+			],
+			'lowercase first letter' => [
+				'foo bar baz',
+				[0, 'Foo_bar_baz']
+			],
+			'case-sensitive namespace' => [
+				'Gadget definition talk:foo',
+				[2303, 'foo']
+			],
+			'alias namespace' => [
+				'Image:Foo.png',
+				[6, 'Foo.png']
+			],
+			'template namespace with colon' => [
+				':Template:Foo',
+				[10, 'Foo']
+			],
+			'test fragment' => [
+				'Foo#Bar',
+				[0, 'Foo']
+			],
+			'test invalid namespace' => [
+				'Foo:Bar',
+				[0, 'Foo:Bar']
+			],
+			'test invalid namespace with prefix colon' => [
+				':Foo:Bar',
+				[0, 'Foo:Bar']
+			],
+			'test lowercase invalid namespace' => [
+				'foo:bar',
+				[0, 'Foo:bar']
 			]
 		];
 	}

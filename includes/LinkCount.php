@@ -67,23 +67,8 @@ class LinkCount {
 		}
 
 		list($dbname, $this->projectURL) = $stmt->fetch();
-
-		$curl = curl_init();
-		curl_setopt_array($curl, [
-			CURLOPT_URL => $this->projectURL . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->page),
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_USERAGENT => Config::get('useragent')
-		]);
-		$info = json_decode(curl_exec($curl));
-		curl_close($curl);
-
-		$this->namespace =(int) $info->query->pages[0]->ns;
-		$this->title = str_replace(' ', '_', $info->query->pages[0]->title);
+		list($this->namespace, $this->title) = $this->getDBInfo($dbname, $this->projectURL, $this->page);
 		$this->db = new Database("$dbname.web.db.svc.wikimedia.cloud", "{$dbname}_p");
-
-		if ($this->namespace != 0) {
-			$this->title = explode(':', $this->title, 2)[1];
-		}
 
 		$this->counts = [
 			'filelinks' => $this->namespace === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,
@@ -96,6 +81,71 @@ class LinkCount {
 		// Redirects are included in the wikilinks table
 		$this->counts['wikilinks']['all'] -= $this->counts['redirects'];
 		$this->counts['wikilinks']['direct'] -= $this->counts['redirects'];
+	}
+
+	public static function getDBInfo($dbname, $url, $page) {
+		$redis = new Redis();
+		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));
+		$redis->auth(Config::get('redis-auth'));
+
+		$idsKey = Config::get('redis-prefix') . $dbname;
+		$casesKey = Config::get('redis-prefix') . $dbname . ':cases';
+
+		if (!$redis->exists($idsKey)) {
+			$curl = curl_init();
+			curl_setopt_array($curl, [
+				CURLOPT_URL => $url . '/w/api.php?action=query&meta=siteinfo&siprop=namespaces|namespacealiases&format=json&formatversion=2',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_USERAGENT => Config::get('useragent')
+			]);
+			$info = json_decode(curl_exec($curl));
+			curl_close($curl);
+
+			$ids = [];
+			$caseSensitive = [];
+
+			foreach($info->query->namespaces as $namespace) {
+				$name = strtolower($namespace->name);
+				$ids[$name] = $namespace->id;
+				$caseSensitive[$namespace->id] = $namespace->case;
+			}
+
+			foreach($info->query->namespacealiases as $namespace) {
+				$name = strtolower($namespace->alias);
+				$ids[$name] = $namespace->id;
+			}
+
+			$redis->hMSet($idsKey, $ids);
+			$redis->hMSet($casesKey, $caseSensitive);
+
+			$redis->expire($idsKey, 86400);
+			$redis->expire($casesKey, 86400);
+		}
+
+		if ($page[0] === ':') {
+			$page = substr($page, 1);
+		}
+
+		$fragPos = strpos($page, '#');
+		if ($fragPos) {
+			$page = substr($page, 0, $fragPos);
+		}
+
+		$page = str_replace('_', ' ', $page);
+		list($ns, $title) = strpos($page, ':') === false ? ['', $page] : explode(':', $page, 2);
+		$ns = strtolower($ns);
+		$title = str_replace(' ', '_', $title);
+		$id = $redis->hGet($idsKey, $ns);
+
+		if ($id === false) {
+			$title = str_replace(' ', '_', $page);
+			$id = $redis->hGet($idsKey, '');
+		}
+
+		$case = $redis->hGet($casesKey, $id);
+		$title = $case !== 'case-sensitive' ? ucfirst($title) : $title;
+
+		return [(int) $id, $title];
 	}
 
 	private function counts($table, $prefix, $mode = 'link', $singleNS = false, $noFromNamespace = false) {

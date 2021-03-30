@@ -3,11 +3,16 @@
 class Config {
 	private static $config = [];
 	private static $defaults = [
-		'user' => null,
-		'password' => null,
-		'server' => null,
-		'database' => null,
-		'useragent' => null
+		'db-user' => null,
+		'db-password' => null,
+		'db-host' => null,
+		'db-name' => null,
+		'db-port' => 3306,
+		'redis-server' => 'localhost',
+		'redis-port' => 6379,
+		'redis-auth' => '',
+		'redis-prefix' => '',
+		'useragent' => ''
 	];
 
 	private static function &load() {
