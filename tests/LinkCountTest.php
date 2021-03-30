@@ -851,7 +851,7 @@ class LinkCountTest extends TestCase {
 	 * @dataProvider provideHtmlOutput
 	 */
 	public function testHtmlOutput($page, $expected) {
-		$this->assertEquals((new LinkCount($page, 'linkcounttest', ''))->html(), $expected);
+		$this->assertEquals($expected, (new LinkCount($page, 'linkcounttest', ''))->html());
 	}
 
 	public function provideHtmlOutput() {
@@ -883,7 +883,7 @@ class LinkCountTest extends TestCase {
 	 * @dataProvider provideJsonOutput
 	 */
 	public function testJsonOutput($page, $expected) {
-		$this->assertEquals((new LinkCount($page, 'linkcounttest', ''))->json(false), $expected);
+		$this->assertEquals($expected, (new LinkCount($page, 'linkcounttest', ''))->json(false));
 	}
 
 	public function provideJsonOutput() {
