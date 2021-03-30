@@ -5,5 +5,10 @@
 	"scripts": {
 		"test": "php tests/runtests.php",
 		"db": "php tests/createdb.php"
+	},
+	"autoload": {
+		"classmap": [
+			"includes/"
+		]
 	}
 }

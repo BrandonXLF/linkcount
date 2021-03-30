@@ -1,10 +1,5 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/Config.php';
-require __DIR__ . '/LinkCount.php';
-require __DIR__ . '/Widgets.php';
-
 class Form {
 	public static function html() {
 		$out = '';

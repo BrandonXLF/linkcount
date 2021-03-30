@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__ . '/Database.php';
-
 define('SINGLE_NAMESPACE', 1);
 define('HAS_INTERWIKI', 2);
 define('EXCLUDE_INDIRECT', 4);
@@ -33,8 +31,6 @@ class LinkCount {
 	];
 
 	public function __construct($page, $project, $namespaces) {
-		global $cnf;
-
 		if (!$page && !$project && $namespaces === '') {
 			return;
 		}
@@ -81,7 +77,7 @@ class LinkCount {
 		curl_setopt_array($curl, [
 			CURLOPT_URL => $this->projectURL . '/w/api.php?action=query&prop=info&format=json&formatversion=2&titles=' . rawurlencode($this->page),
 			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_USERAGENT => $cnf['useragent']
+			CURLOPT_USERAGENT => Config::get('useragent')
 		]);
 		$info = json_decode(curl_exec($curl));
 		curl_close($curl);

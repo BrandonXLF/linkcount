@@ -1,7 +1,6 @@
 <?php
 
-require __DIR__ . '/../includes/Config.php';
-require __DIR__ . '/../includes/Database.php';
+require '../vendor/autoload.php';
 
 $project = $_GET['project'] ?? '';
 $projects = [];

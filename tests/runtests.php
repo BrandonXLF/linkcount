@@ -1,10 +1,9 @@
 <?php
 
-require __DIR__ . '/../includes/Config.php';
-require __DIR__ . '/../includes/LinkCount.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-$cnf['server'] = 'localhost';
-$cnf['database'] = 'linkcounttest';
+Config::set('server', 'localhost');
+Config::set('database', 'linkcounttest');
 
 class DatabaseThatRecordsQueries extends Database {
 	public $queries = [];

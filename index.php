@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/includes/Form.php';
+require 'vendor/autoload.php';
 
 ?>
 <!DOCTYPE html>
