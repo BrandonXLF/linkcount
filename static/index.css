@@ -9,7 +9,7 @@ body {
 }
 
 main, footer {
-	max-width: 650px;
+	max-width: 700px;
 	margin: 0 auto;
 }
 
@@ -38,14 +38,15 @@ footer, .links {
 
 .header {
 	font-weight: bold;
-	padding: 8px 12px;
+	padding: 8px 12px 0;
+	text-align: center;
 }
 
 .type, .all, .direct, .indirect {
 	border: solid #a2a9b1;
 	background: #fff;
-	border-width: 1px 0;
-	padding: 16px 12px;
+	border-width: 1px 0 1px 1px;
+	padding: 12px 8px;
 	margin: 8px 0;
 }
 
@@ -56,45 +57,45 @@ footer, .links {
 }
 
 .all, .direct, .indirect {
-	font-size: 150%;
-	line-height: 100%;
+	font-size: 140%;
+	line-height: 107%;
+	text-align: right;
 }
 
 .indirect {
 	border-right-width: 1px;
 	border-radius: 0 2px 2px 0;
-	padding-right: 5px;
 }
 
 @media (max-width: 575px) {
 	.type {
 		grid-column-start: 1;
 		grid-column-end: 4;
-		border-width: 1px 1px 0 1px;
+		border-width: 1px;
 		border-radius: 2px 2px 0 0;
 		margin-bottom: 0;
-		padding-bottom: 8px;
+		line-height: 80%;
+		text-align: center;
 	}
 
 	.all, .direct, .indirect {
 		border-top: none;
-		padding: 0 0 .5em;
 		margin-top: 0;
 		font-size: 125%;
 	}
 
 	.all {
 		border-left-width: 1px;
+		border-radius: 0 0 0 2px;
+	}
+	
+	.indirect {
 		border-radius: 0 0 2px 0;
 	}
 
 	.out {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-	}
-
-	.out * {
-		text-align: center;
 	}
 
 	.out > :first-child {
