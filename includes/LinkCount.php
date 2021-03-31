@@ -88,8 +88,9 @@ class LinkCount {
 		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));
 		$redis->auth(Config::get('redis-auth'));
 
-		$idsKey = Config::get('redis-prefix') . $dbname;
-		$casesKey = Config::get('redis-prefix') . $dbname . ':cases';
+		$prefix = Config::get('redis-prefix');
+		$idsKey = $prefix . ':' . $dbname;
+		$casesKey = $prefix . ':' . $dbname . ':cases';
 
 		if (!$redis->exists($idsKey)) {
 			$curl = curl_init();
@@ -105,14 +106,16 @@ class LinkCount {
 			$caseSensitive = [];
 
 			foreach ($info->query->namespaces as $namespace) {
-				$name = strtolower($namespace->name);
-				$ids[$name] = $namespace->id;
+				$ids[strtolower($namespace->name)] = $namespace->id;
 				$caseSensitive[$namespace->id] = $namespace->case;
+
+				if (isset($namespace->canonical)) {
+					$ids[strtolower($namespace->canonical)] = $namespace->id;
+				}
 			}
 
 			foreach ($info->query->namespacealiases as $namespace) {
-				$name = strtolower($namespace->alias);
-				$ids[$name] = $namespace->id;
+				$ids[strtolower($namespace->alias)] = $namespace->id;
 			}
 
 			$redis->hMSet($idsKey, $ids);

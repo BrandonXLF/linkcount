@@ -11,7 +11,7 @@ class Config {
 		'redis-server' => 'localhost',
 		'redis-port' => 6379,
 		'redis-auth' => '',
-		'redis-prefix' => '',
+		'redis-prefix' => 'linkcount',
 		'useragent' => ''
 	];
 
