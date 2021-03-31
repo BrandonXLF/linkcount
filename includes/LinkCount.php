@@ -1,10 +1,5 @@
 <?php
 
-define('SINGLE_NAMESPACE', 1);
-define('HAS_INTERWIKI', 2);
-define('EXCLUDE_INDIRECT', 4);
-define('NO_FROM_NAMESPACE', 8);
-
 class LinkCount {
 	public $counts;
 	public $error;
