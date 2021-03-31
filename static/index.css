@@ -45,7 +45,7 @@ footer, .links {
 	border: solid #a2a9b1;
 	background: #fff;
 	border-width: 1px 0;
-	padding: 12px;
+	padding: 16px 12px;
 	margin: 8px 0;
 }
 
@@ -73,12 +73,14 @@ footer, .links {
 		border-width: 1px 1px 0 1px;
 		border-radius: 2px 2px 0 0;
 		margin-bottom: 0;
+		padding-bottom: 8px;
 	}
 
 	.all, .direct, .indirect {
 		border-top: none;
 		padding: 0 0 .5em;
 		margin-top: 0;
+		font-size: 125%;
 	}
 
 	.all {
