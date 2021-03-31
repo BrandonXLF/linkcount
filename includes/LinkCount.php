@@ -194,26 +194,22 @@ class LinkCount {
 		}
 
 		if (isset($this->counts)) {
+			$out .= '<div class="out"><div class="header" id="type">Type</div><div class="header" id="all">All</div><div class="header" id="direct">Direct</div><div class="header" id="indirect">Indirect</div>';
+
 			foreach ($this->counts as $key => $count) {
 				if ($count === null) continue;
 
 				$sublink = str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]);
-				$label = "<a href=\"{$this->projectURL}$sublink\">{$this->meta[$key][0]}</a>";
-				$data = '';
+				$label = "<a href=\"{$this->projectURL}$sublink\">{$this->meta[$key][0]}</a>";;
 
-				if (is_int($count)) {
-					$all = number_format($count);
-					$data .= "<span class=\"main\">$all</span>";
-				} else {
-					$all = number_format($count['all']);
-					$direct = number_format($count['direct']);
-					$indirect = number_format($count['indirect']);
-					$data .= "<span class=\"main\">$all</span> <span class=\"sub\">($direct direct, $indirect indirect)</span>";
-				}
+				$all = number_format(is_int($count) ? $count : $count['all']);
+				$direct = is_int($count) ? '‒' : number_format($count['direct']);
+				$indirect = is_int($count) ? '‒' : number_format($count['indirect']);
 
-				$out .= "<div class=\"out\"><h2>$label</h2><div class=\"num\">$data</div></div>";
+				$out .= "<div class=\"type\">$label</div><div class=\"all\">$all</div><div class=\"direct\">$direct</div><div class=\"indirect\">$indirect</div>";
 			}
 
+			$out .= '</div>';
 			$link = $this->projectURL . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);
 			$out .= "<div class=\"links\"><a href=\"$link\">What links here</a></div>";
 		}

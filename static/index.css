@@ -4,18 +4,8 @@ body {
 	background: #f0f0f0;
 }
 
-h2 {
-	font-size: inherit;
-	font-weight: inherit;
-	margin: 0;
-}
-
-h2 > a {
+.out a {
 	text-decoration: none;
-}
-
-h2 > a:hover {
-	text-decoration: underline;
 }
 
 main, footer {
@@ -27,19 +17,6 @@ footer, .links {
 	margin-top: 1em;
 }
 
-.num {
-	font-size: 150%;
-	line-height: 1.25;
-}
-
-.main, .sub {
-	vertical-align: middle;
-}
-
-.sub {
-	font-size: 75%;
-}
-
 .error {
 	color: #e00000;
 }
@@ -49,20 +26,77 @@ footer, .links {
 }
 
 .out {
-	box-sizing: border-box;
-	padding: 0.5em 0.25em;
-	text-align: center;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	font-size: 125%;
-	border: 1px solid #a2a9b1;
-	margin: 0.25em 0;
-	border-radius: 2px;
-	background: #fff;
-	float: right;
-	clear: both;
-	width: 100%;
 }
 
 .oo-ui-widget.oo-ui-progressBarWidget {
 	border-radius: 2px;
 	box-shadow: none;
 }
+
+.header {
+	font-weight: bold;
+	padding: 8px 12px;
+}
+
+.type, .all, .direct, .indirect {
+	border: solid #a2a9b1;
+	background: #fff;
+	border-width: 1px 0;
+	padding: 12px;
+	margin: 8px 0;
+}
+
+.type {
+	border-left-width: 1px;
+	border-radius: 2px 0 0 2px;
+	white-space: nowrap;
+}
+
+.all, .direct, .indirect {
+	font-size: 150%;
+	line-height: 100%;
+}
+
+.indirect {
+	border-right-width: 1px;
+	border-radius: 0 2px 2px 0;
+	padding-right: 5px;
+}
+
+@media (max-width: 575px) {
+	.type {
+		grid-column-start: 1;
+		grid-column-end: 4;
+		border-width: 1px 1px 0 1px;
+		border-radius: 2px 2px 0 0;
+		margin-bottom: 0;
+	}
+
+	.all, .direct, .indirect {
+		border-top: none;
+		padding: 0 0 .5em;
+		margin-top: 0;
+	}
+
+	.all {
+		border-left-width: 1px;
+		border-radius: 0 0 2px 0;
+	}
+
+	.out {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.out * {
+		text-align: center;
+	}
+
+	.out > :first-child {
+		display: none;
+	}
+}
+
