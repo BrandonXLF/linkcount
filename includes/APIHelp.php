@@ -57,6 +57,7 @@ class APIHelp {
 			);
 
 			echo '<h2>Response</h2>' . self::defineObject(
+				['error', 'string', 'optional', 'Message of an error if one occurred.'],
 				['filelinks', 'LinkCountObject', 'optional', 'Number of pages that show the file.'],
 				['categorylinks', 'LinkCountObject', 'optional', 'Number of category links.'],
 				['wikilinks', 'LinkCountObject', 'required', 'Number of wikilinks.'],
@@ -65,9 +66,9 @@ class APIHelp {
 			);
 
 			echo '<h3>LinkCountObject</h3>' . self::defineObject(
+				['all', 'integer', 'required', 'Sum of direct and indirect links.'],
 				['direct', 'integer', 'required', 'Number of links the directly link to the page.'],
-				['indirect', 'integer', 'required', 'Number of links that link to the page through a redirect.'],
-				['all', 'integer', 'required', 'Sum of direct and indirect links.']
+				['indirect', 'integer', 'required', 'Number of links that link to the page through a redirect.']
 			);
 		?>
 		<h2>Examples</h2>
