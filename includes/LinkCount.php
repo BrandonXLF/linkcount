@@ -194,7 +194,7 @@ class LinkCount {
 		}
 
 		if (isset($this->counts)) {
-			$out .= '<div class="out"><div class="header" id="type">Type</div><div class="header" id="all">All</div><div class="header" id="direct">Direct</div><div class="header" id="indirect">Indirect</div>';
+			$out .= '<div class="out"><div class="header">Type</div><div class="header">All</div><div class="header">Direct</div><div class="header">Indirect</div>';
 
 			foreach ($this->counts as $key => $count) {
 				if ($count === null) continue;
