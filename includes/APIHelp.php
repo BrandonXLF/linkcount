@@ -16,6 +16,7 @@ class APIHelp {
 
 		$examples = [
 			'page=Main_Page&project=en.wikipedia.org',
+			'page=Main_Page&project=en.wikipedia.org&namespaces=0,1',
 			'page=Wikipédia:Accueil_principal&project=fr.wikipedia.org',
 			'page=Category:Main Page&project=en.wikipedia.org',
 			'page=File:Example.png&project=en.wikipedia.org'
