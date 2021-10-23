@@ -186,9 +186,7 @@ class LinkCount {
 
 		if (isset($this->error)) {
 			$out = "<div class=\"error\">{$this->error}</div>";
-		}
-
-		if (isset($this->counts)) {
+		} elseif (isset($this->counts)) {
 			$out .= '<div class="out"><div class="header">Type</div><div class="header">All</div><div class="header">Direct</div><div class="header">Indirect</div>';
 
 			foreach ($this->counts as $key => $count) {
@@ -217,9 +215,7 @@ class LinkCount {
 
 		if (isset($this->error)) {
 			$out['error'] = $this->error;
-		}
-
-		if (isset($this->counts)) {
+		} elseif (isset($this->counts)) {
 			foreach ($this->counts as $type => $count) {
 				$out[$type] = $count;
 			}
