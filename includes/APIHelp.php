@@ -53,7 +53,8 @@ class APIHelp {
 		<?php
 			echo '<h2>Request</h2>' . self::defineObject(
 				['page', 'string', 'required', 'Name of the page to get the link count for.'],
-				['project', 'string', 'optional', 'Project (domain, name, or database) the page is in, default is en.wikipedia.org.']
+				['project', 'string', 'optional', 'Project (domain, name, or database) the page is in, default is en.wikipedia.org.'],
+				['namespace', 'string', 'optional', 'Comma-separated list of namespace numbers which links from are counted. Leave blank to count all namespaces.']
 			);
 
 			echo '<h2>Response</h2>' . self::defineObject(
