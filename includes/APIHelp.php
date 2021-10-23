@@ -52,8 +52,8 @@ class APIHelp {
 		<h1>Link Count API</h1>
 		<?php
 			echo '<h2>Request</h2>' . self::defineObject(
-				['page', 'string', 'required', 'The name of the page get the link count for.'],
-				['project', 'string', 'optional', 'The project (domain, name, or database) the page is in, default is en.wikipedia.org.']
+				['page', 'string', 'required', 'Name of the page to get the link count for.'],
+				['project', 'string', 'optional', 'Project (domain, name, or database) the page is in, default is en.wikipedia.org.']
 			);
 
 			echo '<h2>Response</h2>' . self::defineObject(
