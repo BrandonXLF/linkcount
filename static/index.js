@@ -23,12 +23,15 @@ function getNamespaceOptions(project) {
 		origin: '*'
 	}).then(function(re) {
 		var oldValues = $.merge(namespacesSelect.getValue(), nsQueue || []);
+
 		nsQueue = undefined;
 		namespacesSelect.clearItems().getMenu().clearItems();
 
 		for (var id in re.query.namespaces) {
 			if (id < 0) continue; // Ignore virtual namespaces
+
 			var info = re.query.namespaces[id];
+
 			namespacesSelect.addOptions([{
 				data: info.id,
 				label: info['*'] || '(Article)'
@@ -37,7 +40,9 @@ function getNamespaceOptions(project) {
 
 		oldValues.forEach(function(val) {
 			var item = namespacesSelect.menu.findItemFromData(+val);
+
 			if (!item) return;
+
 			namespacesSelect.addTag(item.getData(), item.getLabel());
 			namespacesSelect.menu.selectItem(item);
 		});
