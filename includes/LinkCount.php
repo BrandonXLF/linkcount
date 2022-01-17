@@ -51,7 +51,7 @@ class LinkCount {
 		}
 
 		$maybeProjectURL = 'https://' . $project;
-		$this->db = new Database('metawiki.web.db.svc.wikimedia.cloud', 'meta_p');
+		$this->db = Config::getDatabase();
 
 		$stmt = $this->db->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
 		$stmt->execute([$project, $maybeProjectURL]);
@@ -63,7 +63,7 @@ class LinkCount {
 
 		list($dbname, $this->projectURL) = $stmt->fetch();
 		list($this->namespace, $this->title) = $this->getDBInfo($dbname, $this->projectURL, $this->page);
-		$this->db = new Database("$dbname.web.db.svc.wikimedia.cloud", "{$dbname}_p");
+		$this->db = Config::getDatabase($dbname);
 
 		$this->counts = [
 			'filelinks' => $this->namespace === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,
@@ -80,10 +80,10 @@ class LinkCount {
 
 	public static function getDBInfo($dbname, $url, $page) {
 		$redis = new Redis();
-		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));
-		$redis->auth(Config::get('redis-auth'));
+		$redis->connect(Config::$redis['host'], Config::$redis['port']);
+		$redis->auth(Config::$redis['auth']);
 
-		$prefix = Config::get('redis-prefix');
+		$prefix = Config::$redis['prefix'];
 		$idsKey = $prefix . ':' . $dbname;
 		$casesKey = $prefix . ':' . $dbname . ':cases';
 
@@ -92,7 +92,7 @@ class LinkCount {
 			curl_setopt_array($curl, [
 				CURLOPT_URL => $url . '/w/api.php?action=query&meta=siteinfo&siprop=namespaces|namespacealiases&format=json&formatversion=2',
 				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_USERAGENT => Config::get('useragent')
+				CURLOPT_USERAGENT => Config::$userAgent
 			]);
 			$info = json_decode(curl_exec($curl));
 			curl_close($curl);

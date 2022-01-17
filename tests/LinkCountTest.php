@@ -2,9 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 
-Config::set('db-host', 'localhost');
-Config::set('db-name', 'linkcounttest');
-
 class LinkCountTest extends TestCase {
 	private static $db;
 	private static $statements;
@@ -14,7 +11,7 @@ class LinkCountTest extends TestCase {
 	private $pageIDCounter = 0;
 
 	public static function setUpBeforeClass(): void {
-		self::$db = new Database('localhost', '');
+		self::$db = new Database('localhost', 'linkcounttest');
 
 		self::$statements = [
 			'page' => self::$db->prepare('INSERT INTO `page` (page_id, page_namespace, page_title) VALUES (?, ?, ?)'),
