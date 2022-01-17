@@ -1,0 +1,10 @@
+db-user = # username for database, user from replica.my.cnf
+db-password = # username for database, password from replica.my.cnf
+db-host = # forced databse host to use
+db-name = # forced database name to use
+db-port = # database port
+redis-server = # server to use for redis
+redis-port = # port for redis
+redis-auth = # password for redis
+redis-prefix = # prefix for redis keys
+useragent = # useragent to use when making API request to the wiki

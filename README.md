@@ -8,7 +8,7 @@ To run you will need to install the PHP dependencies using `composer install` an
 
 ## Config
 
-Create the file `config.php` with the class `Config` extending `DefaultConfig` and fill in the class variables with values from your `replica.my.cnf` file, Redis server info, and an user agent.
+Copy the file `config.ini-example` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file.
 
 ## Testing
 

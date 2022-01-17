@@ -11,12 +11,8 @@
 		"phpunit/phpunit": "9"
 	},
 	"autoload": {
-		"files": [
-			"default-config.php",
-			"config.php"
-		],
 		"classmap": [
-			"includes"
+			"includes/"
 		]
 	}
 }
