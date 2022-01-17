@@ -1,6 +1,6 @@
 {
 	"require": {
-		"oojs/oojs-ui": "^0.41.1"
+		"oojs/oojs-ui": "^0.43.0"
 	},
 	"scripts": {
 		"test-win": "vendor\\bin\\phpunit.bat tests",
@@ -12,7 +12,7 @@
 	},
 	"autoload": {
 		"classmap": [
-			"includes/"
+			"includes"
 		]
 	}
 }
