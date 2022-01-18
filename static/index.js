@@ -33,19 +33,12 @@ function getNamespaceOptions(project) {
 			var info = re.query.namespaces[id];
 
 			namespacesSelect.addOptions([{
-				data: info.id,
+				data: info.id.toString(),
 				label: info['*'] || '(Article)'
 			}]);
 		}
 
-		oldValues.forEach(function(val) {
-			var item = namespacesSelect.menu.findItemFromData(+val);
-
-			if (!item) return;
-
-			namespacesSelect.addTag(item.getData(), item.getLabel());
-			namespacesSelect.menu.selectItem(item);
-		});
+		namespacesSelect.setValue(oldValues);
 
 		if ($.contains(document, namespacesInput.$element[0])) {
 			namespacesInput.$element.replaceWith(namespacesSelect.$element);
