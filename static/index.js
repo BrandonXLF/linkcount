@@ -46,32 +46,21 @@ function getNamespaceOptions(project) {
 	});
 }
 
-function setProject(project) {
-	project = project || 'en.wikipedia.org';
+function submitForm(pushState) {
+	var params = {
+			project: projectLookup.getValue(),
+			page: pageLookup.getValue(),
+			namespaces: namespacesSelect.getValue().join(',')
+		},
+		query = Object.keys(params).map(param => {
+			return param + '=' + params[param];
+		}).join('&');
 
-	getNamespaceOptions(project);
-	pageLookup.setProject(project);
-}
+	if (pushState) {
+		history.pushState(params, null, (query ? '?' : '') + query);
+	}
 
-projectLookup.on('change', setProject);
-setProject(projectLookup.getValue());
-
-button.on('click', function() {
-	var params = [
-			['project', projectLookup.getValue()],
-			['page', pageLookup.getValue()],
-			['namespaces', namespacesSelect.getValue().join()]
-		],
-		search = [];
-
-	params.forEach(function(param) {
-		if (param[1]) search.push(param[0] + '=' + param[1])
-	});
-
-	search = search.join('&');
-	history.replaceState(null, null, location.pathname + (search ? '?' : '') + search);
-
-	if (!search) {
+	if (!query) {
 		outWidget.$element.html('');
 		return;
 	}
@@ -80,11 +69,34 @@ button.on('click', function() {
 
 	outLayout.$element.replaceWith(progressLayout.$element);
 
-	request = $.get('output/?' + search).always(function() {
+	request = $.get('output/?' + query).always(function() {
 		progressLayout.$element.replaceWith(outLayout.$element);
 	}).done(function(res) {
 		outWidget.$element.html(res);
 	}).fail(function() {
 		outWidget.$element.html('<div class="error">Failed to send API request.</div>');
 	});
+}
+
+projectLookup.on('change', function(project) {
+	project = project || 'en.wikipedia.org';
+
+	getNamespaceOptions(project);
+	pageLookup.setProject(project);
 });
+
+button.on('click', function() {
+	submitForm(true);
+});
+
+window.addEventListener('popstate', function(e) {
+	if (!e.state) return;
+
+	projectLookup.setValue(e.state.project);
+	pageLookup.setValue(e.state.page);
+	namespacesSelect.setValue(e.state.namespaces.split(','));
+
+	submitForm(false);
+});
+
+projectLookup.emit('change');
