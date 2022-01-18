@@ -14,7 +14,7 @@ class LinkCountTest extends TestCase {
 	private $pageIDCounter = 0;
 
 	public static function setUpBeforeClass(): void {
-		self::$db = new Database('localhost', '');
+		self::$db = DatabaseFactory::create('localhost', '');
 
 		self::$statements = [
 			'page' => self::$db->prepare('INSERT INTO `page` (page_id, page_namespace, page_title) VALUES (?, ?, ?)'),
