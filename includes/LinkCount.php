@@ -57,7 +57,7 @@ class LinkCount {
 		$stmt->execute([$project, $maybeProjectURL]);
 
 		if (!$stmt->rowCount()) {
-			$this->error = 'That project does not exist..';
+			$this->error = 'That project does not exist...';
 			return;
 		}
 
