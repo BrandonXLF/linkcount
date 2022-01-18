@@ -47,12 +47,14 @@ function getNamespaceOptions(project) {
 }
 
 function setProject(project) {
+	project = project || 'en.wikipedia.org';
+
 	getNamespaceOptions(project);
 	pageLookup.setProject(project);
 }
 
 projectLookup.on('change', setProject);
-setProject(projectLookup.getValue() || 'en.wikipedia.org');
+setProject(projectLookup.getValue());
 
 button.on('click', function() {
 	var params = [
