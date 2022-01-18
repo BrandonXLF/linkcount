@@ -196,32 +196,50 @@ class LinkCount {
 	}
 
 	public function html() {
-		$out = '';
-
 		if (isset($this->error)) {
-			$out = "<div class=\"error\">{$this->error}</div>";
-		} elseif (isset($this->counts)) {
-			$out .= '<div class="out"><div class="header">Type</div><div class="header">All</div><div class="header">Direct</div><div class="header">Indirect</div>';
-
-			foreach ($this->counts as $key => $count) {
-				if ($count === null) continue;
-
-				$sublink = str_replace('PAGE', rawurlencode($this->page), $this->typeInfo[$key]['url']);
-				$label = "<a href=\"{$this->projectURL}$sublink\">{$this->typeInfo[$key]['name']}</a>";;
-
-				$all = number_format(is_int($count) ? $count : $count['all']);
-				$direct = is_int($count) ? '‒' : number_format($count['direct']);
-				$indirect = is_int($count) ? '‒' : number_format($count['indirect']);
-
-				$out .= "<div class=\"type\">$label</div><div class=\"all\">$all</div><div class=\"direct\">$direct</div><div class=\"indirect\">$indirect</div>";
-			}
-
-			$out .= '</div>';
-			$link = $this->projectURL . '/wiki/Special:WhatLinksHere/' . rawurlencode($this->page);
-			$out .= "<div class=\"links\"><a href=\"$link\">What links here</a></div>";
+			return (new OOUI\Tag('div'))->addClasses(['error'])->appendContent($this->error)->toString();
 		}
 
-		return $out;
+		if (!isset($this->counts)) {
+			return '';
+		}
+
+		$out = (new OOUI\Tag('div'))->addClasses(['out']);
+
+		$out->appendContent(
+			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Type'),
+			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('All'),
+			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Direct'),
+			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Indirect')
+		);
+
+		foreach ($this->counts as $key => $count) {
+			if ($count === null) continue;
+
+			$encodedPage = urlencode($this->page);
+			$urlPath = str_replace('PAGE', $encodedPage, $this->typeInfo[$key]['url']);
+			$singleCount = is_int($count);
+
+			$label = (new OOUI\Tag('a'))->setAttributes(['href' => $this->projectURL . $urlPath])->appendContent($this->typeInfo[$key]['name']);
+			$all = number_format($singleCount ? $count : $count['all']);
+			$direct = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['direct']);
+			$indirect = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['indirect']);
+
+			$out->appendContent(
+				(new OOUI\Tag('div'))->addClasses(['type'])->appendContent($label),
+				(new OOUI\Tag('div'))->addClasses(['all'])->appendContent($all),
+				(new OOUI\Tag('div'))->addClasses(['direct'])->appendContent($direct),
+				(new OOUI\Tag('div'))->addClasses(['indirect'])->appendContent($indirect)
+			);
+		}
+
+		$WLHLink = $this->projectURL . '/wiki/Special:WhatLinksHere/' . $encodedPage;
+
+		$links = (new OOUI\Tag('div'))->addClasses(['links'])->appendContent(
+			(new OOUI\Tag('a'))->setAttributes(['href' => $WLHLink])->appendContent('What links here')
+		);
+
+		return $out . $links;
 	}
 
 	public function json($headers = true) {
