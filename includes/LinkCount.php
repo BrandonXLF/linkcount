@@ -11,13 +11,27 @@ class LinkCount {
 	private $page;
 	private $namespaces;
 
-	private $meta = [
-		'filelinks' => ['File links', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1'],
-		// WhatLinksHere doesn't show category links
-		'categorylinks' => ['Category links', '/wiki/PAGE'],
-		'wikilinks' => ['Wikilinks', '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1'],
-		'redirects' => ['Redirects', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'],
-		'transclusions' => ['Transclusions', '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1']
+	private $typeInfo = [
+		'filelinks' => [
+			'name' => 'File links',
+			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1'
+		],
+		'categorylinks' => [
+			'name' => 'Category links',
+			'url' => '/wiki/PAGE' // WhatLinksHere doesn't show category links
+		],
+		'wikilinks' => [
+			'name' => 'Wikilinks',
+			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1'
+		],
+		'redirects' => [
+			'name' => 'Redirects',
+			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'
+		],
+		'transclusions' => [
+			'name' => 'Transclusions',
+			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1'
+		]
 	];
 
 	public function __construct($page, $project, $namespaces = '') {
@@ -192,8 +206,8 @@ class LinkCount {
 			foreach ($this->counts as $key => $count) {
 				if ($count === null) continue;
 
-				$sublink = str_replace('PAGE', rawurlencode($this->page), $this->meta[$key][1]);
-				$label = "<a href=\"{$this->projectURL}$sublink\">{$this->meta[$key][0]}</a>";;
+				$sublink = str_replace('PAGE', rawurlencode($this->page), $this->typeInfo[$key]['url']);
+				$label = "<a href=\"{$this->projectURL}$sublink\">{$this->typeInfo[$key]['name']}</a>";;
 
 				$all = number_format(is_int($count) ? $count : $count['all']);
 				$direct = is_int($count) ? '‒' : number_format($count['direct']);
