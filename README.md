@@ -8,7 +8,7 @@ To run you will need to install the PHP dependencies using `composer install` an
 
 ## Config
 
-Copy the file `config.ini-example` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file.
+Copy the file `config-example.ini` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file.
 
 ## Testing
 

@@ -51,7 +51,7 @@ class LinkCount {
 		}
 
 		$maybeProjectURL = 'https://' . $project;
-		$this->db = DatabaseFactory::create('metawiki.web.db.svc.wikimedia.cloud', 'meta_p');
+		$this->db = DatabaseFactory::create();
 
 		$stmt = $this->db->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
 		$stmt->execute([$project, $maybeProjectURL]);
@@ -63,7 +63,7 @@ class LinkCount {
 
 		list($dbname, $this->projectURL) = $stmt->fetch();
 		list($this->namespace, $this->title) = $this->getDBInfo($dbname, $this->projectURL, $this->page);
-		$this->db = DatabaseFactory::create("$dbname.web.db.svc.wikimedia.cloud", "{$dbname}_p");
+		$this->db = DatabaseFactory::create($dbname);
 
 		$this->counts = [
 			'filelinks' => $this->namespace === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,

@@ -5,7 +5,7 @@ require '../vendor/autoload.php';
 $project = $_GET['project'] ?? '';
 $projects = [];
 
-$db = DatabaseFactory::create('metawiki.web.db.svc.wikimedia.cloud', 'meta_p');
+$db = DatabaseFactory::create();
 
 $stmt = $db->prepare('SELECT url FROM wiki WHERE url LIKE ? OR dbname LIKE ?');
 $stmt->execute(['https://' . $project . '%', $project . '%']);

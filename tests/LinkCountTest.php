@@ -1,9 +1,8 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+require __DIR__ . '/TestDatabaseFactory.php';
 
-Config::set('db-host', 'localhost');
-Config::set('db-name', 'linkcounttest');
+use PHPUnit\Framework\TestCase;
 
 class LinkCountTest extends TestCase {
 	private static $db;
@@ -14,7 +13,7 @@ class LinkCountTest extends TestCase {
 	private $pageIDCounter = 0;
 
 	public static function setUpBeforeClass(): void {
-		self::$db = DatabaseFactory::create('localhost', '');
+		self::$db = TestDatabaseFactory::create();
 
 		self::$statements = [
 			'page' => self::$db->prepare('INSERT INTO `page` (page_id, page_namespace, page_title) VALUES (?, ?, ?)'),
