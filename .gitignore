@@ -2,3 +2,4 @@ desktop.ini
 vendor
 node_modules
 config.ini
+.phpunit.result.cache
