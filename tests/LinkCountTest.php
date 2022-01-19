@@ -888,8 +888,8 @@ class LinkCountTest extends TestCase {
 	/**
 	 * @dataProvider provideHtmlOutput
 	 */
-	public function testHtmlOutput($page, $expected) {
-		$this->assertEquals($expected, (new LinkCount($page, 'linkcounttest', ''))->html());
+	public function testHtmlOutput($page, $expected, $project = null) {
+		$this->assertEquals($expected, (new LinkCount($page, $project ?? 'linkcounttest', ''))->html());
 	}
 
 	public function provideHtmlOutput() {
@@ -913,6 +913,15 @@ class LinkCountTest extends TestCase {
 			'? in title' => [
 				'?',
 				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><div class=\'header\'>Direct</div><div class=\'header\'>Indirect</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F\'>What links here</a></div>'
+			],
+			'no parameters' => [
+				'',
+				'',
+				''
+			],
+			'no title (error)' => [
+				'',
+				'<div class=\'error\'>Page name is required.</div>'
 			]
 		];
 	}
@@ -920,8 +929,8 @@ class LinkCountTest extends TestCase {
 	/**
 	 * @dataProvider provideJsonOutput
 	 */
-	public function testJsonOutput($page, $expected) {
-		$this->assertEquals($expected, (new LinkCount($page, 'linkcounttest', ''))->json(false));
+	public function testJsonOutput($page, $expected, $project = null) {
+		$this->assertEquals($expected, (new LinkCount($page, $project ?? 'linkcounttest', ''))->json(false));
 	}
 
 	public function provideJsonOutput() {
@@ -941,6 +950,15 @@ class LinkCountTest extends TestCase {
 			'file namespace' => [
 				'File:Image.png',
 				'{"filelinks":{"all":3,"direct":0,"indirect":3},"categorylinks":null,"wikilinks":{"all":0,"direct":0,"indirect":0},"redirects":1,"transclusions":{"all":0,"direct":0,"indirect":0}}'
+			],
+			'no parameters' => [
+				'',
+				'{}',
+				''
+			],
+			'no title (error)' => [
+				'',
+				'{"error":"Page name is required."}'
 			]
 		];
 	}
