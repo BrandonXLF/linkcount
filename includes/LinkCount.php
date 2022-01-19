@@ -243,21 +243,15 @@ class LinkCount {
 	}
 
 	public function json($headers = true) {
-		$out = [];
-
-		if (isset($this->error)) {
-			$out['error'] = $this->error;
-		} elseif (isset($this->counts)) {
-			foreach ($this->counts as $type => $count) {
-				$out[$type] = $count;
-			}
-		}
-
 		if ($headers) {
 			header('Content-Type: application/json');
 			header('Access-Control-Allow-Origin: *');
 		}
 
-		return json_encode($out);
+		if (isset($this->error)) {
+			return json_encode(['error' => $this->error]);
+		}
+
+		return json_encode((object)$this->counts);
 	}
 }
