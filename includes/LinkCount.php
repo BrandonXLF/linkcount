@@ -216,7 +216,7 @@ class LinkCount {
 		foreach ($this->counts as $key => $count) {
 			if ($count === null) continue;
 
-			$encodedPage = urlencode($this->page);
+			$encodedPage = rawurlencode($this->page);
 			$urlPath = str_replace('PAGE', $encodedPage, $this->typeInfo[$key]['url']);
 			$singleCount = is_int($count);
 
