@@ -4,12 +4,10 @@ class LinkCount {
 	public $counts;
 	public $error;
 
+	private $fromNamespaces;
 	private $projectURL;
 	private $db;
-	private $namespace;
 	private $title;
-	private $page;
-	private $namespaces;
 
 	private $typeInfo = [
 		'filelinks' => [
@@ -55,19 +53,12 @@ class LinkCount {
 			}
 		}
 
-		$this->namespaces = $namespaces;
-		$this->page = $page;
+		$this->fromNamespaces = $namespaces;
 
-		if (substr($project, 0, 8) === 'https://') {
-			$project = substr($project, 8);
-		} elseif (substr($project, 0, 7) === 'http://') {
-			$project = substr($project, 7);
-		}
+		$maybeProjectURL = 'https://' . preg_replace('/^https:\/\//', '', $project);
+		$metaDB = DatabaseFactory::create();
 
-		$maybeProjectURL = 'https://' . $project;
-		$this->db = DatabaseFactory::create();
-
-		$stmt = $this->db->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
+		$stmt = $metaDB->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
 		$stmt->execute([$project, $maybeProjectURL]);
 
 		if (!$stmt->rowCount()) {
@@ -75,13 +66,13 @@ class LinkCount {
 			return;
 		}
 
-		list($dbname, $this->projectURL) = $stmt->fetch();
-		list($this->namespace, $this->title) = $this->getDBInfo($dbname, $this->projectURL, $this->page);
-		$this->db = DatabaseFactory::create($dbname);
+		list($dbName, $this->projectURL) = $stmt->fetch();
+		$this->db = DatabaseFactory::create($dbName);
+		$this->title = new Title($page, $dbName, $this->projectURL);
 
 		$this->counts = [
-			'filelinks' => $this->namespace === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,
-			'categorylinks' => $this->namespace === 14 ? $this->counts('categorylinks', 'cl', 'link', true, true) : null,
+			'filelinks' => $this->title->getNamespaceId() === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,
+			'categorylinks' => $this->title->getNamespaceId() === 14 ? $this->counts('categorylinks', 'cl', 'link', true, true) : null,
 			'wikilinks' => $this->counts('pagelinks', 'pl'),
 			'redirects' => $this->counts('redirect', 'rd', 'redirect', false, true),
 			'transclusions' => $this->counts('templatelinks', 'tl', 'transclusion')
@@ -92,93 +83,25 @@ class LinkCount {
 		$this->counts['wikilinks']['direct'] -= $this->counts['redirects'];
 	}
 
-	public static function getDBInfo($dbname, $url, $page) {
-		$redis = new Redis();
-		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));
-		$redis->auth(Config::get('redis-auth'));
-
-		$prefix = Config::get('redis-prefix');
-		$idsKey = $prefix . ':' . $dbname;
-		$casesKey = $prefix . ':' . $dbname . ':cases';
-
-		if (!$redis->exists($idsKey)) {
-			$curl = curl_init();
-			curl_setopt_array($curl, [
-				CURLOPT_URL => $url . '/w/api.php?action=query&meta=siteinfo&siprop=namespaces|namespacealiases&format=json&formatversion=2',
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_USERAGENT => Config::get('useragent')
-			]);
-			$info = json_decode(curl_exec($curl));
-			curl_close($curl);
-
-			$ids = [];
-			$caseSensitive = [];
-
-			foreach ($info->query->namespaces as $namespace) {
-				$ids[strtolower($namespace->name)] = $namespace->id;
-				$caseSensitive[$namespace->id] = $namespace->case;
-
-				if (isset($namespace->canonical)) {
-					$ids[strtolower($namespace->canonical)] = $namespace->id;
-				}
-			}
-
-			foreach ($info->query->namespacealiases as $namespace) {
-				$ids[strtolower($namespace->alias)] = $namespace->id;
-			}
-
-			$redis->hMSet($idsKey, $ids);
-			$redis->hMSet($casesKey, $caseSensitive);
-
-			$redis->expire($idsKey, 86400);
-			$redis->expire($casesKey, 86400);
-		}
-
-		if ($page[0] === ':') {
-			$page = substr($page, 1);
-		}
-
-		$fragPos = strpos($page, '#');
-		if ($fragPos) {
-			$page = substr($page, 0, $fragPos);
-		}
-
-		$page = str_replace('_', ' ', $page);
-		list($ns, $title) = strpos($page, ':') === false ? ['', $page] : explode(':', $page, 2);
-		$ns = strtolower($ns);
-		$title = str_replace(' ', '_', $title);
-		$id = $redis->hGet($idsKey, $ns);
-
-		if ($id === false) {
-			$title = str_replace(' ', '_', $page);
-			$id = $redis->hGet($idsKey, '');
-		}
-
-		$case = $redis->hGet($casesKey, $id);
-		$title = $case !== 'case-sensitive' ? ucfirst($title) : $title;
-
-		return [(int) $id, $title];
-	}
-
 	private function counts($table, $prefix, $mode = 'link', $singleNS = false, $noFromNamespace = false) {
-		$escapedTitle = $this->db->quote($this->title);
+		$escapedTitle = $this->db->quote($this->title->getDBKey());
 		$escapedBlank = $this->db->quote('');
 		$titleColumn = $prefix . '_' . ($singleNS ? 'to' : 'title');
 
-		$where = $this->namespaces !== '' && !$noFromNamespace ? " AND {$prefix}_from_namespace IN ({$this->namespaces})" : '';
-		$join = $this->namespaces !== '' && $noFromNamespace ? " JOIN page AS source ON source.page_id = {$prefix}_from AND source.page_namespace IN ({$this->namespaces})" : '';
+		$where = $this->fromNamespaces !== '' && !$noFromNamespace ? " AND {$prefix}_from_namespace IN ({$this->fromNamespaces})" : '';
+		$join = $this->fromNamespaces !== '' && $noFromNamespace ? " JOIN page AS source ON source.page_id = {$prefix}_from AND source.page_namespace IN ({$this->fromNamespaces})" : '';
 
-		$directCond = "$join WHERE $titleColumn = $escapedTitle" . ($singleNS ? '' : " AND {$prefix}_namespace = {$this->namespace}") . $where;
+		$directCond = "$join WHERE $titleColumn = $escapedTitle" . ($singleNS ? '' : " AND {$prefix}_namespace = {$this->title->getNamespaceId()}") . $where;
 		$indirectCond = "JOIN page AS target ON target.page_id = rd_from"
 			. " JOIN $table ON $titleColumn = target.page_title" . ($singleNS ? '' : " AND {$prefix}_namespace = target.page_namespace") . "$where$join"
-			. " WHERE rd_title = $escapedTitle AND rd_namespace = {$this->namespace} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)";
+			. " WHERE rd_title = $escapedTitle AND rd_namespace = {$this->title->getNamespaceId()} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)";
 
 		if ($mode == 'redirect') {
 			$query = "SELECT COUNT(rd_from) FROM redirect"
 				. " $directCond AND ({$prefix}_interwiki is NULl or {$prefix}_interwiki = $escapedBlank)";
 		} elseif ($mode == 'transclusion') {
 			// Transclusions of a redirect that actually follow the redirect are also added as a transclusion of the redirect target
-			// If a page transcludes a redirect to a page and the page itself, only the transclusion of the redirect is counted
+			// If a page transcludes a redirect to a target and the target itself, only the transclusion of the redirect is counted
 			$query = "SELECT COUNT({$prefix}_from), COUNT({$prefix}_from) - COUNT(indirect_from), COUNT(indirect_from) FROM $table"
 				. " LEFT JOIN (SELECT DISTINCT {$prefix}_from AS indirect_from FROM redirect $indirectCond) AS temp ON {$prefix}_from = indirect_from $directCond";
 		} else {
@@ -213,14 +136,17 @@ class LinkCount {
 			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Indirect')
 		);
 
+		$encodedPage = rawurlencode($this->title->getFullText());
+
 		foreach ($this->counts as $key => $count) {
 			if ($count === null) continue;
 
-			$encodedPage = rawurlencode($this->page);
-			$urlPath = str_replace('PAGE', $encodedPage, $this->typeInfo[$key]['url']);
 			$singleCount = is_int($count);
 
-			$label = (new OOUI\Tag('a'))->setAttributes(['href' => $this->projectURL . $urlPath])->appendContent($this->typeInfo[$key]['name']);
+			$label = (new OOUI\Tag('a'))->setAttributes([
+				'href' => $this->projectURL . str_replace('PAGE', $encodedPage, $this->typeInfo[$key]['url'])
+			])->appendContent($this->typeInfo[$key]['name']);
+
 			$all = number_format($singleCount ? $count : $count['all']);
 			$direct = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['direct']);
 			$indirect = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['indirect']);
@@ -233,10 +159,10 @@ class LinkCount {
 			);
 		}
 
-		$WLHLink = $this->projectURL . '/wiki/Special:WhatLinksHere/' . $encodedPage;
-
 		$links = (new OOUI\Tag('div'))->addClasses(['links'])->appendContent(
-			(new OOUI\Tag('a'))->setAttributes(['href' => $WLHLink])->appendContent('What links here')
+			(new OOUI\Tag('a'))->setAttributes([
+				'href' => $this->projectURL . '/wiki/Special:WhatLinksHere/' . $encodedPage
+			])->appendContent('What links here')
 		);
 
 		return $out . $links;

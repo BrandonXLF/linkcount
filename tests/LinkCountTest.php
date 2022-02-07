@@ -37,11 +37,11 @@ class LinkCountTest extends TestCase {
 	}
 
 	private function ensurePage($ns, $title) {
-		if(!array_key_exists($ns, $this->pageIDs)) {
+		if (!array_key_exists($ns, $this->pageIDs)) {
 			$this->pageIDs[$ns] = [];
 		}
 
-		if(!array_key_exists($title, $this->pageIDs[$ns])) {
+		if (!array_key_exists($title, $this->pageIDs[$ns])) {
 			$id = ++$this->pageIDCounter;
 			self::$statements['page']->execute([$id, $ns, $title]);
 			$this->pageIDs[$ns][$title] = $id;
@@ -889,7 +889,7 @@ class LinkCountTest extends TestCase {
 	 * @dataProvider provideHtmlOutput
 	 */
 	public function testHtmlOutput($page, $expected, $project = null) {
-		$this->assertEquals($expected, (new LinkCount($page, $project ?? 'linkcounttest', ''))->html());
+		$this->assertEquals($expected, (new LinkCount($page, $project ?? 'linkcounttest'))->html());
 	}
 
 	public function provideHtmlOutput() {
@@ -930,7 +930,7 @@ class LinkCountTest extends TestCase {
 	 * @dataProvider provideJsonOutput
 	 */
 	public function testJsonOutput($page, $expected, $project = null) {
-		$this->assertEquals($expected, (new LinkCount($page, $project ?? 'linkcounttest', ''))->json(false));
+		$this->assertEquals($expected, (new LinkCount($page, $project ?? 'linkcounttest'))->json(false));
 	}
 
 	public function provideJsonOutput() {
@@ -959,87 +959,6 @@ class LinkCountTest extends TestCase {
 			'no title (error)' => [
 				'',
 				'{"error":"Page name is required."}'
-			]
-		];
-	}
-
-	/**
-	 * @dataProvider provideDBInfo
-	 */
-	public function testDBInfo($page, $expected) {
-		$actual = LinkCount::getDBInfo('linkcounttest', 'https://en.wikipedia.org', $page);
-		$this->assertEquals($expected, $actual);
-	}
-
-	public function provideDBInfo() {
-		return [
-			'main namespace' => [
-				'Foo',
-				[0, 'Foo']
-			],
-			'main namespace with colon' => [
-				':Foo',
-				[0, 'Foo']
-			],
-			'talk namespace' => [
-				'Talk:Foo',
-				[1, 'Foo']
-			],
-			'namespace with space' => [
-				'Template talk:Foo',
-				[11, 'Foo']
-			],
-			'namespace with underscores' => [
-				'Template_talk:Foo',
-				[11, 'Foo']
-			],
-			'page with spaces' => [
-				'Foo bar baz',
-				[0, 'Foo_bar_baz']
-			],
-			'page with underscores' => [
-				'Foo_bar_baz',
-				[0, 'Foo_bar_baz']
-			],
-			'lowercase first letter' => [
-				'foo bar baz',
-				[0, 'Foo_bar_baz']
-			],
-			'case-sensitive namespace' => [
-				'Gadget definition talk:foo',
-				[2303, 'foo']
-			],
-			'alias namespace' => [
-				'Image:Foo.png',
-				[6, 'Foo.png']
-			],
-			'template namespace with colon' => [
-				':Template:Foo',
-				[10, 'Foo']
-			],
-			'test fragment' => [
-				'Foo#Bar',
-				[0, 'Foo']
-			],
-			'test invalid namespace' => [
-				'Foo:Bar',
-				[0, 'Foo:Bar']
-			],
-			'test invalid namespace with prefix colon' => [
-				':Foo:Bar',
-				[0, 'Foo:Bar']
-			],
-			'test lowercase invalid namespace' => [
-				'foo:bar',
-				[0, 'Foo:bar']
-			],
-			'test canonical name' => [
-				'Project:Foo',
-				[4, 'Foo']
-			],
-			'test wiki defined name' => [
-				'Wikipedia:Foo',
-				[4, 'Foo']
 			]
 		];
 	}
