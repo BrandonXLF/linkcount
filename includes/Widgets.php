@@ -4,7 +4,7 @@ class ProjectLookupWidget extends OOUI\TextInputWidget {}
 
 class PageLookupWidget extends OOUI\TextInputWidget {
 	public function getConfig(&$config) {
-		$config['site'] = $_GET['project'] ?? '';
+		$config['site'] = get('project');
 		return parent::getConfig($config);
 	}
 }

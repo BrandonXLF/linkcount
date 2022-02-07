@@ -2,8 +2,9 @@
 
 require '../vendor/autoload.php';
 
-if ($_SERVER['QUERY_STRING']) {
-	die((new LinkCount($_GET['page'] ?? '', $_GET['project'] ?? '', $_GET['namespaces'] ?? ''))->json());
+if (!$_SERVER['QUERY_STRING']) {
+	echo APIHelp::getHTML();
+	exit;
 }
 
-echo APIHelp::html();
+echo (new LinkCount(get('page'), get('project'), get('namespaces')))->json();

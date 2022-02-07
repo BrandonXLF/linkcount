@@ -2,7 +2,7 @@
 
 require '../vendor/autoload.php';
 
-$project = $_GET['project'] ?? '';
+$project = get('project');
 $projects = [];
 
 $db = DatabaseFactory::create();

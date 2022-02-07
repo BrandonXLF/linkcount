@@ -4,13 +4,11 @@ class Form {
 	public static function html() {
 		$out = '';
 
-		OOUI\Theme::setSingleton(new OOUI\WikimediaUITheme);
-
 		$out .= new OOUI\FieldLayout(
 			new ProjectLookupWidget([
 				'name' => 'project',
 				'id' => 'project',
-				'value' => $_GET['project'] ?? '',
+				'value' => get('project'),
 				'placeholder' => 'en.wikipedia.org',
 				'infusable' => true
 			]), [
@@ -23,7 +21,7 @@ class Form {
 			new PageLookupWidget([
 				'name' => 'page',
 				'id' => 'page',
-				'value' => $_GET['page'] ?? '',
+				'value' => get('page'),
 				'infusable' => true
 			]), [
 				'align' => 'top',
@@ -35,7 +33,7 @@ class Form {
 			new OOUI\TextInputWidget([
 				'name' => 'namespaces',
 				'id' => 'namespaces',
-				'value' => $_GET['namespaces'] ?? '',
+				'value' => get('namespaces'),
 				'placeholder' => 'Separate using commas',
 				'infusable' => true
 			]), [
@@ -59,7 +57,7 @@ class Form {
 		$out .= new OOUI\FieldLayout(
 			new HTMLWidget([
 				'id' => 'out',
-				'html' => (new LinkCount($_GET['page'] ?? '', $_GET['project'] ?? '', $_GET['namespaces'] ?? ''))->html(),
+				'html' => (new LinkCount(get('page'), get('project'), get('namespaces')))->html(),
 				'infusable' => true
 			]), [
 				'id' => 'out-layout',
