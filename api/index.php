@@ -69,5 +69,6 @@ if ($_SERVER['QUERY_STRING']) {
 			'page=Category:Main Page&project=en.wikipedia.org',
 			'page=File:Example.png&project=en.wikipedia.org'
 		))->getHtml(); ?>
+		<?php echo (new Footer('..'))->getHTML(); ?>
 	</body>
 </html>

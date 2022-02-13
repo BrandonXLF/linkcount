@@ -23,11 +23,7 @@ require 'vendor/autoload.php';
 			<?php echo (new Form)->getHtml(); ?>
 			<div id="out"><?php echo (new LinkCount(get('page'), get('project'), get('namespaces')))->getHtml(); ?></div>
 		</main>
-		<footer>
-			Checkout the <a href="api">API</a>.
-			View source on <a href="https://github.com/BrandonXLF/linkcount">GitHub</a>.
-			Created by <a href="https://en.wikipedia.org/wiki/User:BrandonXLF">BrandonXLF</a>.
-		</footer>
+		<?php echo (new Footer('.'))->getHTML(); ?>
 		<script src="static/index.js"></script>
 	</body>
 </html>
