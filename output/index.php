@@ -2,4 +2,4 @@
 
 require '../vendor/autoload.php';
 
-echo (new LinkCount(get('page'), get('project'), get('namespaces')))->html();
+echo (new LinkCount(get('page'), get('project'), get('namespaces')))->getHtml();

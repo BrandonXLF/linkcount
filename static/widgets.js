@@ -14,7 +14,7 @@ OO.mixinClass(ProjectLookupWidget, OO.ui.mixin.LookupElement);
 
 ProjectLookupWidget.prototype.getLookupRequest = function() {
 	return $.get('projects/', {
-		project: this.getValue()
+		prefix: this.getValue()
 	});
 };
 

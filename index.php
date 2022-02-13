@@ -20,9 +20,8 @@ require 'vendor/autoload.php';
 	<body>
 		<main>
 			<h1>Link Count</h1>
-			<form>
-				<?php echo Form::html(); ?>
-			</form>
+			<?php echo (new Form)->getHtml(); ?>
+			<div id="out"><?php echo (new LinkCount(get('page'), get('project'), get('namespaces')))->getHtml(); ?></div>
 		</main>
 		<footer>
 			Checkout the <a href="api">API</a>.

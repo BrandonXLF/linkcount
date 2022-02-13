@@ -1,6 +1,6 @@
 <?php
 
-class LinkCount {
+class LinkCount implements ProducesHtml, ProducesJson {
 	public $counts;
 	public $error;
 
@@ -118,7 +118,7 @@ class LinkCount {
 		];
 	}
 
-	public function html() {
+	public function getHtml() {
 		if (isset($this->error)) {
 			return (new OOUI\Tag('div'))->addClasses(['error'])->appendContent($this->error)->toString();
 		}
@@ -168,8 +168,8 @@ class LinkCount {
 		return $out . $links;
 	}
 
-	public function json($headers = true) {
-		if ($headers) {
+	public function getJson() {
+		if (!headers_sent()) {
 			header('Content-Type: application/json');
 			header('Access-Control-Allow-Origin: *');
 		}
@@ -178,6 +178,6 @@ class LinkCount {
 			return json_encode(['error' => $this->error]);
 		}
 
-		return json_encode((object)$this->counts);
+		return json_encode((object) $this->counts);
 	}
 }

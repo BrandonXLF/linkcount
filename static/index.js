@@ -9,8 +9,7 @@ var projectLookup = OO.ui.infuse($('#project')),
 	progressLayout = new OO.ui.FieldLayout(progressWidget, {
 		align: 'top'
 	}),
-	outWidget = OO.ui.infuse($('#out')),
-	outLayout = OO.ui.infuse($('#out-layout')),
+	out = $('#out'),
 	nsQueue = namespacesInput.getValue() ? namespacesInput.getValue().split(',') : [],
 	request = undefined;
 
@@ -61,20 +60,20 @@ function submitForm(pushState) {
 	}
 
 	if (!query) {
-		outWidget.$element.html('');
+		out.empty();
 		return;
 	}
 
 	if (request) request.abort();
 
-	outLayout.$element.replaceWith(progressLayout.$element);
+	out.html(progressLayout.$element);
 
-	request = $.get('output/?' + query).always(function() {
-		progressLayout.$element.replaceWith(outLayout.$element);
-	}).done(function(res) {
-		outWidget.$element.html(res);
-	}).fail(function() {
-		outWidget.$element.html('<div class="error">Failed to send API request.</div>');
+	request = $.get('output/?' + query);
+
+	request.then(function(res) {
+		out.html(res);
+	}, function() {
+		out.html('<div class="error">Failed to send API request.</div>');
 	});
 }
 

@@ -13,16 +13,16 @@ main, footer {
 	margin: 0 auto;
 }
 
-footer, .links {
-	margin-top: 1em;
+.links {
+	margin-top: 8px;
+}
+
+footer, #out {
+	margin-top: 1.5em;
 }
 
 .error {
 	color: #e00000;
-}
-
-.links {
-	float: left;
 }
 
 .out {
@@ -88,7 +88,7 @@ footer, .links {
 		border-left-width: 1px;
 		border-radius: 0 0 0 2px;
 	}
-	
+
 	.indirect {
 		border-radius: 0 0 2px 0;
 	}
