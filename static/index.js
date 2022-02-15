@@ -2,48 +2,16 @@ var projectLookup = OO.ui.infuse($('#project')),
 	pageLookup = OO.ui.infuse($('#page')),
 	namespacesInput = OO.ui.infuse($('#namespaces')),
 	button = OO.ui.infuse($('#submit')),
-	namespacesSelect = new OO.ui.MenuTagMultiselectWidget({
-		allowArbitrary: false
+	namespacesSelect = new NamespaceLookupWidget({
+		value: namespacesInput.getValue() && namespacesInput.getValue().split(','),
+		project: projectLookup.getValue()
 	}),
 	progressWidget = new OO.ui.ProgressBarWidget(),
 	progressLayout = new OO.ui.FieldLayout(progressWidget, {
 		align: 'top'
 	}),
 	out = $('#out'),
-	nsQueue = namespacesInput.getValue() ? namespacesInput.getValue().split(',') : [],
 	request = undefined;
-
-function getNamespaceOptions(project) {
-	$.get('https://' + project + '/w/api.php', {
-		action: 'query',
-		meta: 'siteinfo',
-		siprop: 'namespaces',
-		format: 'json',
-		origin: '*'
-	}).then(function(re) {
-		var oldValues = $.merge(namespacesSelect.getValue(), nsQueue || []);
-
-		nsQueue = undefined;
-		namespacesSelect.clearItems().getMenu().clearItems();
-
-		for (var id in re.query.namespaces) {
-			if (id < 0) continue; // Ignore virtual namespaces
-
-			var info = re.query.namespaces[id];
-
-			namespacesSelect.addOptions([{
-				data: info.id.toString(),
-				label: info['*'] || '(Article)'
-			}]);
-		}
-
-		namespacesSelect.setValue(oldValues);
-
-		if ($.contains(document, namespacesInput.$element[0])) {
-			namespacesInput.$element.replaceWith(namespacesSelect.$element);
-		}
-	});
-}
 
 function submitForm(pushState) {
 	var params = {
@@ -80,8 +48,8 @@ function submitForm(pushState) {
 projectLookup.on('change', function(project) {
 	project = project || 'en.wikipedia.org';
 
-	getNamespaceOptions(project);
 	pageLookup.setProject(project);
+	namespacesSelect.setProject(project);
 });
 
 button.on('click', function() {

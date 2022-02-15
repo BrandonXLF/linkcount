@@ -8,11 +8,7 @@ require 'vendor/autoload.php';
 	<head>
 		<title>Link Count</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="node_modules/jquery/dist/jquery.min.js"></script>
-		<script src="node_modules/oojs/dist/oojs.min.js"></script>
-		<script src="node_modules/oojs-ui/dist/oojs-ui.min.js"></script>
-		<script src="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.js"></script>
-		<script src="static/widgets.js"></script>
+		<script src="js/" defer></script>
 		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css">
 		<link rel="stylesheet" href="static/index.css">
 		<link rel="shortcut icon" type="image/png" href="static/icon.png">
@@ -24,6 +20,5 @@ require 'vendor/autoload.php';
 			<div id="out"><?php echo (new LinkCount(get('page'), get('project'), get('namespaces')))->getHtml(); ?></div>
 		</main>
 		<?php echo (new Footer('.'))->getHTML(); ?>
-		<script src="static/index.js"></script>
 	</body>
 </html>
