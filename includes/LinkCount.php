@@ -43,7 +43,7 @@ class LinkCount implements ProducesHtml, ProducesJson {
 		}
 
 		if (!$project) {
-			$project = 'en.wikipedia.org';
+			$project = Config::get('default-project');
 		}
 
 		foreach ($namespaces ? explode(',', $namespaces) : [] as $rawNamespace) {

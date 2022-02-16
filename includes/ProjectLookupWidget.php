@@ -2,13 +2,22 @@
 
 class ProjectLookupWidget extends OOUI\TextInputWidget {
 	private $domain;
+	private $default;
 
 	public function __construct(array $config = []) {
 		$config['placeholder'] = $config['default'];
 
 		parent::__construct($config);
 
-		$project = $config['value'] ?: 'en.wikipedia.org';
+		$this->default = $config['default'];
+
+		$project = $config['value'];
+
+		if (!$project) {
+			$this->domain = $this->default;
+			return;
+		}
+
 		$db = DatabaseFactory::create();
 		$maybeProjectURL = 'https://' . preg_replace('/^https:\/\//', '', $project);
 
@@ -23,6 +32,7 @@ class ProjectLookupWidget extends OOUI\TextInputWidget {
 
 	public function getConfig(&$config) {
 		$config['domain'] = $this->domain;
+		$config['default'] = $this->default;
 
 		return parent::getConfig($config);
 	}

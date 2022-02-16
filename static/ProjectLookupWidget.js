@@ -9,6 +9,7 @@
 	OO.ui.mixin.LookupElement.call(this, config);
 
 	this.domain = config.domain;
+	this.default = config.default;
 
 	this.lookupMenu.connect(this, {
 		choose: 'onProjectLookupMenuChoose'
@@ -44,7 +45,7 @@ ProjectLookupWidget.prototype.onProjectLookupMenuChoose = function(item) {
 };
 
 ProjectLookupWidget.prototype.getValue = function() {
-	return this.value || 'en.wikipedia.org';
+	return this.value || this.default;
 };
 
 ProjectLookupWidget.prototype.getDomain = function() {
