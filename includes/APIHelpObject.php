@@ -2,7 +2,7 @@
 
 
 class APIHelpObject implements ProducesHtml {
-	private array $keys;
+	private $keys;
 
 	public function __construct(...$keys) {
 		$this->keys = $keys;

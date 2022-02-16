@@ -1,7 +1,7 @@
 <?php
 
 class Footer implements ProducesHtml {
-	private string $rel;
+	private $rel;
 
 	public function __construct(string $rel) {
 		$this->rel = $rel;

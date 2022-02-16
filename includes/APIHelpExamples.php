@@ -2,8 +2,8 @@
 
 
 class APIHelpExamples implements ProducesHtml {
-	private array $examples;
-	private string $prefix;
+	private $examples;
+	private $prefix;
 
 	public function __construct(...$examples) {
 		$this->examples = $examples;
