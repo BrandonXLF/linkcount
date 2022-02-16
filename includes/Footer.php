@@ -13,7 +13,7 @@ class Footer implements ProducesHtml {
 		])->appendContent('GitHub');
 
 		$revLink = (new OOUI\Tag('a'))->setAttributes([
-			'href' => "https://github.com/BrandonXLF/linkcount/commit/" . exec('git rev-parse HEAD')
+			'href' => "https://github.com/BrandonXLF/linkcount/tree/" . exec('git rev-parse HEAD')
 		])->appendContent(exec('git rev-parse --short HEAD'));
 
 		$authorLink = (new OOUI\Tag('a'))->setAttributes([
