@@ -9,6 +9,7 @@ class Form implements ProducesHtml {
 					'id' => 'project',
 					'value' => get('project'),
 					'default' => Config::get('default-project'),
+					'autocomplete' => false,
 					'infusable' => true
 				]), [
 					'align' => 'top',
@@ -20,6 +21,7 @@ class Form implements ProducesHtml {
 					'name' => 'page',
 					'id' => 'page',
 					'value' => get('page'),
+					'autocomplete' => false,
 					'infusable' => true
 				]), [
 					'align' => 'top',
