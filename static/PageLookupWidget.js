@@ -8,14 +8,15 @@
  function PageLookupWidget(config) {
 	PageLookupWidget.super.call(this, config);
 	OO.ui.mixin.LookupElement.call(this, config);
-	this.site = config.site;
+
+	this.setDomain(config.domain);
 }
 
 OO.inheritClass(PageLookupWidget, OO.ui.TextInputWidget);
 OO.mixinClass(PageLookupWidget, OO.ui.mixin.LookupElement);
 
 PageLookupWidget.prototype.getLookupRequest = function() {
-	return this.site ? $.get('https://' + this.site + '/w/api.php', {
+	return this.domain ? $.get('https://' + this.domain + '/w/api.php', {
 		action: 'query',
 		generator: 'prefixsearch',
 		gpssearch: this.getValue(),
@@ -52,6 +53,6 @@ PageLookupWidget.prototype.getLookupMenuOptionsFromData = function(data) {
 	})
 };
 
-PageLookupWidget.prototype.setProject = function(project) {
-	this.site = project;
+PageLookupWidget.prototype.setDomain = function(domain) {
+	this.domain = domain;
 };

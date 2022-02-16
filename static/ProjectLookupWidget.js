@@ -6,7 +6,13 @@
  */
  function ProjectLookupWidget(config) {
 	ProjectLookupWidget.super.call(this, config);
-	OO.ui.mixin.LookupElement.call(this, config)
+	OO.ui.mixin.LookupElement.call(this, config);
+
+	this.domain = config.domain;
+
+	this.lookupMenu.connect(this, {
+		choose: 'onProjectLookupMenuChoose'
+	});
 }
 
 OO.inheritClass(ProjectLookupWidget, OO.ui.TextInputWidget);
@@ -23,10 +29,31 @@ ProjectLookupWidget.prototype.getLookupCacheDataFromResponse = function(response
 };
 
 ProjectLookupWidget.prototype.getLookupMenuOptionsFromData = function(data) {
-	return data.map(function(value){
+	this.setDomain(data.exact);
+
+	return data.projects.map(function(value) {
 		return new OO.ui.MenuOptionWidget({
 			data: value,
 			label: value
 		});
 	});
 };
+
+ProjectLookupWidget.prototype.onProjectLookupMenuChoose = function(item) {
+	this.setDomain(item.getData());
+};
+
+ProjectLookupWidget.prototype.getValue = function() {
+	return this.value || 'en.wikipedia.org';
+};
+
+ProjectLookupWidget.prototype.getDomain = function() {
+	return this.domain;
+}
+
+ProjectLookupWidget.prototype.setDomain = function(domain) {
+	if (domain == this.domain) return;
+
+	this.domain = domain;
+	this.emit('domain', domain);
+}

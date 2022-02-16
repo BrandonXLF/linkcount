@@ -1,10 +1,12 @@
 var projectLookup = OO.ui.infuse($('#project')),
-	pageLookup = OO.ui.infuse($('#page')),
+	pageLookup = OO.ui.infuse($('#page'), {
+		domain: projectLookup.getDomain()
+	}),
 	namespacesInput = OO.ui.infuse($('#namespaces')),
 	button = OO.ui.infuse($('#submit')),
 	namespacesSelect = new NamespaceLookupWidget({
 		value: namespacesInput.getValue() && namespacesInput.getValue().split(','),
-		project: projectLookup.getValue()
+		domain: projectLookup.getDomain()
 	}),
 	progressWidget = new OO.ui.ProgressBarWidget(),
 	progressLayout = new OO.ui.FieldLayout(progressWidget, {
@@ -45,11 +47,9 @@ function submitForm(pushState) {
 	});
 }
 
-projectLookup.on('change', function(project) {
-	project = project || 'en.wikipedia.org';
-
-	pageLookup.setProject(project);
-	namespacesSelect.setProject(project);
+projectLookup.on('domain', function (domain) {
+	pageLookup.setDomain(domain);
+	namespacesSelect.setDomain(domain);
 });
 
 button.on('click', function() {
@@ -66,4 +66,4 @@ window.addEventListener('popstate', function(e) {
 	submitForm(false);
 });
 
-projectLookup.emit('change');
+namespacesInput.$element.replaceWith(namespacesSelect.$element);

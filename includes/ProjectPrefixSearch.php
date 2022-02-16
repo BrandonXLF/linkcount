@@ -1,7 +1,8 @@
 <?php
 
 class ProjectPrefixSearch implements ProducesJson {
-	public $projects;
+	public $projects = [];
+	public $exact;
 
 	public function __construct($prefix) {
 		if ($prefix == '') {
@@ -12,11 +13,17 @@ class ProjectPrefixSearch implements ProducesJson {
 		$db = DatabaseFactory::create();
 		$maybeProjectURL = 'https://' . preg_replace('/^https:\/\//', '', $prefix);
 
-		$stmt = $db->prepare('SELECT url FROM wiki WHERE dbname LIKE ? OR url LIKE ?');
+		$stmt = $db->prepare('SELECT dbname, url FROM wiki WHERE dbname LIKE ? OR url LIKE ?');
 		$stmt->execute([$prefix . '%', $maybeProjectURL . '%']);
 
 		foreach ($stmt->fetchAll() as $row) {
-			$this->projects[] = substr($row[0], 8);
+			$domain = substr($row[1], 8);
+
+			if ($row[0] == $prefix || $row[1] == $maybeProjectURL) {
+				$this->exact = $domain;
+			}
+
+			$this->projects[] = $domain;
 		}
 	}
 
@@ -25,6 +32,9 @@ class ProjectPrefixSearch implements ProducesJson {
 			header('Content-Type: application/json');
 		}
 
-		echo json_encode($this->projects);
+		echo json_encode([
+			'projects' => $this->projects,
+			'exact' => $this->exact
+		]);
 	}
 }

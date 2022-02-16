@@ -8,7 +8,7 @@ class Form implements ProducesHtml {
 					'name' => 'project',
 					'id' => 'project',
 					'value' => get('project'),
-					'placeholder' => 'en.wikipedia.org',
+					'default' => 'en.wikipedia.org',
 					'infusable' => true
 				]), [
 					'align' => 'top',
