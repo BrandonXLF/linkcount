@@ -34,7 +34,10 @@ function submitForm(pushState) {
 		return;
 	}
 
-	if (request) request.abort();
+	if (request) {
+		request.wasReplaced = true;
+		request.abort();
+	}
 
 	out.html(progressLayout.$element);
 
@@ -42,7 +45,9 @@ function submitForm(pushState) {
 
 	request.then(function(res) {
 		out.html(res);
-	}, function() {
+	}, function(req) {
+		if (req.wasReplaced) return;
+
 		out.html('<div class="error">Failed to send API request.</div>');
 	});
 }
