@@ -132,8 +132,12 @@ class LinkCount implements ProducesHtml, ProducesJson {
 		$out->appendContent(
 			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Type'),
 			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('All'),
-			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Direct'),
-			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Indirect')
+			(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
+				'title' => 'Number of pages that link to page using the actual page name'
+			])->appendContent('Direct'),
+			(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
+				'title' => 'Number of pages that link to the page through a redirect'
+			])->appendContent('Indirect')
 		);
 
 		$encodedPage = rawurlencode($this->title->getFullText());
