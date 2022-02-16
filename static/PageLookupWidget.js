@@ -22,7 +22,8 @@ PageLookupWidget.prototype.getLookupRequest = function() {
 		gpssearch: this.getValue(),
 		gpslimit: 10,
 		origin: '*',
-		format: 'json'
+		format: 'json',
+		formatversion: 2
 	}) : $.Deferred().resolve({
 		query: {
 			pages: []
@@ -34,17 +35,7 @@ PageLookupWidget.prototype.getLookupCacheDataFromResponse = function(res) {
 	return res.query.pages || [];
 };
 
-PageLookupWidget.prototype.getLookupMenuOptionsFromData = function(data) {
-	var titles = [];
-
-	for (var id in data) {
-		titles.push(data[id]);
-	}
-
-	titles.sort(function(a, b) {
-		return a.index - b.index;
-	});
-
+PageLookupWidget.prototype.getLookupMenuOptionsFromData = function(titles) {
 	return titles.map(function(value) {
 		return new OO.ui.MenuOptionWidget({
 			data: value.title,
@@ -55,4 +46,8 @@ PageLookupWidget.prototype.getLookupMenuOptionsFromData = function(data) {
 
 PageLookupWidget.prototype.setDomain = function(domain) {
 	this.domain = domain;
+};
+
+PageLookupWidget.prototype.getRequestQuery = function() {
+	return this.domain + '/' + this.getValue();
 };
