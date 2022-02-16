@@ -32,7 +32,7 @@ class ProjectPrefixSearch implements ProducesJson {
 			header('Content-Type: application/json');
 		}
 
-		echo json_encode([
+		return json_encode([
 			'projects' => $this->projects,
 			'exact' => $this->exact
 		]);
