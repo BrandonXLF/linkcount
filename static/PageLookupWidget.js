@@ -32,7 +32,13 @@ PageLookupWidget.prototype.getLookupRequest = function() {
 };
 
 PageLookupWidget.prototype.getLookupCacheDataFromResponse = function(res) {
-	return res.query.pages || [];
+	var titles = res.query.pages || [];
+
+	titles.sort(function(a, b) {
+		return a.index - b.index;
+	});
+
+	return titles;
 };
 
 PageLookupWidget.prototype.getLookupMenuOptionsFromData = function(titles) {
