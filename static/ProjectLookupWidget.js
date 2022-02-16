@@ -57,3 +57,15 @@ ProjectLookupWidget.prototype.setDomain = function(domain) {
 	this.domain = domain;
 	this.emit('domain', domain);
 }
+
+ProjectLookupWidget.prototype.getValidity = function() {
+	var deferred = $.Deferred();
+
+	if (this.domain) {
+		deferred.resolve();
+	} else {
+		deferred.reject();
+	}
+
+	return deferred.promise();
+}
