@@ -7,6 +7,9 @@ require 'vendor/autoload.php';
 <html lang="en">
 	<head>
 		<title>Link Count</title>
+<?php if ($_SERVER['QUERY_STRING']) { ?>
+		<meta name="robots" content="noindex">
+<?php } ?>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="js/" defer></script>
 		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css">
