@@ -17,8 +17,6 @@ jobs:
       mysql:
         image: mysql
         env:
-          MYSQL_USER: root
-          MYSQL_PASSWORD: pass
           MYSQL_ROOT_PASSWORD: pass
         options: >-
           --health-cmd pg_isready
