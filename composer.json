@@ -1,5 +1,5 @@
 {
-	"name": "LinkCount",
+	"name": "linkcount",
 	"description": "Web program to see the number of links to a page in any Wikimedia project.",
 	"license": "GPL-3.0-or-later",
 	"require": {
