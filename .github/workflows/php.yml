@@ -18,8 +18,8 @@ jobs:
         image: mysql
         env:
           MYSQL_USER: root
-          MYSQL_PASSWORD: ''
-          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_PASSWORD: pass
+          MYSQL_ROOT_PASSWORD: pass
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -55,6 +55,8 @@ jobs:
         path: '**/config.ini'
         contents: |
           redis-server = redis
+          test-db-user = root
+          test-db-password = pass
           test-db-host = mysql
         write-mode: append
 
