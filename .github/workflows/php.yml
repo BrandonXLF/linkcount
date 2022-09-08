@@ -28,6 +28,8 @@ jobs:
 
       redis:
         image: redis
+        env:
+          REDIS_PASSWORD: pass
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -58,6 +60,7 @@ jobs:
         path: '**/config.ini'
         contents: |
           test-db-password = pass
+          redis-auth = pass
         write-mode: append
 
     - name: Run test suite
