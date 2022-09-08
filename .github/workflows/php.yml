@@ -12,6 +12,23 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
@@ -27,6 +44,15 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
+      
+    - name: Write to config file
+      uses: DamianReeves/write-file-action@master
+      with:
+        path: '**/config.ini'
+        contents: |
+          redis-server = redis
+          test-db-host = mysql
+        write-mode: append
 
     - name: Run test suite
       run: composer run-script test-lin
