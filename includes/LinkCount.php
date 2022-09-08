@@ -1,6 +1,10 @@
 <?php
 
 class LinkCount implements ProducesHtml, ProducesJson {
+	public const COUNT_MODE_REDIRECT = 'redirect';
+	public const COUNT_MODE_LINK = 'link';
+	public const COUNT_MODE_TRANSCLUSION = 'transclusion';
+
 	public $counts;
 	public $error;
 
@@ -71,11 +75,11 @@ class LinkCount implements ProducesHtml, ProducesJson {
 		$this->title = new Title($page, $dbName, $this->projectURL);
 
 		$this->counts = [
-			'filelinks' => $this->title->getNamespaceId() === 6 ? $this->counts('imagelinks', 'il', 'transclusion', true) : null,
-			'categorylinks' => $this->title->getNamespaceId() === 14 ? $this->counts('categorylinks', 'cl', 'link', true, true) : null,
-			'wikilinks' => $this->counts('pagelinks', 'pl'),
-			'redirects' => $this->counts('redirect', 'rd', 'redirect', false, true),
-			'transclusions' => $this->counts('templatelinks', 'tl', 'transclusion')
+			'filelinks' => $this->title->getNamespaceId() === 6 ? $this->counts('imagelinks', 'il', self::COUNT_MODE_TRANSCLUSION, true, true, false) : null,
+			'categorylinks' => $this->title->getNamespaceId() === 14 ? $this->counts('categorylinks', 'cl', self::COUNT_MODE_LINK, true, false, false) : null,
+			'wikilinks' => $this->counts('pagelinks', 'pl', self::COUNT_MODE_LINK, false, true, false),
+			'redirects' => $this->counts('redirect', 'rd', self::COUNT_MODE_REDIRECT, false, false, false),
+			'transclusions' => $this->counts('templatelinks', 'tl', self::COUNT_MODE_TRANSCLUSION, false, true, true)
 		];
 
 		// Redirects are included in the wikilinks table
@@ -83,35 +87,91 @@ class LinkCount implements ProducesHtml, ProducesJson {
 		$this->counts['wikilinks']['direct'] -= $this->counts['redirects'];
 	}
 
-	private function counts($table, $prefix, $mode = 'link', $singleNS = false, $noFromNamespace = false) {
+	private function counts($table, $prefix, $mode = self::COUNT_MODE_LINK, $singleNS = false, $hasFromNamespace = true, $usesLinkTarget = true) {
 		$escapedTitle = $this->db->quote($this->title->getDBKey());
 		$escapedBlank = $this->db->quote('');
 		$titleColumn = $prefix . '_' . ($singleNS ? 'to' : 'title');
 
-		$where = $this->fromNamespaces !== '' && !$noFromNamespace ? " AND {$prefix}_from_namespace IN ({$this->fromNamespaces})" : '';
-		$join = $this->fromNamespaces !== '' && $noFromNamespace ? " JOIN page AS source ON source.page_id = {$prefix}_from AND source.page_namespace IN ({$this->fromNamespaces})" : '';
+		$fromNamespaceWhere = '';
+		$fromNamespaceJoin = '';
 
-		$directCond = "$join WHERE $titleColumn = $escapedTitle" . ($singleNS ? '' : " AND {$prefix}_namespace = {$this->title->getNamespaceId()}") . $where;
-		$indirectCond = "JOIN page AS target ON target.page_id = rd_from"
-			. " JOIN $table ON $titleColumn = target.page_title" . ($singleNS ? '' : " AND {$prefix}_namespace = target.page_namespace") . "$where$join"
-			. " WHERE rd_title = $escapedTitle AND rd_namespace = {$this->title->getNamespaceId()} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)";
+		if ($this->fromNamespaces !== '') {
+			// Must be used in queries with $table
+			$fromNamespaceWhere = $hasFromNamespace ? " AND {$prefix}_from_namespace IN ({$this->fromNamespaces})" : '';
+			$fromNamespaceJoin = !$hasFromNamespace ? " JOIN page AS source ON source.page_id = {$prefix}_from AND source.page_namespace IN ({$this->fromNamespaces})" : '';
+		}
 
-		if ($mode == 'redirect') {
-			$query = "SELECT COUNT(rd_from) FROM redirect"
-				. " $directCond AND ({$prefix}_interwiki is NULl or {$prefix}_interwiki = $escapedBlank)";
-		} elseif ($mode == 'transclusion') {
-			// Transclusions of a redirect that actually follow the redirect are also added as a transclusion of the redirect target
-			// If a page transcludes a redirect to a target and the target itself, only the transclusion of the redirect is counted
-			$query = "SELECT COUNT({$prefix}_from), COUNT({$prefix}_from) - COUNT(indirect_from), COUNT(indirect_from) FROM $table"
-				. " LEFT JOIN (SELECT DISTINCT {$prefix}_from AS indirect_from FROM redirect $indirectCond) AS temp ON {$prefix}_from = indirect_from $directCond";
+		// TODO: Remove once all tables are switched to linktarget
+		$directCond = '';
+		$indirectQuery = '';
+
+		if (!$usesLinkTarget) {
+			$namespaceComponent = $singleNS ? '' : " AND {$prefix}_namespace = {$this->title->getNamespaceId()}";
+
+			$directCond = <<<SQL
+				$fromNamespaceJoin
+				WHERE $titleColumn = $escapedTitle $namespaceComponent $fromNamespaceWhere
+			SQL;
+
+			$namespaceComponent = $singleNS ? '' : " AND {$prefix}_namespace = target.page_namespace";
+
+			$indirectQuery = <<<SQL
+				SELECT DISTINCT NULL AS direct_link, {$prefix}_from AS indirect_link FROM redirect
+				JOIN page AS target ON target.page_id = rd_from
+				JOIN $table ON $titleColumn = target.page_title $namespaceComponent $fromNamespaceWhere$fromNamespaceJoin
+				WHERE rd_title = $escapedTitle AND rd_namespace = {$this->title->getNamespaceId()} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)
+			SQL;
 		} else {
-			$query = "SELECT COUNT(DISTINCT {$prefix}_from), SUM(NOT indirect), SUM(indirect) FROM"
-				. " (SELECT DISTINCT {$prefix}_from, 1 AS indirect FROM redirect $indirectCond UNION ALL SELECT {$prefix}_from, 0 AS indirect FROM $table $directCond) AS temp";
+			// Must be used in queries with $table
+			$directCond = <<<SQL
+				JOIN linktarget on {$prefix}_target_id = lt_id $fromNamespaceJoin
+				WHERE lt_title = $escapedTitle AND lt_namespace = {$this->title->getNamespaceId()} $fromNamespaceWhere
+			SQL;
+
+			$indirectQuery = <<<SQL
+				SELECT DISTINCT NULL AS direct_link, {$prefix}_from AS indirect_link FROM redirect
+				JOIN page AS target ON target.page_id = rd_from
+				JOIN linktarget ON lt_title = target.page_title AND lt_namespace = target.page_namespace
+				JOIN $table ON {$prefix}_target_id = lt_id $fromNamespaceWhere$fromNamespaceJoin
+				WHERE rd_title = $escapedTitle AND rd_namespace = {$this->title->getNamespaceId()} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)
+			SQL;
+		}
+
+		if ($mode == self::COUNT_MODE_REDIRECT) {
+			$query = <<<SQL
+				SELECT COUNT(rd_from) FROM $table
+				$directCond AND ({$prefix}_interwiki is NULL or {$prefix}_interwiki = $escapedBlank)
+			SQL;
+		} elseif ($mode == self::COUNT_MODE_TRANSCLUSION) {
+			// Transclusions of a redirect that follow the redirect are also added as a transclusion of the redirect target.
+			// There is no way to differentiate from a page with a indirect link and a page with a indirect and a direct link in this case, only the indirect link is recorded.
+			// Pages can also transclude a page with a redirect without following the redirect, so a valid indirect link must have an associated direct link.
+			$query = <<<SQL
+				SELECT
+					COUNT({$prefix}_from),
+					COUNT({$prefix}_from) - COUNT(indirect_link),
+					COUNT(indirect_link)
+				FROM $table
+				LEFT JOIN ($indirectQuery) AS temp ON {$prefix}_from = indirect_link $directCond
+			SQL;
+		} elseif ($mode == self::COUNT_MODE_LINK) {
+			$query = <<<SQL
+				SELECT
+					COUNT(DISTINCT COALESCE(direct_link, indirect_link)),
+					COUNT(direct_link),
+					COUNT(indirect_link)
+				FROM (
+					SELECT {$prefix}_from AS direct_link, NULL AS indirect_link FROM $table
+					$directCond
+					UNION ALL
+					$indirectQuery
+				) AS temp
+			SQL;
 		}
 
 		$res = $this->db->query($query)->fetch();
 
-		return $mode == 'redirect' ? (int) $res[0] : [
+		return $mode == self::COUNT_MODE_REDIRECT ? (int) $res[0] : [
 			'all' => (int) $res[0],
 			'direct' => (int) $res[1],
 			'indirect' => (int) $res[2]

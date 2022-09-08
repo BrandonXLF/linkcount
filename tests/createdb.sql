@@ -87,7 +87,12 @@ CREATE TABLE redirect (
 
 CREATE TABLE templatelinks (
 	tl_from int(10) unsigned NOT NULL DEFAULT 0,
-	tl_namespace int(11) NOT NULL DEFAULT 0,
-	tl_title varbinary(255) NOT NULL DEFAULT '',
-	tl_from_namespace int(11) NOT NULL DEFAULT 0
+	tl_from_namespace int(11) NOT NULL DEFAULT 0,
+	tl_target_id bigint(20) unsigned DEFAULT 0
+);
+
+CREATE TABLE linktarget (
+	lt_id bigint(20) unsigned NOT NULL DEFAULT 0,
+	lt_namespace int(11) NOT NULL DEFAULT 0,
+	lt_title varbinary(255) NOT NULL DEFAULT ''
 );

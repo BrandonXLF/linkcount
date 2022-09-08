@@ -10,7 +10,8 @@ class LinkCountTest extends TestCase {
 	private static $defaultExpected;
 
 	private $pageIDs = [];
-	private $pageIDCounter = 0;
+	private $targetIDs = [];
+	private $counter = 0;
 
 	public static function setUpBeforeClass(): void {
 		self::$db = TestDatabaseFactory::create();
@@ -20,9 +21,10 @@ class LinkCountTest extends TestCase {
 			'redirect' => self::$db->prepare('INSERT INTO redirect (rd_from, rd_namespace, rd_title, rd_interwiki) VALUES (?, ?, ?, NULL)'),
 			'iwredirect' => self::$db->prepare('INSERT INTO redirect (rd_from, rd_namespace, rd_title, rd_interwiki) VALUES (?, ?, ?, ?)'),
 			'pagelink' => self::$db->prepare('INSERT INTO pagelinks (pl_from, pl_namespace, pl_title, pl_from_namespace) VALUES (?, ?, ?, ?)'),
-			'templatelink' => self::$db->prepare('INSERT INTO templatelinks (tl_from, tl_namespace, tl_title, tl_from_namespace) VALUES (?, ?, ?, ?)'),
+			'templatelink' => self::$db->prepare('INSERT INTO templatelinks (tl_from, tl_from_namespace, tl_target_id) VALUES (?, ?, ?)'),
 			'categorylink' => self::$db->prepare('INSERT INTO categorylinks (cl_from, cl_to) VALUES (?, ?)'),
-			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_to, il_from_namespace) VALUES (?, ?, ?)')
+			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_to, il_from_namespace) VALUES (?, ?, ?)'),
+			'linktarget' => self::$db->prepare('INSERT INTO linktarget (lt_id, lt_namespace, lt_title) VALUES (?, ?, ?)')
 		];
 
 		self::$defaultExpected = [
@@ -42,7 +44,7 @@ class LinkCountTest extends TestCase {
 		}
 
 		if (!array_key_exists($title, $this->pageIDs[$ns])) {
-			$id = ++$this->pageIDCounter;
+			$id = ++$this->counter;
 			self::$statements['page']->execute([$id, $ns, $title]);
 			$this->pageIDs[$ns][$title] = $id;
 		}
@@ -50,9 +52,22 @@ class LinkCountTest extends TestCase {
 		return $this->pageIDs[$ns][$title];
 	}
 
+	private function ensureTarget($ns, $title) {
+		if (!array_key_exists($ns, $this->targetIDs)) {
+			$this->targetIDs[$ns] = [];
+		}
+
+		if (!array_key_exists($title, $this->targetIDs[$ns])) {
+			$id = ++$this->counter;
+			self::$statements['linktarget']->execute([$id, $ns, $title]);
+			$this->targetIDs[$ns][$title] = $id;
+		}
+
+		return $this->targetIDs[$ns][$title];
+	}
+
 	private function addRedirect($pagelink, $fromNS, $fromTitle, $toNS, $toTitle, $iw = null) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		$this->ensurePage($toNS, $toTitle);
 
 		if ($iw !== null) {
 			self::$statements['iwredirect']->execute([$fromID, $toNS, $toTitle, $iw]);
@@ -67,25 +82,22 @@ class LinkCountTest extends TestCase {
 
 	private function addPageLink($fromNS, $fromTitle, $toNS, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		$this->ensurePage($toNS, $toTitle);
 		self::$statements['pagelink']->execute([$fromID, $toNS, $toTitle, $fromNS]);
 	}
 
 	private function addTemplateLink($fromNS, $fromTitle, $toNS, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		$this->ensurePage($toNS, $toTitle);
-		self::$statements['templatelink']->execute([$fromID, $toNS, $toTitle, $fromNS]);
+		$targetID = $this->ensureTarget($toNS, $toTitle);
+		self::$statements['templatelink']->execute([$fromID, $fromNS, $targetID]);
 	}
 
 	private function addCategoryLink($fromNS, $fromTitle, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		$this->ensurePage(14, $toTitle);
 		self::$statements['categorylink']->execute([$fromID, $toTitle]);
 	}
 
 	private function addImageLink($fromNS, $fromTitle, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		$this->ensurePage(6, $toTitle);
 		self::$statements['imagelink']->execute([$fromID, $toTitle, $fromNS]);
 	}
 
@@ -110,10 +122,19 @@ class LinkCountTest extends TestCase {
 	 * @dataProvider provideCounts
 	 */
 	public function testCounts($links, $counts, $nscounts = []) {
-		self::$db->exec("TRUNCATE TABLE categorylinks;TRUNCATE TABLE imagelinks;TRUNCATE TABLE page;TRUNCATE TABLE pagelinks;TRUNCATE TABLE redirect;TRUNCATE TABLE templatelinks;");
+		self::$db->exec("
+			TRUNCATE TABLE categorylinks;
+			TRUNCATE TABLE imagelinks;
+			TRUNCATE TABLE page;
+			TRUNCATE TABLE pagelinks;
+			TRUNCATE TABLE redirect;
+			TRUNCATE TABLE templatelinks;
+			TRUNCATE TABLE linktarget;
+		");
 
 		$this->pageIDs = [];
-		$this->pageIDCounter = 0;
+		$this->targetIDs = [];
+		$this->counter = 0;
 
 		if (array_key_exists('redirects+pagelinks', $links)) {
 			foreach($links['redirects+pagelinks'] as $link) {
@@ -896,23 +917,23 @@ class LinkCountTest extends TestCase {
 		return [
 			'main namespace' => [
 				'Page',
-				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><div class=\'header\'>Direct</div><div class=\'header\'>Indirect</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page\'>What links here</a></div>'
+				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><abbr title=\'Number of pages that link to page using the actual page name\' class=\'header\'>Direct</abbr><abbr title=\'Number of pages that link to the page through a redirect\' class=\'header\'>Indirect</abbr><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Page\'>What links here</a></div>'
 			],
 			'talk namespace' => [
 				'Talk:Page',
-				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><div class=\'header\'>Direct</div><div class=\'header\'>Indirect</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage\'>What links here</a></div>'
+				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><abbr title=\'Number of pages that link to page using the actual page name\' class=\'header\'>Direct</abbr><abbr title=\'Number of pages that link to the page through a redirect\' class=\'header\'>Indirect</abbr><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Talk%3APage\'>What links here</a></div>'
 			],
 			'category namespace' => [
 				'Category:Category',
-				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><div class=\'header\'>Direct</div><div class=\'header\'>Indirect</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Category%3ACategory\'>Category links</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory\'>What links here</a></div>'
+				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><abbr title=\'Number of pages that link to page using the actual page name\' class=\'header\'>Direct</abbr><abbr title=\'Number of pages that link to the page through a redirect\' class=\'header\'>Indirect</abbr><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Category%3ACategory\'>Category links</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/Category%3ACategory\'>What links here</a></div>'
 			],
 			'file namespace' => [
 				'File:Image.png',
-				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><div class=\'header\'>Direct</div><div class=\'header\'>Indirect</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&amp;hidelinks=1\'>File links</a></div><div class=\'all\'>3</div><div class=\'direct\'>0</div><div class=\'indirect\'>3</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>1</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png\'>What links here</a></div>'
+				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><abbr title=\'Number of pages that link to page using the actual page name\' class=\'header\'>Direct</abbr><abbr title=\'Number of pages that link to the page through a redirect\' class=\'header\'>Indirect</abbr><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&amp;hidelinks=1\'>File links</a></div><div class=\'all\'>3</div><div class=\'direct\'>0</div><div class=\'indirect\'>3</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>1</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/File%3AImage.png\'>What links here</a></div>'
 			],
 			'? in title' => [
 				'?',
-				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><div class=\'header\'>Direct</div><div class=\'header\'>Indirect</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F\'>What links here</a></div>'
+				'<div class=\'out\'><div class=\'header\'>Type</div><div class=\'header\'>All</div><abbr title=\'Number of pages that link to page using the actual page name\' class=\'header\'>Direct</abbr><abbr title=\'Number of pages that link to the page through a redirect\' class=\'header\'>Indirect</abbr><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidetrans=1&amp;hideimages=1\'>Wikilinks</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&amp;hidetrans=1&amp;hideimages=1\'>Redirects</a></div><div class=\'all\'>0</div><div class=\'direct\'>&#8210;</div><div class=\'indirect\'>&#8210;</div><div class=\'type\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F?hidelinks=1&amp;hideimages=1\'>Transclusions</a></div><div class=\'all\'>0</div><div class=\'direct\'>0</div><div class=\'indirect\'>0</div></div><div class=\'links\'><a href=\'https://en.wikipedia.org/wiki/Special:WhatLinksHere/%3F\'>What links here</a></div>'
 			],
 			'no parameters' => [
 				'',
