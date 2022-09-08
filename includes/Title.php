@@ -60,7 +60,12 @@ class Title {
 		$redis = new Redis;
 
 		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));
-		$redis->auth(Config::get('redis-auth'));
+
+		$redisAuth = Config::get('redis-auth');
+
+		if ($redisAuth) {
+			$redis->auth($redisAuth);
+		}
 
 		$redis->close();
 
