@@ -23,6 +23,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 3306:3306
 
       redis:
         image: redis
@@ -31,9 +33,12 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 6379:6379
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Check out repository code
+      uses: actions/checkout@v3
 
     - name: Cache Composer packages
       id: composer-cache
@@ -52,10 +57,7 @@ jobs:
       with:
         path: '**/config.ini'
         contents: |
-          redis-server = redis
-          test-db-user = root
           test-db-password = pass
-          test-db-host = mysql
         write-mode: append
 
     - name: Run test suite
