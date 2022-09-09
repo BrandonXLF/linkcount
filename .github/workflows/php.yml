@@ -43,6 +43,14 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
+        
+      - name: Write to config file
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: '**/config.ini'
+          contents: |
+            test-db-password = root
+          write-mode: append
 
       - name: Run test suite
         run: composer run-script test-lin
