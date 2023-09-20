@@ -1,6 +1,6 @@
 <?php
 
-class Form implements ProducesHtml {
+class Form implements HtmlProducer {
 	public function getHtml() {
 		$fields = [
 			new OOUI\FieldLayout(

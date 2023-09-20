@@ -1,5 +1,5 @@
 <?php
 
-interface ProducesJson {
+interface JsonProducer {
 	public function getJson();
 }

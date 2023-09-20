@@ -1,6 +1,6 @@
 <?php
 
-class LinkCount implements ProducesHtml, ProducesJson {
+class LinkCount implements HtmlProducer, JsonProducer {
 	public const COUNT_MODE_REDIRECT = 'redirect';
 	public const COUNT_MODE_LINK = 'link';
 	public const COUNT_MODE_TRANSCLUSION = 'transclusion';

@@ -1,6 +1,6 @@
 <?php
 
-class Footer implements ProducesHtml {
+class Footer implements HtmlProducer {
 	private $rel;
 
 	public function __construct(string $rel) {

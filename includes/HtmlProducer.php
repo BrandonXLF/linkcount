@@ -1,5 +1,5 @@
 <?php
 
-interface ProducesHtml {
+interface HtmlProducer {
 	public function getHtml();
 }

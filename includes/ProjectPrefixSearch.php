@@ -1,6 +1,6 @@
 <?php
 
-class ProjectPrefixSearch implements ProducesJson {
+class ProjectPrefixSearch implements JsonProducer {
 	public $projects = [];
 	public $exact;
 

@@ -1,7 +1,7 @@
 <?php
 
 
-class APIHelpExamples implements ProducesHtml {
+class APIHelpExamples implements HtmlProducer {
 	private $examples;
 	private $prefix;
 

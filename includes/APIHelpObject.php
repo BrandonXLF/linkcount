@@ -1,7 +1,7 @@
 <?php
 
 
-class APIHelpObject implements ProducesHtml {
+class APIHelpObject implements HtmlProducer {
 	private $keys;
 
 	public function __construct(...$keys) {
