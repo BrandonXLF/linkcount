@@ -44,7 +44,8 @@ function submitForm(pushState) {
 	request = $.get('output/?' + query);
 
 	request.then(function(res) {
-		out.html(res);
+		document.title = res.title;
+		out.html(res.html);
 	}, function(req) {
 		if (req.wasReplaced) return;
 

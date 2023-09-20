@@ -178,6 +178,20 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		];
 	}
 
+	public function getTitle() {
+		$parts = [];
+
+		if (isset($this->error)) {
+			array_push($parts, 'Error');
+		} elseif (isset($this->counts)) {
+			array_push($parts, $this->title->getFullText());
+		}
+
+		array_push($parts, 'Link Count');
+
+		return implode(' - ', $parts);
+	}
+
 	public function getHtml() {
 		if (isset($this->error)) {
 			return (new OOUI\Tag('div'))->addClasses(['error'])->appendContent($this->error)->toString();
@@ -230,6 +244,13 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		);
 
 		return $out . $links;
+	}
+
+	public function getPageUpdateJson() {
+		return json_encode([
+			'title' => $this->getTitle(),
+			'html' => $this->getHtml()
+		]);
 	}
 
 	public function getJson() {

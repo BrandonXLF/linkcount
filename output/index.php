@@ -2,4 +2,9 @@
 
 require '../vendor/autoload.php';
 
-echo (new LinkCount(get('page'), get('project'), get('namespaces')))->getHtml();
+$linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
+
+header('Content-Type: application/json');
+echo $linkCount->getPageUpdateJson();
+
+?>
