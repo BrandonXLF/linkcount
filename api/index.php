@@ -3,7 +3,10 @@
 require '../vendor/autoload.php';
 
 if ($_SERVER['QUERY_STRING']) {
+	header('Content-Type: application/json');
+	header('Access-Control-Allow-Origin: *');
 	echo (new LinkCount(get('page'), get('project'), get('namespaces')))->getJson();
+
 	exit;
 }
 

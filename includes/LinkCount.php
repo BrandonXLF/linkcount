@@ -233,11 +233,6 @@ class LinkCount implements HtmlProducer, JsonProducer {
 	}
 
 	public function getJson() {
-		if (!headers_sent()) {
-			header('Content-Type: application/json');
-			header('Access-Control-Allow-Origin: *');
-		}
-
 		if (isset($this->error)) {
 			return json_encode(['error' => $this->error]);
 		}

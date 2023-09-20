@@ -28,10 +28,6 @@ class ProjectPrefixSearch implements JsonProducer {
 	}
 
 	public function getJson() {
-		if (!headers_sent()) {
-			header('Content-Type: application/json');
-		}
-
 		return json_encode([
 			'projects' => $this->projects,
 			'exact' => $this->exact
