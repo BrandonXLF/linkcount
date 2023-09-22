@@ -62,12 +62,20 @@ button.on('click', function() {
 	submitForm(true);
 });
 
-window.addEventListener('popstate', function(e) {
-	if (!e.state) return;
+window.addEventListener('popstate', function() {
+	var params = {};
 
-	projectLookup.setValue(e.state.project);
-	pageLookup.setValue(e.state.page);
-	namespacesSelect.setValue(e.state.namespaces.split(','));
+	location.search.slice(1).split('&').forEach(param => {
+		var chunks = param.split('=');
+			key = chunks.shift(),
+			value = decodeURIComponent(chunks.join('='));
+
+		params[key] = value;
+	});
+
+	projectLookup.setValue(params.project || '');
+	pageLookup.setValue(params.page || '');
+	namespacesSelect.setValue((params.namespaces || '').split(','));
 
 	submitForm(false);
 });
