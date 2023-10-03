@@ -66,7 +66,7 @@ window.addEventListener('popstate', function() {
 	var params = {};
 
 	location.search.slice(1).split('&').forEach(param => {
-		var chunks = param.split('=');
+		var chunks = param.split('='),
 			key = chunks.shift(),
 			value = decodeURIComponent(chunks.join('='));
 
