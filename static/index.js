@@ -26,7 +26,7 @@ function submitForm(pushState) {
 		}).join('&');
 
 	if (pushState) {
-		history.pushState(params, null, (query ? '?' : '') + query);
+		history.pushState({}, null, (query ? '?' : '') + query);
 	}
 
 	if (!query) {
