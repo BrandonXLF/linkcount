@@ -95,7 +95,8 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				'redirect',
 				'rd',
 				CountQueryMode::Redirect,
-				CountQuery::NO_FROM_NS | CountQuery::NO_LINK_TARGET),
+				CountQuery::NO_FROM_NS | CountQuery::NO_LINK_TARGET
+			),
 			'transclusions' => $this->countQuery->runQuery(
 				'templatelinks',
 				'tl',
