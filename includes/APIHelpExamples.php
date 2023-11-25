@@ -5,7 +5,7 @@ class APIHelpExamples implements HtmlProducer {
 	private $examples;
 	private $prefix;
 
-	public function __construct(...$examples) {
+	public function __construct(string ...$examples) {
 		$this->examples = $examples;
 		$this->prefix = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 	}

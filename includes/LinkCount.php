@@ -1,16 +1,12 @@
 <?php
 
 class LinkCount implements HtmlProducer, JsonProducer {
-	public const COUNT_MODE_REDIRECT = 'redirect';
-	public const COUNT_MODE_LINK = 'link';
-	public const COUNT_MODE_TRANSCLUSION = 'transclusion';
-
 	public $counts;
-	public $error;
+	public string $error;
 
-	private $projectURL;
-	private $title;
-	private $countQuery;
+	private string $projectURL;
+	private Title $title;
+	private CountQuery $countQuery;
 
 	private $typeInfo = [
 		'filelinks' => [
@@ -35,7 +31,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		]
 	];
 
-	public function __construct($page, $project, $namespaces = '') {
+	public function __construct(string $page, string $project, $namespaces = '') {
 		if (!$page && !$project && $namespaces === '') {
 			return;
 		}
@@ -77,7 +73,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				? $this->countQuery->runQuery(
 					'imagelinks',
 					'il',
-					CountQuery::MODE_TRANSCLUSION,
+					CountQueryMode::Transclusion,
 					CountQuery::SINGLE_NS | CountQuery::NO_LINK_TARGET
 				)
 				: null,
@@ -85,25 +81,25 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				? $this->countQuery->runQuery(
 					'categorylinks',
 					'cl',
-					CountQuery::MODE_LINK,
+					CountQueryMode::Link,
 					CountQuery::SINGLE_NS | CountQuery::NO_FROM_NS | CountQuery::NO_LINK_TARGET
 				)
 				: null,
 			'wikilinks' => $this->countQuery->runQuery(
 				'pagelinks',
 				'pl',
-				CountQuery::MODE_LINK,
+				CountQueryMode::Link,
 				CountQuery::NO_LINK_TARGET
 			),
 			'redirects' => $this->countQuery->runQuery(
 				'redirect',
 				'rd',
-				CountQuery::MODE_REDIRECT,
+				CountQueryMode::Redirect,
 				CountQuery::NO_FROM_NS | CountQuery::NO_LINK_TARGET),
 			'transclusions' => $this->countQuery->runQuery(
 				'templatelinks',
 				'tl',
-				CountQuery::MODE_TRANSCLUSION
+				CountQueryMode::Transclusion
 			)
 		];
 

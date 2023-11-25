@@ -4,7 +4,7 @@ class JsLoader {
 	public $type;
 	public $files;
 
-	public function __construct(...$files) {
+	public function __construct(string ...$files) {
 		$this->files = $files;
 	}
 

@@ -15,11 +15,11 @@ class Config {
 		return self::$config;
 	}
 
-	static function get($key) {
+	public static function get(string $key) {
 		return self::load()[$key];
 	}
 
-	static function set($key, $value) {
+	public static function set(string $key, string $value) {
 		return self::load()[$key] = $value;
 	}
 }

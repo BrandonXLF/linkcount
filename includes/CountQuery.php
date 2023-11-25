@@ -1,5 +1,11 @@
 <?php
 
+enum CountQueryMode {
+    case Redirect;
+    case Link;
+    case Transclusion;
+}
+
 class CountQuery {
     public const SINGLE_NS = 1;
     public const NO_FROM_NS = 2;
@@ -9,17 +15,17 @@ class CountQuery {
     private $db;
     private $title;
 
-    public function __construct($fromNamespaces, $db, $title) {
+    public function __construct(string $fromNamespaces, PDO $db, Title $title) {
 		$this->fromNamespaces = $fromNamespaces;
         $this->db = $db;
         $this->title = $title;
     }
 
     private function createCond(
-        $prefix,
-        $titleSQL,
-        $namespaceSQL,
-        $flags,
+        string $prefix,
+        string $titleSQL,
+        string $namespaceSQL,
+        int $flags,
         $joins = [],
         $wheres = []
     ) {
@@ -58,7 +64,7 @@ class CountQuery {
         return implode(' ', $joins) . " WHERE " . implode(' AND ', $wheres);
     }
 
-    private function createDirectCond($prefix, $flags) {
+    private function createDirectCond(string $prefix, int $flags) {
         return $this->createCond(
             $prefix,
             $this->db->quote($this->title->getDBKey()),
@@ -67,7 +73,7 @@ class CountQuery {
         );
     }
 
-    private function createIndirectCond($table, $prefix, $flags) {
+    private function createIndirectCond(string $table, string $prefix, int $flags) {
         $joins = [
             'JOIN page AS target ON target.page_id = rd_from',
             "JOIN $table"
@@ -89,9 +95,9 @@ class CountQuery {
         );
     }
 
-    private function createQuery($table, $prefix, $mode, $flags) {
+    private function createQuery(string $table, string $prefix, CountQueryMode $mode, int $flags) {
         return match ($mode) {
-            self::MODE_REDIRECT => <<<SQL
+            CountQueryMode::Redirect => <<<SQL
                 SELECT COUNT(rd_from) FROM $table
                 {$this->createDirectCond($prefix, $flags)}
                 AND ({$prefix}_interwiki is NULL or {$prefix}_interwiki = {$this->db->quote('')})
@@ -100,7 +106,7 @@ class CountQuery {
 			// There is no way to differentiate from a page with a indirect link and a page with a indirect and a direct link
 			// in this case, only the indirect link is recorded. Pages can also transclude a page with a redirect without
 			// following the redirect, so a valid indirect link must have an associated direct link.
-            self::MODE_TRANSCLUSION => <<<SQL
+            CountQueryMode::Transclusion => <<<SQL
                 SELECT
                     COUNT({$prefix}_from),
                     COUNT({$prefix}_from) - COUNT(indirect_link),
@@ -113,7 +119,7 @@ class CountQuery {
                 ) AS temp ON {$prefix}_from = indirect_link
                 {$this->createDirectCond($prefix, $flags)}
             SQL,
-            self::MODE_LINK => <<<SQL
+            CountQueryMode::Link => <<<SQL
                 SELECT
                     COUNT(DISTINCT COALESCE(direct_link, indirect_link)),
                     COUNT(direct_link),
@@ -131,11 +137,11 @@ class CountQuery {
         };
     }
 
-    public function runQuery($table, $prefix, $mode, $flags = 0) {
+    public function runQuery(string $table, string $prefix, CountQueryMode $mode, $flags = 0) {
         $query = $this->createQuery($table, $prefix, $mode, $flags);
         $res = $this->db->query($query)->fetch();
 
-		return $mode == self::MODE_REDIRECT ? (int) $res[0] : [
+		return $mode == CountQueryMode::Redirect ? (int) $res[0] : [
 			'all' => (int) $res[0],
 			'direct' => (int) $res[1],
 			'indirect' => (int) $res[2]

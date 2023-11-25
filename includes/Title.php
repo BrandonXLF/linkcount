@@ -3,12 +3,12 @@
 class Title {
 	public const REDIS_DB_VER = 3;
 
-	private $databaseName;
-	private $projectURL;
-	private $title;
-	private $namespaceInfo;
+	private string $databaseName;
+	private string $projectURL;
+	private string $title;
+	private array $namespaceInfo;
 
-	public function __construct($text, $databaseName, $projectURL) {
+	public function __construct(string $text, string $databaseName, string $projectURL) {
 		$this->databaseName = $databaseName;
 		$this->projectURL = $projectURL;
 
@@ -32,15 +32,15 @@ class Title {
 		$this->namespaceInfo = $namespaceInfo;
 	}
 
-	public function getNamespaceId() {
+	public function getNamespaceId(): int {
 		return $this->namespaceInfo[0];
 	}
 
-	public function getDBKey() {
+	public function getDBKey(): string {
 		return strtr($this->title, ' ', '_');
 	}
 
-	public function getFullText() {
+	public function getFullText(): string {
 		if ($this->namespaceInfo[1] == '') {
 			return $this->title;
 		}
@@ -48,7 +48,7 @@ class Title {
 		return "{$this->namespaceInfo[1]}:{$this->title}";
 	}
 
-	private function breakupText($text) {
+	private function breakupText(string $text) {
 		if (strpos($text, ':') === false) {
 			return ['', $text];
 		} else {
@@ -56,7 +56,7 @@ class Title {
 		}
 	}
 
-	private function getNamespaceInfo($namespace) {
+	private function getNamespaceInfo(string $namespace): array|null {
 		$redis = new Redis;
 
 		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));

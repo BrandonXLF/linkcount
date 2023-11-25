@@ -4,7 +4,7 @@ class ProjectPrefixSearch implements JsonProducer {
 	public $projects = [];
 	public $exact;
 
-	public function __construct($prefix) {
+	public function __construct(string $prefix) {
 		if ($prefix == '') {
 			$this->projects = [];
 			return;
