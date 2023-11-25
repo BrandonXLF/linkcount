@@ -96,7 +96,6 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		$fromNamespaceJoin = '';
 
 		if ($this->fromNamespaces !== '') {
-			// Must be used in queries with $table
 			$fromNamespaceWhere = $hasFromNamespace ? " AND {$prefix}_from_namespace IN ({$this->fromNamespaces})" : '';
 			$fromNamespaceJoin = !$hasFromNamespace ? " JOIN page AS source ON source.page_id = {$prefix}_from AND source.page_namespace IN ({$this->fromNamespaces})" : '';
 		}
@@ -122,7 +121,6 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				WHERE rd_title = $escapedTitle AND rd_namespace = {$this->title->getNamespaceId()} AND (rd_interwiki IS NULL OR rd_interwiki = $escapedBlank)
 			SQL;
 		} else {
-			// Must be used in queries with $table
 			$directCond = <<<SQL
 				JOIN linktarget on {$prefix}_target_id = lt_id $fromNamespaceJoin
 				WHERE lt_title = $escapedTitle AND lt_namespace = {$this->title->getNamespaceId()} $fromNamespaceWhere
