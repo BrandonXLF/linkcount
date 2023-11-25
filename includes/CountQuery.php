@@ -1,10 +1,6 @@
 <?php
 
 class CountQuery {
-	public const MODE_REDIRECT = 'redirect';
-	public const MODE_LINK = 'link';
-	public const MODE_TRANSCLUSION = 'transclusion';
-
     public const SINGLE_NS = 1;
     public const NO_FROM_NS = 2;
     public const NO_LINK_TARGET = 4;
