@@ -4,7 +4,7 @@
 class APIHelpObject implements HtmlProducer {
 	private $keys;
 
-	public function __construct(string ...$keys) {
+	public function __construct(array ...$keys) {
 		$this->keys = $keys;
 	}
 
