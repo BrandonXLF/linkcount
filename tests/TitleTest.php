@@ -55,11 +55,14 @@ class TitleTest extends TestCase {
 				0,
 				'Foo_bar_baz'
 			],
+			/*
+			// There are no active case-sensitive namespaces
 			'case-sensitive namespace' => [
 				'Gadget definition talk:foo',
 				2303,
 				'foo'
 			],
+			*/
 			'alias namespace' => [
 				'Image:Foo.png',
 				6,
