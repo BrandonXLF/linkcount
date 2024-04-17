@@ -88,8 +88,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			'wikilinks' => $this->countQuery->runQuery(
 				'pagelinks',
 				'pl',
-				CountQueryMode::Link,
-				CountQuery::NO_LINK_TARGET
+				CountQueryMode::Link
 			),
 			'redirects' => $this->countQuery->runQuery(
 				'redirect',
