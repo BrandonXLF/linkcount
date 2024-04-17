@@ -20,7 +20,7 @@ class LinkCountTest extends TestCase {
 			'page' => self::$db->prepare('INSERT INTO `page` (page_id, page_namespace, page_title) VALUES (?, ?, ?)'),
 			'redirect' => self::$db->prepare('INSERT INTO redirect (rd_from, rd_namespace, rd_title, rd_interwiki) VALUES (?, ?, ?, NULL)'),
 			'iwredirect' => self::$db->prepare('INSERT INTO redirect (rd_from, rd_namespace, rd_title, rd_interwiki) VALUES (?, ?, ?, ?)'),
-			'pagelink' => self::$db->prepare('INSERT INTO pagelinks (pl_from, pl_namespace, pl_title, pl_from_namespace) VALUES (?, ?, ?, ?)'),
+			'pagelink' => self::$db->prepare('INSERT INTO pagelinks (pl_from, pl_from_namespace, pl_target_id) VALUES (?, ?, ?)'),
 			'templatelink' => self::$db->prepare('INSERT INTO templatelinks (tl_from, tl_from_namespace, tl_target_id) VALUES (?, ?, ?)'),
 			'categorylink' => self::$db->prepare('INSERT INTO categorylinks (cl_from, cl_to) VALUES (?, ?)'),
 			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_to, il_from_namespace) VALUES (?, ?, ?)'),
@@ -82,7 +82,8 @@ class LinkCountTest extends TestCase {
 
 	private function addPageLink($fromNS, $fromTitle, $toNS, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		self::$statements['pagelink']->execute([$fromID, $toNS, $toTitle, $fromNS]);
+		$targetID = $this->ensureTarget($toNS, $toTitle);
+		self::$statements['pagelink']->execute([$fromID, $fromNS, $targetID]);
 	}
 
 	private function addTemplateLink($fromNS, $fromTitle, $toNS, $toTitle) {

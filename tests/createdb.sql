@@ -73,9 +73,8 @@ CREATE TABLE page (
 
 CREATE TABLE pagelinks (
 	pl_from int(10) unsigned NOT NULL DEFAULT 0,
-	pl_namespace int(11) NOT NULL DEFAULT 0,
-	pl_title varbinary(255) NOT NULL DEFAULT '',
-	pl_from_namespace int(11) NOT NULL DEFAULT 0
+	pl_from_namespace int(11) NOT NULL DEFAULT 0,
+	pl_target_id bigint(20) unsigned DEFAULT 0
 );
 
 CREATE TABLE redirect (
