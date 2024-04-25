@@ -4,6 +4,22 @@ body {
 	background: #f0f0f0;
 }
 
+#skip {
+	left: -99999px;
+	position: absolute;
+}
+
+#skip:focus {
+	top: 8px;
+	left: 8px;
+	border: 2px solid #36c;
+	border-radius: 4px;
+	outline: none;
+	text-decoration: underline;
+	background: #fff;
+	padding: 4px;
+}
+
 .out a {
 	text-decoration: none;
 }

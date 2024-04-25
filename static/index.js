@@ -80,4 +80,9 @@ window.addEventListener('popstate', function() {
 	submitForm(false);
 });
 
+$('#skip').on('click', function(e) {
+	e.preventDefault();
+	out.trigger('focus');
+});
+
 namespacesInput.$element.replaceWith(namespacesSelect.$element);

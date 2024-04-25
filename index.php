@@ -18,8 +18,9 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 	<body>
 		<main>
 			<h1>Link Count</h1>
+			<a id="skip" href="#out">Skip to output</a>
 			<?php echo (new Form)->getHtml(); ?>
-			<div id="out"><?php echo $linkCount->getHtml(); ?></div>
+			<div id="out" tabindex="-1"><?php echo $linkCount->getHtml(); ?></div>
 		</main>
 		<?php echo (new Footer('.'))->getHTML(); ?>
 	</body>
