@@ -51,6 +51,10 @@ footer, #out {
 	display: contents;
 }
 
+.out > * > * {
+	display: inline-block;
+}
+
 .oo-ui-widget.oo-ui-progressBarWidget {
 	border-radius: 2px;
 	box-shadow: none;
