@@ -71,18 +71,20 @@ footer, #out {
 	margin: 8px 0;
 }
 
-.type {
+.out .type {
 	border-radius: 2px 0 0 2px;
 	white-space: nowrap;
 }
 
-.all, .direct, .indirect {
+.out .all,
+.out .direct,
+.out .indirect {
 	font-size: 140%;
 	line-height: 107%;
 	text-align: right;
 }
 
-.indirect {
+.out .indirect {
 	border-right-width: 1px;
 	border-radius: 0 2px 2px 0;
 }
@@ -105,7 +107,16 @@ footer, #out {
 }
 
 @media (max-width: 575px) {
-	.type {
+	.out {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.out > :first-child > :first-child {
+		display: none;
+	}
+
+	.out .type {
 		grid-column-start: 1;
 		grid-column-end: 4;
 		border-width: 1px;
@@ -115,28 +126,21 @@ footer, #out {
 		text-align: center;
 	}
 
-	.all, .direct, .indirect {
+	.out .all,
+	.out .direct,
+	.out .indirect {
 		border-top: none;
 		margin-top: 0;
 		font-size: 125%;
 	}
 
-	.all {
+	.out .all {
 		border-left-width: 1px;
 		border-radius: 0 0 0 2px;
 	}
 
-	.indirect {
+	.out .indirect {
 		border-radius: 0 0 2px 0;
-	}
-
-	.out {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-
-	.out > :first-child {
-		display: none;
 	}
 
 	.out [role="row"]:target [role="cell"] {
