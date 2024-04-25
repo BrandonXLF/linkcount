@@ -144,17 +144,17 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			(new OOUI\Tag('div'))->setAttributes([
 				'role' => 'row'
 			])->appendContent(
-				(new OOUI\Tag('div'))->addClasses(['header'])->setAttributes([
+				(new OOUI\Tag('div'))->setAttributes([
 					'role' => 'columnheader'
 				])->appendContent('Type'),
-				(new OOUI\Tag('div'))->addClasses(['header'])->setAttributes([
+				(new OOUI\Tag('div'))->setAttributes([
 					'role' => 'columnheader'
 				])->appendContent('All'),
-				(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
+				(new OOUI\Tag('abbr'))->setAttributes([
 					'title' => 'Number of pages that link to page using the actual page name',
 					'role' => 'columnheader'
 				])->appendContent('Direct'),
-				(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
+				(new OOUI\Tag('abbr'))->setAttributes([
 					'title' => 'Number of pages that link to the page through a redirect',
 					'role' => 'columnheader'
 				])->appendContent('Indirect')
@@ -179,10 +179,18 @@ class LinkCount implements HtmlProducer, JsonProducer {
 					'id' => $key,
 					'role' => 'row'
 				])->appendContent(
-					(new OOUI\Tag('div'))->addClasses(['type'])->appendContent($label),
-					(new OOUI\Tag('div'))->addClasses(['all'])->appendContent($all),
-					(new OOUI\Tag('div'))->addClasses(['direct'])->appendContent($direct),
-					(new OOUI\Tag('div'))->addClasses(['indirect'])->appendContent($indirect)
+					(new OOUI\Tag('div'))->addClasses(['type'])->setAttributes([
+						'role' => 'cell'
+					])->appendContent($label),
+					(new OOUI\Tag('div'))->addClasses(['all'])->setAttributes([
+						'role' => 'cell'
+					])->appendContent($all),
+					(new OOUI\Tag('div'))->addClasses(['direct'])->setAttributes([
+						'role' => 'cell'
+					])->appendContent($direct),
+					(new OOUI\Tag('div'))->addClasses(['indirect'])->setAttributes([
+						'role' => 'cell'
+					])->appendContent($indirect)
 				)
 			);
 		}
