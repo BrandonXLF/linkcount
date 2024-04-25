@@ -31,6 +31,10 @@ footer, #out {
 	font-size: 125%;
 }
 
+.out > * {
+	display: contents;
+}
+
 .oo-ui-widget.oo-ui-progressBarWidget {
 	border-radius: 2px;
 	box-shadow: none;

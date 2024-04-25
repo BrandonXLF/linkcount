@@ -131,24 +131,39 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			return '';
 		}
 
-		$out = (new OOUI\Tag('div'))->addClasses(['out']);
+		$validCounts = array_filter($this->counts, function($val) {
+			return $val !== null;
+		});
+
+		$out = (new OOUI\Tag('div'))->addClasses(['out'])->setAttributes([
+			'role' => 'table',
+			'aria-rowcount' => count($validCounts) + 1
+		]);
 
 		$out->appendContent(
-			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('Type'),
-			(new OOUI\Tag('div'))->addClasses(['header'])->appendContent('All'),
-			(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
-				'title' => 'Number of pages that link to page using the actual page name'
-			])->appendContent('Direct'),
-			(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
-				'title' => 'Number of pages that link to the page through a redirect'
-			])->appendContent('Indirect')
+			(new OOUI\Tag('div'))->setAttributes([
+				'role' => 'row'
+			])->appendContent(
+				(new OOUI\Tag('div'))->addClasses(['header'])->setAttributes([
+					'role' => 'columnheader'
+				])->appendContent('Type'),
+				(new OOUI\Tag('div'))->addClasses(['header'])->setAttributes([
+					'role' => 'columnheader'
+				])->appendContent('All'),
+				(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
+					'title' => 'Number of pages that link to page using the actual page name',
+					'role' => 'columnheader'
+				])->appendContent('Direct'),
+				(new OOUI\Tag('abbr'))->addClasses(['header'])->setAttributes([
+					'title' => 'Number of pages that link to the page through a redirect',
+					'role' => 'columnheader'
+				])->appendContent('Indirect')
+			)
 		);
 
 		$encodedPage = rawurlencode($this->title->getFullText());
 
-		foreach ($this->counts as $key => $count) {
-			if ($count === null) continue;
-
+		foreach ($validCounts as $key => $count) {
 			$singleCount = is_int($count);
 
 			$label = (new OOUI\Tag('a'))->setAttributes([
@@ -160,10 +175,14 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			$indirect = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['indirect']);
 
 			$out->appendContent(
-				(new OOUI\Tag('div'))->addClasses(['type'])->appendContent($label),
-				(new OOUI\Tag('div'))->addClasses(['all'])->appendContent($all),
-				(new OOUI\Tag('div'))->addClasses(['direct'])->appendContent($direct),
-				(new OOUI\Tag('div'))->addClasses(['indirect'])->appendContent($indirect)
+				(new OOUI\Tag('div'))->setAttributes([
+					'role' => 'row'
+				])->appendContent(
+					(new OOUI\Tag('div'))->addClasses(['type'])->appendContent($label),
+					(new OOUI\Tag('div'))->addClasses(['all'])->appendContent($all),
+					(new OOUI\Tag('div'))->addClasses(['direct'])->appendContent($direct),
+					(new OOUI\Tag('div'))->addClasses(['indirect'])->appendContent($indirect)
+				)
 			);
 		}
 
