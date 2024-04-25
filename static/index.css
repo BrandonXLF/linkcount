@@ -94,6 +94,7 @@ footer, #out {
 [role="row"]:target .all,
 [role="row"]:target .direct,
 [role="row"]:target .indirect {
+	padding: 10px 8px;
 	border-top-width: 3px;
 	border-bottom-width: 3px;
 	border-color: #36c;
@@ -142,6 +143,13 @@ footer, #out {
 
 	.out > :first-child {
 		display: none;
+	}
+
+	[role="row"]:target .type,
+	[role="row"]:target .all,
+	[role="row"]:target .direct,
+	[role="row"]:target .indirect {
+		padding: 11px 8px;
 	}
 
 	[role="row"]:target .type {
