@@ -20,10 +20,6 @@ body {
 	padding: 4px;
 }
 
-.out a {
-	text-decoration: none;
-}
-
 main,
 footer {
 	max-width: 700px;
@@ -52,6 +48,10 @@ footer,
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	font-size: 125%;
+}
+
+.out a {
+	text-decoration: none;
 }
 
 .out [role="row"] {
@@ -91,19 +91,19 @@ footer,
 	border-radius: 0 2px 2px 0;
 }
 
-[role="row"]:target [role="cell"] {
+.out [role="row"]:target [role="cell"] {
 	padding: 10px 8px;
 	border-top-width: 3px;
 	border-bottom-width: 3px;
 	border-color: #36c;
 }
 
-[role="row"]:target .type {
+.out [role="row"]:target .type {
 	border-left-width: 3px;
 	border-radius: 4px 0 0 4px;
 }
 
-[role="row"]:target .indirect {
+.out [role="row"]:target .indirect {
 	border-right-width: 3px;
 	border-radius: 0 4px 4px 0;
 }
