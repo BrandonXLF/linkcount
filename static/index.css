@@ -24,7 +24,8 @@ body {
 	text-decoration: none;
 }
 
-main, footer {
+main,
+footer {
 	max-width: 700px;
 	margin: 0 auto;
 }
@@ -33,7 +34,8 @@ main, footer {
 	margin-top: 8px;
 }
 
-footer, #out {
+footer,
+#out {
 	margin-top: 1.5em;
 }
 
@@ -162,4 +164,3 @@ footer, #out {
 		border-radius: 0 0 4px 0;
 	}
 }
-
