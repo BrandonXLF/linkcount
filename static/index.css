@@ -75,7 +75,6 @@ footer, #out {
 }
 
 .type {
-	border-left-width: 1px;
 	border-radius: 2px 0 0 2px;
 	white-space: nowrap;
 }
