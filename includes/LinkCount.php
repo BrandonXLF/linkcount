@@ -176,6 +176,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 
 			$out->appendContent(
 				(new OOUI\Tag('div'))->setAttributes([
+					'id' => $key,
 					'role' => 'row'
 				])->appendContent(
 					(new OOUI\Tag('div'))->addClasses(['type'])->appendContent($label),
