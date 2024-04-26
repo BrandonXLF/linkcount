@@ -28,7 +28,8 @@ function submitForm(pushState) {
 			.join('&');
 
 	if (pushState) {
-		history.pushState({}, null, (query ? '?' : '') + query);
+		currentSearch = (query ? '?' : '') + query;
+		history.pushState({}, null, currentSearch);
 	}
 
 	if (!query) {
