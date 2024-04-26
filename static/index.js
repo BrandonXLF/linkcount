@@ -24,7 +24,7 @@ function submitForm(pushState) {
 		},
 		query = Object.keys(params)
 			.filter(param => params[param])
-			.map(param => param + '=' + params[param])
+			.map(param => param + '=' + encodeURIComponent(params[param]))
 			.join('&');
 
 	if (pushState) {
