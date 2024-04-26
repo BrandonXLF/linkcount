@@ -4,6 +4,10 @@ body {
 	background: #f0f0f0;
 }
 
+abbr {
+	cursor: help;
+}
+
 #skip {
 	left: -99999px;
 	position: absolute;
