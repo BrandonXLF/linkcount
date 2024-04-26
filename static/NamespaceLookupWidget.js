@@ -15,7 +15,7 @@
 OO.inheritClass(NamespaceLookupWidget, OO.ui.MenuTagMultiselectWidget);
 
 NamespaceLookupWidget.prototype.clearMenu = function() {
-	var oldValues = this.getValue();
+	let oldValues = this.getValue();
 
 	this.clearItems();
 	this.getMenu().clearItems();
@@ -38,16 +38,16 @@ NamespaceLookupWidget.prototype.setDomain = function(domain) {
 		origin: '*',
 		formatversion: 2
 	}).then(function(res) {
-		var oldValues = this.getValue(),
+		let oldValues = this.getValue(),
 			options = [];
 
 		this.clearItems();
 		this.getMenu().clearItems();
 
-		for (var id in res.query.namespaces) {
+		for (let id in res.query.namespaces) {
 			if (id < 0) continue; // Ignore virtual namespaces
 
-			var info = res.query.namespaces[id];
+			let info = res.query.namespaces[id];
 
 			options.push({
 				data: info.id.toString(),

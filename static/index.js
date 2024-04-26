@@ -1,4 +1,4 @@
-var projectLookup = OO.ui.infuse($('#project')),
+let projectLookup = OO.ui.infuse($('#project')),
 	pageLookup = OO.ui.infuse($('#page'), {
 		domain: projectLookup.getDomain()
 	}),
@@ -13,11 +13,11 @@ var projectLookup = OO.ui.infuse($('#project')),
 		align: 'top'
 	}),
 	out = $('#out'),
-	request = undefined,
+	request,
 	currentSearch = location.search;
 
 function submitForm(pushState) {
-	var params = {
+	let params = {
 			project: projectLookup.getValue(),
 			page: pageLookup.getValue(),
 			namespaces: namespacesSelect.getValue().join(',')
@@ -68,10 +68,10 @@ window.addEventListener('popstate', function() {
 	if (currentSearch === location.search) return;
 	currentSearch = location.search;
 
-	var params = {};
+	let params = {};
 
 	currentSearch.slice(1).split('&').forEach(param => {
-		var chunks = param.split('='),
+		let chunks = param.split('='),
 			key = chunks.shift(),
 			value = decodeURIComponent(chunks.join('='));
 
