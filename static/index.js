@@ -13,7 +13,8 @@ var projectLookup = OO.ui.infuse($('#project')),
 		align: 'top'
 	}),
 	out = $('#out'),
-	request = undefined;
+	request = undefined,
+	currentSearch = location.search;
 
 function submitForm(pushState) {
 	var params = {
@@ -63,9 +64,12 @@ button.on('click', function() {
 });
 
 window.addEventListener('popstate', function() {
+	if (currentSearch === location.search) return;
+	currentSearch = location.search;
+
 	var params = {};
 
-	location.search.slice(1).split('&').forEach(param => {
+	currentSearch.slice(1).split('&').forEach(param => {
 		var chunks = param.split('='),
 			key = chunks.shift(),
 			value = decodeURIComponent(chunks.join('='));

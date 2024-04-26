@@ -170,6 +170,11 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				'href' => $this->projectURL . str_replace('PAGE', $encodedPage, $this->typeInfo[$key]['url'])
 			])->appendContent($this->typeInfo[$key]['name']);
 
+			$link = (new OOUI\Tag('a'))->addClasses(['hash-link'])->setAttributes([
+				'href' => '#' . $key,
+				'title' => 'Link to row'
+			])->appendContent('(#)');
+
 			$all = number_format($singleCount ? $count : $count['all']);
 			$direct = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['direct']);
 			$indirect = $singleCount ? new OOUI\HtmlSnippet('&#8210;') : number_format($count['indirect']);
@@ -181,7 +186,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				])->appendContent(
 					(new OOUI\Tag('div'))->addClasses(['type'])->setAttributes([
 						'role' => 'cell'
-					])->appendContent($label),
+					])->appendContent($label, ' ', $link),
 					(new OOUI\Tag('div'))->addClasses(['all'])->setAttributes([
 						'role' => 'cell'
 					])->appendContent($all),

@@ -83,6 +83,14 @@ footer,
 .out .type {
 	border-radius: 2px 0 0 2px;
 	white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.hash-link {
+	color: #5d5f62;
+	font-size: 70%;
 }
 
 .out .all,
@@ -134,7 +142,7 @@ footer,
 		border-radius: 2px 2px 0 0;
 		margin-bottom: 0;
 		line-height: 80%;
-		text-align: center;
+		justify-content: center;
 	}
 
 	.out .all,
