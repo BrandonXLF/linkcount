@@ -22,9 +22,10 @@ function submitForm(pushState) {
 			page: pageLookup.getValue(),
 			namespaces: namespacesSelect.getValue().join(',')
 		},
-		query = Object.keys(params).map(param => {
-			return param + '=' + params[param];
-		}).join('&');
+		query = Object.keys(params)
+			.filter(param => params[param])
+			.map(param => param + '=' + params[param])
+			.join('&');
 
 	if (pushState) {
 		history.pushState({}, null, (query ? '?' : '') + query);
