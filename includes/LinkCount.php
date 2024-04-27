@@ -1,7 +1,7 @@
 <?php
 
 class LinkCount implements HtmlProducer, JsonProducer {
-	public static $description = "View the number of links (wikilinks, redirect, transclusions, file links, and category links) to any page on any Wikimedia project.";
+	public static $description = "View the number of links (wikilinks, redirects, transclusions, file links, and category links) to any page on any Wikimedia project.";
 
 	public $counts;
 	public string $error;
