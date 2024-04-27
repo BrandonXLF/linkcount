@@ -9,6 +9,7 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 <html lang="en">
 	<head>
 		<title><?php echo $linkCount->getTitle(); ?></title>
+		<meta name="description" content="<?php echo LinkCount::$description; ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="js/" defer></script>
 		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css">

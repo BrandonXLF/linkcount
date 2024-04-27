@@ -10,11 +10,14 @@ if ($_SERVER['QUERY_STRING']) {
 	exit;
 }
 
+$description = "API for getting the number of links to any page on any Mediawiki project."
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>Link Count API</title>
+		<meta name="description" content="<?php echo $description; ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" type="image/png" href="../static/icon.png">
 		<style>
@@ -22,15 +25,21 @@ if ($_SERVER['QUERY_STRING']) {
 				font-family: sans-serif;
 				line-height: 1.5;
 			}
-			h2, h3 {
+
+			h2,
+			h3 {
 				margin: 0 0 10px;
 			}
+
+			p,
 			ul {
 				margin: 0 0 20px
 			}
+
 			li {
 				padding: 2px 0;
 			}
+
 			code {
 				background: #eee;
 				font-family: inherit;
@@ -40,6 +49,7 @@ if ($_SERVER['QUERY_STRING']) {
 	</head>
 	<body>
 		<h1>Link Count API</h1>
+		<p><?php echo $description; ?></p>
 		<h2>Request</h2>
 		<?php echo (new APIHelpObject(
 			['page', 'string', 'required', 'Name of the page to get the link count for.'],
