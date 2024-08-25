@@ -66,6 +66,8 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		}
 
 		list($dbName, $this->projectURL) = $stmt->fetch();
+		$metaDB = null;
+
 		$db = DatabaseFactory::create($dbName);
 		$this->title = new Title($page, $dbName, $this->projectURL);
 		$this->countQuery = new CountQuery($namespaces, $db, $this->title);
