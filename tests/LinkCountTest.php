@@ -22,8 +22,8 @@ class LinkCountTest extends TestCase {
 			'iwredirect' => self::$db->prepare('INSERT INTO redirect (rd_from, rd_namespace, rd_title, rd_interwiki) VALUES (?, ?, ?, ?)'),
 			'pagelink' => self::$db->prepare('INSERT INTO pagelinks (pl_from, pl_from_namespace, pl_target_id) VALUES (?, ?, ?)'),
 			'templatelink' => self::$db->prepare('INSERT INTO templatelinks (tl_from, tl_from_namespace, tl_target_id) VALUES (?, ?, ?)'),
-			'categorylink' => self::$db->prepare('INSERT INTO categorylinks (cl_from, cl_to) VALUES (?, ?)'),
-			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_to, il_from_namespace) VALUES (?, ?, ?)'),
+			'categorylink' => self::$db->prepare('INSERT INTO categorylinks (cl_from, cl_target_id) VALUES (?, ?)'),
+			'imagelink' => self::$db->prepare('INSERT INTO imagelinks (il_from, il_to, il_from_namespace) VALUES (?, ?, ?)'), // No link target yet
 			'linktarget' => self::$db->prepare('INSERT INTO linktarget (lt_id, lt_namespace, lt_title) VALUES (?, ?, ?)')
 		];
 
@@ -94,7 +94,8 @@ class LinkCountTest extends TestCase {
 
 	private function addCategoryLink($fromNS, $fromTitle, $toTitle) {
 		$fromID = $this->ensurePage($fromNS, $fromTitle);
-		self::$statements['categorylink']->execute([$fromID, $toTitle]);
+		$targetID = $this->ensureTarget(14, $toTitle);
+		self::$statements['categorylink']->execute([$fromID, $targetID]);
 	}
 
 	private function addImageLink($fromNS, $fromTitle, $toTitle) {
