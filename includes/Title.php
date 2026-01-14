@@ -98,7 +98,15 @@ class Title {
 			CURLOPT_USERAGENT => Config::get('useragent')
 		]);
 
-		$info = json_decode(curl_exec($curl));
+		$res = curl_exec($curl);
+
+		if ($res === false) {
+			echo curl_error($curl);
+			http_response_code(500);
+			exit;
+		}
+
+		$info = json_decode($res);
 		unset($curl);
 
 		$namespaceByName = [];
