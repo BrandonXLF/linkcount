@@ -1,6 +1,6 @@
 {
 	"require": {
-		"oojs/oojs-ui": "^v0.48.2"
+		"oojs/oojs-ui": "^0.53.1"
 	},
 	"scripts": {
 		"test-win": "vendor\\bin\\phpunit.bat tests",
