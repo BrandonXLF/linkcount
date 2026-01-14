@@ -99,8 +99,7 @@ class Title {
 		]);
 
 		$info = json_decode(curl_exec($curl));
-
-		curl_close($curl);
+		unset($curl);
 
 		$namespaceByName = [];
 		$namespaceById = [];
