@@ -18,15 +18,10 @@ class ProjectLookupWidget extends OOUI\TextInputWidget {
 			return;
 		}
 
-		$db = DatabaseFactory::create();
-		$maybeProjectURL = 'https://' . preg_replace('/^https:\/\//', '', $project);
+		$projectInfo = ProjectLookup::lookupProject($project);
 
-		$stmt = $db->prepare('SELECT url FROM wiki WHERE dbname = ? OR url = ? LIMIT 1');
-		$stmt->execute([$project, $maybeProjectURL]);
-		$row = $stmt->fetch();
-
-		if ($row) {
-			$this->domain = substr($row[0], 8);
+		if ($projectInfo) {
+			$this->domain = substr($projectInfo->url, 8);
 		}
 	}
 

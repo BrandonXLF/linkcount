@@ -10,9 +10,9 @@ class ProjectPrefixSearch implements JsonProducer {
 			return;
 		}
 
-		$db = DatabaseFactory::create();
-		$maybeProjectURL = 'https://' . preg_replace('/^https:\/\//', '', $prefix);
+		$maybeProjectURL = ProjectLookup::stripPotentialURL($prefix);
 
+		$db = DatabaseFactory::create();
 		$stmt = $db->prepare('SELECT dbname, url FROM wiki WHERE dbname LIKE ? OR url LIKE ?');
 		$stmt->execute([$prefix . '%', $maybeProjectURL . '%']);
 

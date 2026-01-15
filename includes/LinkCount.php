@@ -54,22 +54,16 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			}
 		}
 
-		$maybeProjectURL = 'https://' . preg_replace('/^https:\/\//', '', $project);
-		$metaDB = DatabaseFactory::create();
+		$projectInfo = ProjectLookup::lookupProject($project);
 
-		$stmt = $metaDB->prepare('SELECT dbname, url FROM wiki WHERE dbname=? OR url=? LIMIT 1');
-		$stmt->execute([$project, $maybeProjectURL]);
-
-		if (!$stmt->rowCount()) {
+		if (!$projectInfo) {
 			$this->error = 'That project does not exist...';
 			return;
 		}
 
-		list($dbName, $this->projectURL) = $stmt->fetch();
-		$metaDB = null;
-
-		$db = DatabaseFactory::create($dbName);
-		$this->title = new Title($page, $dbName, $this->projectURL);
+		$this->projectURL = $projectInfo->url;
+		$db = DatabaseFactory::create($projectInfo->dbname);
+		$this->title = new Title($page, $projectInfo->dbname, $this->projectURL);
 		$this->countQuery = new CountQuery($namespaces, $db, $this->title);
 
 		$this->counts = [
