@@ -1,7 +1,6 @@
 <?php
 
 class JsLoader {
-	public $type;
 	public $files;
 
 	public function __construct(string ...$files) {
