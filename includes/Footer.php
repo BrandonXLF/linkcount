@@ -12,12 +12,13 @@ class Footer implements HtmlProducer {
 			'href' => 'https://github.com/BrandonXLF/linkcount'
 		])->appendContent('GitHub');
 
+		$shortRev = exec('git rev-parse --short HEAD');
 		$revLink = (new OOUI\Tag('a'))->setAttributes([
-			'href' => "https://github.com/BrandonXLF/linkcount/tree/" . exec('git rev-parse HEAD')
-		])->appendContent(exec('git rev-parse --short HEAD'));
+			'href' => 'https://github.com/BrandonXLF/linkcount/tree/' . $shortRev
+		])->appendContent($shortRev);
 
 		$authorLink = (new OOUI\Tag('a'))->setAttributes([
-			'href' => "https://en.wikipedia.org/wiki/User:BrandonXLF"
+			'href' => 'https://en.wikipedia.org/wiki/User:BrandonXLF'
 		])->appendContent('BrandonXLF');
 
 		$parts = [
