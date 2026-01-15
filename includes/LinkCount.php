@@ -86,7 +86,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 					'categorylinks',
 					'cl',
 					CountQueryMode::Link,
-					CountQuery::SINGLE_NS | CountQuery::NO_FROM_NS
+					CountQuery::NO_FROM_NS
 				)
 				: null,
 			'wikilinks' => $this->countQuery->runQuery(
