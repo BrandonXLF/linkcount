@@ -1,7 +1,7 @@
 <?php
 
 class TestDatabaseFactory {
-	public static function create(string|null $project = null): PDO {
+	public static function create(?string $project = null): PDO {
 		$host = Config::get('test-db-host');
 		$name = $project ? 'linkcounttest' : '';
 		$port = Config::get('test-db-port');

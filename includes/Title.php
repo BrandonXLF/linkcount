@@ -19,7 +19,7 @@ class Title {
 			$text = substr($text, 1);
 		}
 
-		list($maybeNamespace, $title) = $this->breakupText($text);
+		[$maybeNamespace, $title] = $this->breakupText($text);
 
 		$namespaceInfo = $this->getNamespaceInfo($maybeNamespace);
 
@@ -56,7 +56,7 @@ class Title {
 		}
 	}
 
-	private function getNamespaceInfo(string $namespace): array|null {
+	private function getNamespaceInfo(string $namespace): ?array {
 		$redis = RedisFactory::create();
 		$prefix = Config::get('redis-prefix');
 		$ver = 'v' . self::REDIS_DB_VER;
