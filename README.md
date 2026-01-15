@@ -4,7 +4,7 @@
 
 ## Installing
 
-To run you will need to install the PHP dependencies using `composer install` and the Node JS dependencies using `npm install`. PHP >= 8.4 is recommended.
+To run you will need to install the PHP dependencies using `composer install` and the Node JS dependencies using `npm install`.
 
 ## Config
 

@@ -1,6 +1,7 @@
 {
 	"require": {
-		"oojs/oojs-ui": "^0.53.1"
+		"oojs/oojs-ui": "^0.53.1",
+		"php": ">=8.3"
 	},
 	"scripts": {
 		"test-win": "vendor\\bin\\phpunit.bat tests",
