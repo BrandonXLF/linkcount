@@ -1,8 +1,14 @@
 <?php
 
+require_once __DIR__ . '/LoadTestRedis.php';
+
 use PHPUnit\Framework\TestCase;
 
 class TitleTest extends TestCase {
+	public static function setUpBeforeClass(): void {
+		LoadTestRedis::load();
+	}
+
 	/**
 	 * @dataProvider provideTitle
 	 */

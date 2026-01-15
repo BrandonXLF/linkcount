@@ -1,6 +1,7 @@
 <?php
 
-require __DIR__ . '/TestDatabaseFactory.php';
+require_once __DIR__ . '/LoadTestRedis.php';
+require_once __DIR__ . '/TestDatabaseFactory.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -14,6 +15,8 @@ class LinkCountTest extends TestCase {
 	private $counter = 0;
 
 	public static function setUpBeforeClass(): void {
+		LoadTestRedis::load();
+
 		self::$db = TestDatabaseFactory::create();
 
 		self::$statements = [
