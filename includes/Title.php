@@ -57,16 +57,7 @@ class Title {
 	}
 
 	private function getNamespaceInfo(string $namespace): array|null {
-		$redis = new Redis;
-
-		$redis->connect(Config::get('redis-server'), Config::get('redis-port'));
-
-		$redisAuth = Config::get('redis-auth');
-
-		if ($redisAuth) {
-			$redis->auth($redisAuth);
-		}
-
+		$redis = RedisFactory::create();
 		$prefix = Config::get('redis-prefix');
 		$ver = 'v' . self::REDIS_DB_VER;
 		$nsInfoHashKey = "$prefix:$ver:{$this->databaseName}";
