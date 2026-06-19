@@ -71,8 +71,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 				? $this->countQuery->runQuery(
 					'imagelinks',
 					'il',
-					CountQueryMode::Transclusion,
-					CountQuery::SINGLE_NS | CountQuery::NO_LINK_TARGET
+					CountQueryMode::Transclusion
 				)
 				: null,
 			'categorylinks' => $this->title->getNamespaceId() === 14
