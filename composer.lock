@@ -4,8 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6dbf8293831de4be746974e0ccd5b1f3",
+    "content-hash": "b4ff92e2e3d00c50c34424f174caada1",
     "packages": [
+        {
+            "name": "krinkle/intuition",
+            "version": "v2.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/labs-tools-intuition.git",
+                "reference": "5871a02c009621cf7c1bc1a240fab30688b9db48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/labs-tools-intuition/zipball/5871a02c009621cf7c1bc1a240fab30688b9db48",
+                "reference": "5871a02c009621cf7c1bc1a240fab30688b9db48",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "32.0.0",
+                "php-coveralls/php-coveralls": "^2.4",
+                "php-parallel-lint/php-parallel-lint": "^1.0.0",
+                "phpunit/phpunit": "^8.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/defines.php"
+                ],
+                "psr-0": {
+                    "MessagesFunctions": "language/"
+                },
+                "psr-4": {
+                    "Krinkle\\Intuition\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Framework for localisation in PHP.",
+            "support": {
+                "source": "https://github.com/wikimedia/labs-tools-intuition/tree/v2.3.6"
+            },
+            "time": "2024-03-28T22:32:35+00:00"
+        },
         {
             "name": "oojs/oojs-ui",
             "version": "v0.53.1",
@@ -1901,12 +1946,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.3"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

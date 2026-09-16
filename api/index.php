@@ -10,6 +10,8 @@ if ($_SERVER['QUERY_STRING']) {
 	exit;
 }
 
+UI::init('en'); // For footer
+
 $description = "API for getting the number of links to any page on any Mediawiki project."
 
 ?>

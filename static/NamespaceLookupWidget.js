@@ -51,7 +51,7 @@ NamespaceLookupWidget.prototype.setDomain = function(domain) {
 
 			options.push({
 				data: info.id.toString(),
-				label: info.name || '(Article)'
+				label: info.name || '(Main)'
 			});
 		}
 

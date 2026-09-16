@@ -1,8 +1,6 @@
 <?php
 
 class LinkCount implements HtmlProducer, JsonProducer {
-	public static $description = "View the number of links (wikilinks, redirects, transclusions, file links, and category links) to any page on any Wikimedia project.";
-
 	public $counts;
 	public string $error;
 
@@ -10,27 +8,12 @@ class LinkCount implements HtmlProducer, JsonProducer {
 	private Title $title;
 	private CountQuery $countQuery;
 
-	private $typeInfo = [
-		'filelinks' => [
-			'name' => 'File links',
-			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1'
-		],
-		'categorylinks' => [
-			'name' => 'Category links',
-			'url' => '/wiki/PAGE' // WhatLinksHere doesn't show category links
-		],
-		'wikilinks' => [
-			'name' => 'Wikilinks',
-			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1'
-		],
-		'redirects' => [
-			'name' => 'Redirects',
-			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1'
-		],
-		'transclusions' => [
-			'name' => 'Transclusions',
-			'url' => '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1'
-		]
+	private $typeLinks = [
+		'filelinks' => '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hidelinks=1',
+		'categorylinks' => '/wiki/PAGE', // WhatLinksHere doesn't show category links
+		'wikilinks' => '/wiki/Special:WhatLinksHere/PAGE?hidetrans=1&hideimages=1',
+		'redirects' => '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hidetrans=1&hideimages=1',
+		'transclusions' => '/wiki/Special:WhatLinksHere/PAGE?hidelinks=1&hideimages=1',
 	];
 
 	public function __construct(string $page, string $project, $namespaces = '') {
@@ -39,7 +22,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		}
 
 		if (!$page) {
-			$this->error = 'Page name is required.';
+			$this->error = _('error-page-required');
 			return;
 		}
 
@@ -49,7 +32,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 
 		foreach ($namespaces ? explode(',', $namespaces) : [] as $rawNamespace) {
 			if (!is_numeric($rawNamespace)) {
-				$this->error = 'Invalid namespace IDs.';
+				$this->error = _('error-invalid-namespace-ids');
 				return;
 			}
 		}
@@ -57,7 +40,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		$projectInfo = ProjectLookup::lookupProject($project);
 
 		if (!$projectInfo) {
-			$this->error = 'That project does not exist...';
+			$this->error = _('error-nonexistent-project');
 			return;
 		}
 
@@ -125,7 +108,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		}
 
 		if (!isset($this->counts)) {
-			return LinkCount::$description;
+			return '';
 		}
 
 		$validCounts = array_filter($this->counts, function($val) {
@@ -143,18 +126,18 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			])->appendContent(
 				(new OOUI\Tag('div'))->setAttributes([
 					'role' => 'columnheader'
-				])->appendContent('Type'),
+				])->appendContent(_('table-header-type')),
 				(new OOUI\Tag('div'))->setAttributes([
 					'role' => 'columnheader'
-				])->appendContent('All'),
+				])->appendContent(_('table-header-all')),
 				(new OOUI\Tag('abbr'))->setAttributes([
-					'title' => 'Number of pages that link to page using the actual page name',
+					'title' => _('table-header-direct-tooltip'),
 					'role' => 'columnheader'
-				])->appendContent('Direct'),
+				])->appendContent(_('table-header-direct')),
 				(new OOUI\Tag('abbr'))->setAttributes([
-					'title' => 'Number of pages that link to the page through a redirect',
+					'title' => _('table-header-indirect-tooltip'),
 					'role' => 'columnheader'
-				])->appendContent('Indirect')
+				])->appendContent(_('table-header-indirect'))
 			)
 		);
 
@@ -164,12 +147,12 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			$singleCount = is_int($count);
 
 			$label = (new OOUI\Tag('a'))->setAttributes([
-				'href' => $this->projectURL . str_replace('PAGE', $encodedPage, $this->typeInfo[$key]['url'])
-			])->appendContent($this->typeInfo[$key]['name']);
+				'href' => $this->projectURL . str_replace('PAGE', $encodedPage, $this->typeLinks[$key])
+			])->appendContent(_('link-type-' . $key));
 
 			$link = (new OOUI\Tag('a'))->addClasses(['hash-link'])->setAttributes([
 				'href' => '#' . $key,
-				'title' => 'Link to row'
+				'title' => _('action-link-to-row')
 			])->appendContent('(#)');
 
 			$all = number_format($singleCount ? $count : $count['all']);
@@ -200,7 +183,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		$links = (new OOUI\Tag('div'))->addClasses(['links'])->appendContent(
 			(new OOUI\Tag('a'))->setAttributes([
 				'href' => $this->projectURL . '/wiki/Special:WhatLinksHere/' . $encodedPage
-			])->appendContent('What links here')
+			])->appendContent(_('link-what-links-here')),
 		);
 
 		return $out . $links;

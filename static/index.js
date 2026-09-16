@@ -91,4 +91,8 @@ $('#skip').on('click', function(e) {
 	out.trigger('focus');
 });
 
+$('.lang-select-cnt select').on('change', function() {
+	this.form.submit();
+});
+
 namespacesInput.$element.replaceWith(namespacesSelect.$element);
