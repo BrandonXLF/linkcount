@@ -8,6 +8,7 @@ UI::init();
 
 /** @global Intuition $I18N */
 global $I18N;
+global $COMMIT;
 
 $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 
@@ -18,9 +19,8 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 		<title><?php echo $linkCount->getTitle(); ?></title>
 		<meta name="description" content="<?php echo escmsg('description'); ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="js/" defer></script>
-		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css">
-		<link rel="stylesheet" href="static/index.css?v=6">
+		<script src="js/?ck=<?php echo $COMMIT; ?>" defer></script>
+		<link rel="stylesheet" href="css/?ck=<?php echo $COMMIT; ?>">
 		<link rel="shortcut icon" type="image/png" href="static/icon.png">
 	</head>
 	<body>

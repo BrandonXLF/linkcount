@@ -2,7 +2,8 @@
 
 require '../vendor/autoload.php';
 
-echo (new JsLoader(
+echo (new ResourceLoader(
+	ResourceLoader::CONTENT_JS,
 	'../node_modules/jquery/dist/jquery.min.js',
 	'../node_modules/oojs/dist/oojs.min.js',
 	'../node_modules/oojs-ui/dist/oojs-ui.min.js',

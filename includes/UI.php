@@ -6,6 +6,7 @@ class UI {
 	public static function init($lang = null) {
 		/** @global Intuition $I18N */
 		global $I18N;
+		global $COMMIT;
 
 		OOUI\Theme::setSingleton(new OOUI\WikimediaUITheme);
 
@@ -15,5 +16,7 @@ class UI {
 		]);
 
 		$I18N->registerDomain('linkcount', __DIR__ . '/../i18n');
+
+		$COMMIT = exec('git rev-parse --short HEAD');
 	}
 }
