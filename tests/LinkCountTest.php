@@ -945,7 +945,7 @@ class LinkCountTest extends TestCase {
 			],
 			'no parameters' => [
 				'',
-				'View the number of links (wikilinks, redirects, transclusions, file links, and category links) to any page on any Wikimedia project.',
+				'',
 				''
 			],
 			'no title (error)' => [
