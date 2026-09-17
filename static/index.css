@@ -32,6 +32,12 @@ header {
 	margin: 1.5rem 0;
 }
 
+hgroup {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
 h1 {
 	margin: 0;
 }
@@ -41,6 +47,10 @@ h1 {
 	align-items: center;
 	gap: 0.5rem;
 	line-height: 1;
+}
+
+.lang-select-cnt {
+	max-width: 8.5rem;
 }
 
 main,

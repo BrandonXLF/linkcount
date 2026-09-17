@@ -27,7 +27,10 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 		<main>
 			<a id="skip" href="#out"><?php echo _html('nav-skip'); ?></a>
 			<header>
-				<h1>Link Count</h1>
+				<hgroup>
+					<h1>Link Count</h1>
+					<img src="./static/icon.png" alt="Link Count logo" style="width: 1.65rem; height: 1.65rem;" />
+				</hgroup>
 				<?php echo (new LanguageSelector)->getHtml(); ?>
 			</header>
 			<div><?php echo _html('description'); ?></div>
