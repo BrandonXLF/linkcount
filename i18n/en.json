@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Brandon Fowler"
+		]
+	},
+	"description": "View the number of links (wikilinks, redirects, transclusions, file links, and category links) to any page on any Wikimedia project.",
+	"nav-skip": "Skip to results",
+	"lang-select-label": "Select interface language",
+	"form-project": "Project",
+	"form-page": "Page",
+	"form-namespaces": "Namespaces",
+	"form-submit": "Submit",
+	"table-header-type": "Type",
+	"table-header-all": "All",
+	"table-header-direct": "Direct",
+	"table-header-direct-tooltip": "Number of pages that link to the page through a redirect",
+	"table-header-indirect": "Indirect",
+	"table-header-indirect-tooltip": "Number of pages that link to page using the actual page name",
+	"action-link-to-row": "Link to row",
+	"link-type-filelinks": "File links",
+	"link-type-categorylinks": "Category links",
+	"link-type-wikilinks": "Wikilinks",
+	"link-type-redirects": "Redirects",
+	"link-type-transclusions": "Transclusions",
+	"link-what-links-here": "What links here",
+	"footer-form": "Form",
+	"footer-api": "API",
+	"footer-created-by": "Created by $1",
+	"error": "Error",
+	"error-page-required": "Page name is required.",
+	"error-invalid-namespace-ids": "Invalid namespace IDs.",
+	"error-nonexistent-project": "That project does not exist..."
+}

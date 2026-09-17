@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Brandon Fowler"
+		]
+	},
+	"description": "Voir le nombre de liens (wikiliens, redirections, transclusions, liens de fichiers et liens de catégories) vers n'importe quelle page d'un projet Wikimedia.",
+	"nav-skip": "Passer aux résultats",
+	"lang-select-label": "Sélectionner la langue de l'interface",
+	"form-project": "Projet",
+	"form-page": "Page",
+	"form-namespaces": "Espaces de noms",
+	"form-submit": "Soumettre",
+	"table-header-type": "Type",
+	"table-header-all": "Tous",
+	"table-header-direct": "Direct",
+	"table-header-direct-tooltip": "Nombre de pages liées via une redirection",
+	"table-header-indirect": "Indirect",
+	"table-header-indirect-tooltip": "Nombre de pages liées en utilisant le nom réel de la page",
+	"action-link-to-row": "Lien vers la ligne",
+	"link-type-filelinks": "Liens de fichiers",
+	"link-type-categorylinks": "Liens de catégories",
+	"link-type-wikilinks": "Wikiliens",
+	"link-type-redirects": "Redirections",
+	"link-type-transclusions": "Transclusions",
+	"link-what-links-here": "Pages liées",
+	"footer-form": "Formulaire",
+	"footer-api": "API",
+	"footer-created-by": "Créé par $1",
+	"error": "Erreur",
+	"error-page-required": "Le nom de la page est requis.",
+	"error-invalid-namespace-ids": "Identifiants d'espace de noms invalides.",
+	"error-nonexistent-project": "Ce projet n'existe pas...."
+}

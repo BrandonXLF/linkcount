@@ -22,10 +22,10 @@ class Footer implements HtmlProducer {
 		])->appendContent('BrandonXLF');
 
 		$parts = [
-			(new OOUI\Tag('a'))->setAttributes(['href' => "./{$this->rel}/"])->appendContent('Form'),
-			(new OOUI\Tag('a'))->setAttributes(['href' => "./{$this->rel}/api/"])->appendContent('API'),
+			(new OOUI\Tag('a'))->setAttributes(['href' => "./{$this->rel}/"])->appendContent(_('footer-form')),
+			(new OOUI\Tag('a'))->setAttributes(['href' => "./{$this->rel}/api/"])->appendContent(_('footer-api')),
 			"$gitHubLink ($revLink)",
-			"Created by $authorLink"
+			_html('footer-created-by', [ 'variables' => [ $authorLink ], 'raw-variables' => true ])
 		];
 
 		$content = new OOUI\HtmlSnippet(implode(' | ', $parts));
