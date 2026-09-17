@@ -2,6 +2,8 @@
 
 use Krinkle\Intuition\Intuition;
 
+$COMMIT = exec('git rev-parse --short HEAD');
+
 function get($param) {
 	return trim($_GET[$param] ?? '');
 }

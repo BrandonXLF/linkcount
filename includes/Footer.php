@@ -8,14 +8,15 @@ class Footer implements HtmlProducer {
 	}
 
 	public function getHtml() {
+		global $COMMIT;
+
 		$gitHubLink = (new OOUI\Tag('a'))->setAttributes([
 			'href' => 'https://github.com/BrandonXLF/linkcount'
 		])->appendContent('GitHub');
 
-		$shortRev = exec('git rev-parse --short HEAD');
 		$revLink = (new OOUI\Tag('a'))->setAttributes([
-			'href' => 'https://github.com/BrandonXLF/linkcount/tree/' . $shortRev
-		])->appendContent($shortRev);
+			'href' => 'https://github.com/BrandonXLF/linkcount/tree/' . $COMMIT
+		])->appendContent($COMMIT);
 
 		$authorLink = (new OOUI\Tag('a'))->setAttributes([
 			'href' => 'https://en.wikipedia.org/wiki/User:BrandonXLF'
