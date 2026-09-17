@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Brandon Fowler"
+		]
+	},
+	"description": "Description of Link Count's functionality. Shown as a short description at the top of the page and in search results.",
+	"nav-skip": "Hidden link that allows keyboard users to skip to the tool's results.",
+	"lang-select-label": "Tooltip for the language selection dropdown that controls the interface language.",
+	"form-project": "Label for the project input field in the form. This is where users enter the URL of the Wikimedia project they want to analyze.",
+	"form-page": "Label for the page input field in the form. This is where users enter the name of the page they want to analyze.",
+	"form-namespaces": "Label for the namespaces input field in the form. This is where users can specify which namespaces to include in the analysis.",
+	"form-submit": "Text for the submit button in the form.",
+	"table-header-type": "Header for the 'Type' column in the results table. This column indicates the type of link (wikilink, redirect, etc.).",
+	"table-header-all": "Header for the 'All' column in the results table. This column shows the total number of links for each type.",
+	"table-header-direct": "Header for the 'Direct' column in the results table. This column shows the number of pages that link to the analyzed page through a redirect.",
+	"table-header-direct-tooltip": "Tooltip that explains the 'Direct' column in the results table.",
+	"table-header-indirect": "Header for the 'Indirect' column in the results table. This column shows the number of pages that link to the analyzed page directly using it's name (rather than through a redirect).",
+	"table-header-indirect-tooltip": "Tooltip that explains the 'Indirect' column in the results table.",
+	"action-link-to-row": "Tooltip for a small button that allows users to add a link to the current table row to the clipboard.",
+	"link-type-filelinks": "Label for the row that shows the number of file links. Should be concise.",
+	"link-type-categorylinks": "Label for the row that shows the number of category links. Should be concise.",
+	"link-type-wikilinks": "Label for the row that shows the number of wikilinks (standard internal links). Should be concise.",
+	"link-type-redirects": "Label for the row that shows the number of redirects. Should be concise.",
+	"link-type-transclusions": "Label for the row that shows the number of transclusions (pages that use this page as a template). Should be concise.",
+	"link-what-links-here": "Link to the MediaWiki '{{msg-mw|whatlinkshere-title}}' special page for the analyzed page. Should probably be '{{msg-mw|whatlinkshere}}'.",
+	"footer-form": "Link to the form page for Link Count.",
+	"footer-api": "Link to the API page for Link Count.",
+	"footer-created-by": "Text indicating who authored/created Link Count. $1 is a placeholder for the author's name.",
+	"error": "Title for an error state.",
+	"error-page-required": "Error shown when the user submits the form without entering a page name.",
+	"error-invalid-namespace-ids": "Error shown when the user submits the form with invalid namespace IDs.",
+	"error-nonexistent-project": "Error shown when the user submits the form with a non-existent MediaWiki project."
+}

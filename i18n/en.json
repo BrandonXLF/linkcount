@@ -5,7 +5,7 @@
 		]
 	},
 	"description": "View the number of links (wikilinks, redirects, transclusions, file links, and category links) to any page on any Wikimedia project.",
-	"nav-skip": "Skip to content",
+	"nav-skip": "Skip to results",
 	"lang-select-label": "Select interface language",
 	"form-project": "Project",
 	"form-page": "Page",
