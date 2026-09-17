@@ -8,7 +8,7 @@ Before running, you first need to install JS and CSS dependencies using `cd stat
 
 ## Config
 
-Copy the file `config-example.ini` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file.
+Copy the file `config-example.ini` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file. Alterantively, the config file can be provided using the `CONFIG_INI_TEXT` enviroment variable.
 
 ## Testing
 

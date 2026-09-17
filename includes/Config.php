@@ -5,7 +5,11 @@ class Config {
 
 	private static function &load() {
 		if (!self::$config) {
-			if (file_exists(__DIR__ . '/../config.ini')) {
+			$env = getenv('CONFIG_INI_TEXT') ?: '';
+
+			if ($env !== '') {
+				self::$config += parse_ini_string($env);
+			} elseif (file_exists(__DIR__ . '/../config.ini')) {
 				self::$config += parse_ini_file(__DIR__ . '/../config.ini');
 			}
 
