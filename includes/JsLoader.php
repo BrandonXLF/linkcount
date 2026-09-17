@@ -1,20 +1,15 @@
 <?php
 
-class ResourceLoader {
-	public const CONTENT_JS = "text/javascript";
-	public const CONTENT_CSS = "text/css";
-
-	public $contentType;
+class JsLoader {
 	public $files;
 
-	public function __construct(string $contentType, string ...$files) {
-		$this->contentType = $contentType;
+	public function __construct(string ...$files) {
 		$this->files = $files;
 	}
 
 	public function getContent() {
 		if (!headers_sent()) {
-			header("Content-Type: {$this->contentType}; charset=utf-8");
+			header("Content-Type: text/javascript; charset=utf-8");
 
 			if (get('ck') !== '') {
 				header('Cache-Control: public, max-age=31536000, immutable');

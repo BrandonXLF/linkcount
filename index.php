@@ -20,7 +20,8 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 		<meta name="description" content="<?php echo escmsg('description'); ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="js/?ck=<?php echo $COMMIT; ?>" defer></script>
-		<link rel="stylesheet" href="css/?ck=<?php echo $COMMIT; ?>">
+		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css?ck=<?php echo $COMMIT; ?>">
+		<link rel="stylesheet" href="static/index.css?ck=<?php echo $COMMIT; ?>">
 		<link rel="shortcut icon" type="image/png" href="static/icon.png">
 	</head>
 	<body>
