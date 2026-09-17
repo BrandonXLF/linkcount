@@ -8,6 +8,7 @@ class LanguageSelector implements HtmlProducer {
 		global $I18N;
 
 		$langs = $I18N->getAvailableLangs();
+		unset($langs['qqq']);
 
 		$dropdown = (new OOUI\DropdownInputWidget([
 			'name' => 'lang',
