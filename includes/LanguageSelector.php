@@ -38,10 +38,12 @@ class LanguageSelector implements HtmlProducer {
 				'for' => $dropdown->getInputId(),
 			]),
 			$dropdown,
-			new OOUI\ButtonInputWidget([
-				'type' => 'submit',
-				'label' => rawmsg('lang-select-submit'),
-			])
+			(new OOUI\Tag('noscript'))->appendContent(
+				new OOUI\ButtonInputWidget([
+					'type' => 'submit',
+					'label' => rawmsg('lang-select-submit'),
+				])
+			)
 		)->toString();
 	}
 }

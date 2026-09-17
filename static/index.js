@@ -116,6 +116,4 @@ $('.lang-select-form').on('submit', function(e) {
 	}
 });
 
-$('.lang-select-form .oo-ui-buttonInputWidget').remove();
-
 namespacesInput.$element.replaceWith(namespacesSelect.$element);
