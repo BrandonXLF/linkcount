@@ -10,7 +10,7 @@ class LanguageSelector implements HtmlProducer {
 		$langs = $I18N->getAvailableLangs();
 		unset($langs['qqq']);
 
-		$dropdown = (new OOUI\DropdownInputWidget([
+		$dropdown = (new SelfSubmittingDropdownInputWidget([
 			'name' => 'lang',
 			'value' => $I18N->getLang(),
 			'options' => array_map(function($name, $key) {

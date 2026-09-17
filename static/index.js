@@ -91,7 +91,7 @@ $('#skip').on('click', function(e) {
 	out.trigger('focus');
 });
 
-$('.lang-select-cnt select').on('change', function() {
+$('.lang-select-cnt select').removeAttr('onchange').on('change', function() {
 	this.form.action = './setlang/' + location.search
 	this.form.submit();
 });
