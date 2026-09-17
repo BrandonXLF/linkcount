@@ -13,7 +13,7 @@ class Form implements HtmlProducer {
 					'infusable' => true
 				]), [
 					'align' => 'top',
-					'label' => _('form-project')
+					'label' => rawmsg('form-project')
 				]
 			),
 			new OOUI\FieldLayout(
@@ -25,7 +25,7 @@ class Form implements HtmlProducer {
 					'infusable' => true
 				]), [
 					'align' => 'top',
-					'label' => _('form-page')
+					'label' => rawmsg('form-page')
 				]
 			),
 			new OOUI\FieldLayout(
@@ -37,14 +37,14 @@ class Form implements HtmlProducer {
 					'infusable' => true
 				]), [
 					'align' => 'top',
-					'label' => _('form-namespaces')
+					'label' => rawmsg('form-namespaces')
 				]
 			),
 			new OOUI\FieldLayout(
 				new OOUI\ButtonInputWidget([
 					'id' => 'submit',
 					'type' => 'submit',
-					'label' => _('form-submit'),
+					'label' => rawmsg('form-submit'),
 					'flags' => ['primary', 'progressive'],
 					'infusable' => true
 				]), [

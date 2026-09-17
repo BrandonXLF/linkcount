@@ -16,7 +16,7 @@
 	"table-header-direct": "Direct",
 	"table-header-direct-tooltip": "Number of pages that link to the page through a redirect",
 	"table-header-indirect": "Indirect",
-	"table-header-indirect-tooltip": "Number of pages that link to page using the actual page name",
+	"table-header-indirect-tooltip": "Number of pages that link to the page using the actual page name",
 	"action-link-to-row": "Link to row",
 	"link-type-filelinks": "File links",
 	"link-type-categorylinks": "Category links",

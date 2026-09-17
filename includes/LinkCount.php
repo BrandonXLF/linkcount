@@ -22,7 +22,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		}
 
 		if (!$page) {
-			$this->error = _('error-page-required');
+			$this->error = rawmsg('error-page-required');
 			return;
 		}
 
@@ -32,7 +32,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 
 		foreach ($namespaces ? explode(',', $namespaces) : [] as $rawNamespace) {
 			if (!is_numeric($rawNamespace)) {
-				$this->error = _('error-invalid-namespace-ids');
+				$this->error = rawmsg('error-invalid-namespace-ids');
 				return;
 			}
 		}
@@ -40,7 +40,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		$projectInfo = ProjectLookup::lookupProject($project);
 
 		if (!$projectInfo) {
-			$this->error = _('error-nonexistent-project');
+			$this->error = rawmsg('error-nonexistent-project');
 			return;
 		}
 
@@ -126,18 +126,18 @@ class LinkCount implements HtmlProducer, JsonProducer {
 			])->appendContent(
 				(new OOUI\Tag('div'))->setAttributes([
 					'role' => 'columnheader'
-				])->appendContent(_('table-header-type')),
+				])->appendContent(rawmsg('table-header-type')),
 				(new OOUI\Tag('div'))->setAttributes([
 					'role' => 'columnheader'
-				])->appendContent(_('table-header-all')),
+				])->appendContent(rawmsg('table-header-all')),
 				(new OOUI\Tag('abbr'))->setAttributes([
-					'title' => _('table-header-direct-tooltip'),
+					'title' => rawmsg('table-header-direct-tooltip'),
 					'role' => 'columnheader'
-				])->appendContent(_('table-header-direct')),
+				])->appendContent(rawmsg('table-header-direct')),
 				(new OOUI\Tag('abbr'))->setAttributes([
-					'title' => _('table-header-indirect-tooltip'),
+					'title' => rawmsg('table-header-indirect-tooltip'),
 					'role' => 'columnheader'
-				])->appendContent(_('table-header-indirect'))
+				])->appendContent(rawmsg('table-header-indirect'))
 			)
 		);
 
@@ -148,11 +148,11 @@ class LinkCount implements HtmlProducer, JsonProducer {
 
 			$label = (new OOUI\Tag('a'))->setAttributes([
 				'href' => $this->projectURL . str_replace('PAGE', $encodedPage, $this->typeLinks[$key])
-			])->appendContent(_('link-type-' . $key));
+			])->appendContent(rawmsg('link-type-' . $key));
 
 			$link = (new OOUI\Tag('a'))->addClasses(['hash-link'])->setAttributes([
 				'href' => '#' . $key,
-				'title' => _('action-link-to-row')
+				'title' => rawmsg('action-link-to-row')
 			])->appendContent('(#)');
 
 			$all = number_format($singleCount ? $count : $count['all']);
@@ -183,7 +183,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		$links = (new OOUI\Tag('div'))->addClasses(['links'])->appendContent(
 			(new OOUI\Tag('a'))->setAttributes([
 				'href' => $this->projectURL . '/wiki/Special:WhatLinksHere/' . $encodedPage
-			])->appendContent(_('link-what-links-here')),
+			])->appendContent(rawmsg('link-what-links-here')),
 		);
 
 		return $out . $links;

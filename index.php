@@ -16,7 +16,7 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 <html lang="<?php echo $I18N->getLang(); ?>">
 	<head>
 		<title><?php echo $linkCount->getTitle(); ?></title>
-		<meta name="description" content="<?php echo _html('description'); ?>">
+		<meta name="description" content="<?php echo escmsg('description'); ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="js/" defer></script>
 		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css">
@@ -25,7 +25,7 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 	</head>
 	<body>
 		<main>
-			<a id="skip" href="#out"><?php echo _html('nav-skip'); ?></a>
+			<a id="skip" href="#out"><?php echo escmsg('nav-skip'); ?></a>
 			<header>
 				<hgroup>
 					<h1>Link Count</h1>
@@ -33,7 +33,7 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 				</hgroup>
 				<?php echo (new LanguageSelector)->getHtml(); ?>
 			</header>
-			<div><?php echo _html('description'); ?></div>
+			<div><?php echo escmsg('description'); ?></div>
 			<?php echo (new Form)->getHtml(); ?>
 			<div id="out" tabindex="-1"><?php echo $linkCount->getHtml(); ?></div>
 		</main>

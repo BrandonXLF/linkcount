@@ -11,7 +11,6 @@ class UI {
 
 		$I18N = new Intuition([
 			'domain' => 'linkcount',
-			'globalfunctions' => true,
 			'lang' => $lang,
 		]);
 
