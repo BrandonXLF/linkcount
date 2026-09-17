@@ -37,7 +37,11 @@ class LanguageSelector implements HtmlProducer {
 				'aria-label' => rawmsg('lang-select-label'),
 				'for' => $dropdown->getInputId(),
 			]),
-			$dropdown
+			$dropdown,
+			new OOUI\ButtonInputWidget([
+				'type' => 'submit',
+				'label' => rawmsg('lang-select-submit'),
+			])
 		)->toString();
 	}
 }

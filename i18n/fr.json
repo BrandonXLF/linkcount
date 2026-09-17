@@ -7,6 +7,7 @@
 	"description": "Voir le nombre de liens (wikiliens, redirections, transclusions, liens de fichiers et liens de catégories) vers n'importe quelle page d'un projet Wikimedia.",
 	"nav-skip": "Passer aux résultats",
 	"lang-select-label": "Sélectionner la langue de l'interface",
+	"lang-select-submit": "Appliquer",
 	"form-project": "Projet",
 	"form-page": "Page",
 	"form-namespaces": "Espaces de noms",

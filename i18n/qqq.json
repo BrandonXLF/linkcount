@@ -7,6 +7,7 @@
 	"description": "Description of Link Count's functionality. Shown as a short description at the top of the page and in search results.",
 	"nav-skip": "Hidden link that allows keyboard users to skip to the tool's results.",
 	"lang-select-label": "Tooltip for the language selection dropdown that controls the interface language.",
+	"lang-select-submit": "Concise label for the button to apply the selected interface language.",
 	"form-project": "Label for the project input field in the form. This is where users enter the URL of the Wikimedia project they want to analyze.",
 	"form-page": "Label for the page input field in the form. This is where users enter the name of the page they want to analyze.",
 	"form-namespaces": "Label for the namespaces input field in the form. This is where users can specify which namespaces to include in the analysis.",
