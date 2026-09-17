@@ -5,6 +5,8 @@ require_once __DIR__ . '/TestDatabaseFactory.php';
 
 use PHPUnit\Framework\TestCase;
 
+UI::init('en');
+
 class LinkCountTest extends TestCase {
 	private static $db;
 	private static $statements;
