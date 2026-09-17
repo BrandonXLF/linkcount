@@ -96,24 +96,4 @@ $('.lang-select-cnt select').on('change', function() {
 	this.form.submit();
 });
 
-$('.lang-select-form').on('submit', function(e) {
-	e.preventDefault();
-	let form = this,
-		params = {
-			project: form.project.value,
-			page: form.page.value,
-			namespaces: form.namespaces.value
-		},
-		query = Object.keys(params)
-			.filter(param => params[param])
-			.map(param => param + '=' + encodeURIComponent(params[param]))
-			.join('&');
-
-	if (query) {
-		location.search = query;
-	} else {
-		location.href = location.pathname;
-	}
-});
-
 namespacesInput.$element.replaceWith(namespacesSelect.$element);
