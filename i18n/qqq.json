@@ -10,6 +10,7 @@
 	"form-project": "Label for the project input field in the form. This is where users enter the URL of the Wikimedia project they want to analyze.",
 	"form-page": "Label for the page input field in the form. This is where users enter the name of the page they want to analyze.",
 	"form-namespaces": "Label for the namespaces input field in the form. This is where users can specify which namespaces to include in the analysis.",
+	"form-separate-using-commas": "Placeholder explaining that the inputted values should be separated by commas.",
 	"form-submit": "Text for the submit button in the form.",
 	"table-header-type": "Header for the 'Type' column in the results table. This column indicates the type of link (wikilink, redirect, etc.).",
 	"table-header-all": "Header for the 'All' column in the results table. This column shows the total number of links for each type.",

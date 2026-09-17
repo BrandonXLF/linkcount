@@ -10,6 +10,7 @@
 	"form-project": "Project",
 	"form-page": "Page",
 	"form-namespaces": "Namespaces",
+	"form-separate-using-commas": "Separate using commas",
 	"form-submit": "Submit",
 	"table-header-type": "Type",
 	"table-header-all": "All",

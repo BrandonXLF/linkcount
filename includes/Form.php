@@ -33,7 +33,7 @@ class Form implements HtmlProducer {
 					'name' => 'namespaces',
 					'id' => 'namespaces',
 					'value' => get('namespaces'),
-					'placeholder' => 'Separate using commas',
+					'placeholder' => rawmsg('form-separate-using-commas'),
 					'infusable' => true
 				]), [
 					'align' => 'top',
