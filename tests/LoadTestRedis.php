@@ -2,7 +2,7 @@
 
 class LoadTestRedis {
 	public static function load() {
-		$redis = RedisFactory::get();
+		$redis = RedisFactory::create();
 		$prefix = Config::get('redis-prefix');
 		$ver = 'v' . Title::REDIS_DB_VER;
 		$nsInfoHashKey = "$prefix:$ver:linkcounttest";
@@ -12,5 +12,6 @@ class LoadTestRedis {
 
 		$redis->hMSet($nsInfoHashKey, $namespaceByName);
 		$redis->expire($nsInfoHashKey, 86400);
+		$redis->close();
 	}
 }
