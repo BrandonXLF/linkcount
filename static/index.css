@@ -78,6 +78,14 @@ footer {
 	box-shadow: none;
 }
 
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group {
+	margin-top: 5px;
+}
+
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input {
+	height: 2.098214em;
+}
+
 .out {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
