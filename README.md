@@ -4,7 +4,7 @@
 
 ## Installing
 
-To run you will need to install the PHP dependencies using `composer install` and the Node JS dependencies using `npm install`.
+Before running, you first need to install JS and CSS dependencies using `cd static && npm install && cd ..`. Then, install PHP dependencies and build static files using `composer install`.
 
 ## Config
 

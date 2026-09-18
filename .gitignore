@@ -1,6 +1,7 @@
 desktop.ini
 vendor
 node_modules
+static/build
 config.ini
 .phpunit.result.cache
 google*.html

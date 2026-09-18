@@ -11,6 +11,7 @@ global $I18N;
 global $COMMIT;
 
 $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
+$staticPrefix = Config::get('static-base') ?? '';
 
 ?>
 <!DOCTYPE html>
@@ -19,10 +20,10 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 		<title><?php echo $linkCount->getTitle(); ?></title>
 		<meta name="description" content="<?php echo escmsg('description'); ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="js/?ck=<?php echo $COMMIT; ?>" defer></script>
-		<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css?ck=<?php echo $COMMIT; ?>">
-		<link rel="stylesheet" href="static/index.css?ck=<?php echo $COMMIT; ?>">
-		<link rel="shortcut icon" type="image/png" href="static/icon.png">
+		<script src="<?php echo $staticPrefix; ?>build/combined.js?ck=<?php echo $COMMIT; ?>" defer></script>
+		<link rel="stylesheet" href="<?php echo $staticPrefix; ?>node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css?ck=<?php echo $COMMIT; ?>">
+		<link rel="stylesheet" href="<?php echo $staticPrefix; ?>index.css?ck=<?php echo $COMMIT; ?>">
+		<link rel="shortcut icon" type="image/png" href="<?php echo $staticPrefix; ?>icon.png">
 	</head>
 	<body>
 		<main>
@@ -30,7 +31,7 @@ $linkCount = new LinkCount(get('page'), get('project'), get('namespaces'));
 			<header>
 				<hgroup>
 					<h1>Link Count</h1>
-					<img src="./static/icon.png" alt="Link Count logo" style="width: 1.65rem; height: 1.65rem;" />
+					<img src="<?php echo $staticPrefix; ?>icon.png" alt="Link Count logo" style="width: 1.65rem; height: 1.65rem;" />
 				</hgroup>
 				<?php echo (new LanguageSelector)->getHtml(); ?>
 			</header>
