@@ -97,9 +97,12 @@ class CountQuery {
 				AND ({$prefix}_interwiki is NULL or {$prefix}_interwiki = {$this->db->quote('')})
 			SQL,
 			// Transclusions of a redirect that follow the redirect are also added as a transclusion of the redirect target.
-			// There is no way to differentiate from a page with a indirect link and a page with a indirect and a direct link
-			// in this case, only the indirect link is recorded. Pages can also transclude a page with a redirect without
-			// following the redirect, so a valid indirect link must have an associated direct link.
+			//
+			// Caveat: There is no way to differentiate a page with an indirect link vs. a page with an indirect and a direct
+			// link. In this case, only the indirect link is recorded.
+			//
+			// LEFT JOIN: Pages can also transclude a page with a redirect without following the redirect, so a valid indirect
+			// link must also have an associated direct link.
 			CountQueryMode::Transclusion => <<<SQL
 				SELECT
 					COUNT({$prefix}_from),
