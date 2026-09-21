@@ -108,7 +108,7 @@ class CountQuery {
 
 		return match ($mode) {
 			CountQueryMode::Redirect => <<<SQL
-				SELECT COUNT(rd_from)
+				SELECT COUNT(*)
 				{$this->createDirectNonLTCond($table, $prefix, $hasFromNS)}
 				SQL,
 			// Transclusions of a redirect that follow the redirect are also added as a transclusion of the redirect target.
@@ -120,8 +120,8 @@ class CountQuery {
 			// link must also have an associated direct link.
 			CountQueryMode::Transclusion => <<<SQL
 				SELECT
-					COUNT({$prefix}_from),
-					COUNT({$prefix}_from) - COUNT(indirect_link),
+					COUNT(*),
+					COUNT(*) - COUNT(indirect_link),
 					COUNT(indirect_link)
 				{$this->createDirectLTCond($table, $prefix, $hasFromNS, <<<SQL2
 				LEFT JOIN (
