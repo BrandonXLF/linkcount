@@ -6,10 +6,12 @@ enum CountQueryMode {
 	case Transclusion;
 }
 
-class CountQuery {
-	public const NO_FROM_NS = 2;
-	public const NO_LINK_TARGET = 4;
+enum CountQueryFromNS {
+	case Column;
+	case NoColumn;
+}
 
+class CountQuery {
 	private $fromNamespaces;
 	private $db;
 	private $title;
@@ -20,82 +22,95 @@ class CountQuery {
 		$this->title = $title;
 	}
 
+	private function joinClauses(array $joins) {
+		return implode("\n", $joins);
+	}
+
+	private function joinConds(array $conds) {
+		return implode(' AND ', $conds);
+	}
+
+	private function getPageConds(string $table, string $prefix, string|null $titleSql = null, string|null $namespaceSql = null) {
+		$titleSql ??= $this->db->quote($this->title->getDBKey());
+		$namespaceSql ??= $this->db->quote($this->title->getNamespaceId());
+
+		$wheres = [
+			"{$prefix}_title = {$titleSql}",
+			"{$prefix}_namespace = {$namespaceSql}"
+		];
+
+		if ($table === 'redirect') {
+			$wheres[] = "({$prefix}_interwiki IS NULL OR {$prefix}_interwiki = {$this->db->quote('')})";
+		}
+
+		return $wheres;
+	}
+
 	private function createCond(
-		string $prefix,
-		string $titleSQL,
-		string $namespaceSQL,
-		int $flags,
-		$joins = [],
-		$wheres = []
+		string $baseTable, string $basePrefix,
+		string $linkTable, string $linkPrefix,
+		bool $hasFromNS,
+		array $joins = [], string $addl = ''
 	) {
-		$hasFromNS = ~$flags & CountQuery::NO_FROM_NS;
-		$usesLinkTarget = ~$flags & CountQuery::NO_LINK_TARGET;
+		$linkTableIsBase = $baseTable === $linkTable;
+		$wheres = $this->getPageConds($baseTable, $basePrefix);
+
+		if (!$linkTableIsBase) {
+			$joins[] = "JOIN $linkTable ON {$linkPrefix}_target_id = lt_id";
+		}
 
 		if ($this->fromNamespaces !== '') {
 			if ($hasFromNS) {
-				array_push($wheres, "{$prefix}_from_namespace IN ({$this->fromNamespaces})");
+				$cond = "{$linkPrefix}_from_namespace IN ({$this->fromNamespaces})";
+
+				if ($linkTableIsBase) {
+					$wheres[] = $cond;
+				} else {
+					$joins[count($joins) - 1] .= " AND $cond";
+				}
 			} else {
-				array_push(
-					$joins,
-					<<<SQL
-						JOIN page AS source ON
-							source.page_id = {$prefix}_from
-							AND source.page_namespace IN ({$this->fromNamespaces})
-					SQL
-				);
+				$joins[] = <<<SQL
+					JOIN page AS source
+						ON source.page_id = {$linkPrefix}_from
+						AND source.page_namespace IN ({$this->fromNamespaces})
+					SQL;
 			}
 		}
 
-		$linkInfoPrefix = $usesLinkTarget ? 'lt' : $prefix;
-
-		array_push($wheres, "{$linkInfoPrefix}_title = $titleSQL");
-		array_push($wheres, "{$linkInfoPrefix}_namespace = $namespaceSQL");
-
-		if ($usesLinkTarget) {
-			array_push($joins, "JOIN linktarget ON {$prefix}_target_id = lt_id");
+		if ($addl) {
+			$joins[] = $addl;
 		}
 
-		return implode(' ', $joins) . " WHERE " . implode(' AND ', $wheres);
+		return <<<SQL
+			FROM $baseTable
+			{$this->joinClauses($joins)}
+			WHERE {$this->joinConds($wheres)}
+			SQL;
 	}
 
-	private function createDirectCond(string $prefix, int $flags) {
-		return $this->createCond(
-			$prefix,
-			$this->db->quote($this->title->getDBKey()),
-			$this->title->getNamespaceId(),
-			$flags
-		);
+	private function createDirectNonLTCond(string $table, string $prefix, bool $hasFromNS, string $addl = '') {
+		return $this->createCond($table, $prefix, $table, $prefix, $hasFromNS, addl: $addl);
 	}
 
-	private function createIndirectCond(string $table, string $prefix, int $flags) {
-		$joins = [
-			'JOIN page AS target ON target.page_id = rd_from',
-			"JOIN $table"
-		];
-
-		$wheres = [
-			"rd_title = {$this->db->quote($this->title->getDBKey())}",
-			"rd_namespace = {$this->title->getNamespaceId()}",
-			"(rd_interwiki IS NULL OR rd_interwiki = {$this->db->quote('')})"
-		];
-
-		return $this->createCond(
-			$prefix,
-			'target.page_title',
-			'target.page_namespace',
-			$flags,
-			$joins,
-			$wheres
-		);
+	private function createDirectLTCond(string $table, string $prefix, int $hasFromNS, string $addl = '') {
+		return $this->createCond('linktarget', 'lt', $table, $prefix, $hasFromNS, addl: $addl);
 	}
 
-	private function createQuery(string $table, string $prefix, CountQueryMode $mode, int $flags) {
+	private function createIndirectLTCond(string $table, string $prefix, bool $hasFromNS) {
+		return $this->createCond('redirect', 'rd', $table, $prefix, $hasFromNS, [
+			"JOIN page AS target ON target.page_id = rd_from",
+			"JOIN linktarget ON {$this->joinConds($this->getPageConds('linktarget', 'lt', 'target.page_title', 'target.page_namespace'))}"
+		]);
+	}
+
+	private function createQuery(string $table, string $prefix, CountQueryMode $mode, CountQueryFromNS $fromNS) {
+		$hasFromNS = $fromNS === CountQueryFromNS::Column;
+
 		return match ($mode) {
 			CountQueryMode::Redirect => <<<SQL
-				SELECT COUNT(rd_from) FROM $table
-				{$this->createDirectCond($prefix, $flags)}
-				AND ({$prefix}_interwiki is NULL or {$prefix}_interwiki = {$this->db->quote('')})
-			SQL,
+				SELECT COUNT(rd_from)
+				{$this->createDirectNonLTCond($table, $prefix, $hasFromNS)}
+				SQL,
 			// Transclusions of a redirect that follow the redirect are also added as a transclusion of the redirect target.
 			//
 			// Caveat: There is no way to differentiate a page with an indirect link vs. a page with an indirect and a direct
@@ -108,14 +123,13 @@ class CountQuery {
 					COUNT({$prefix}_from),
 					COUNT({$prefix}_from) - COUNT(indirect_link),
 					COUNT(indirect_link)
-				FROM $table
+				{$this->createDirectLTCond($table, $prefix, $hasFromNS, <<<SQL2
 				LEFT JOIN (
 					SELECT DISTINCT {$prefix}_from AS indirect_link
-					FROM redirect
-					{$this->createIndirectCond($table, $prefix, $flags)}
+					{$this->createIndirectLTCond($table, $prefix, $hasFromNS)}
 				) AS temp ON {$prefix}_from = indirect_link
-				{$this->createDirectCond($prefix, $flags)}
-			SQL,
+				SQL2)}
+				SQL,
 			CountQueryMode::Link => <<<SQL
 				SELECT
 					COUNT(DISTINCT COALESCE(direct_link, indirect_link)),
@@ -123,19 +137,17 @@ class CountQuery {
 					COUNT(indirect_link)
 				FROM (
 					SELECT {$prefix}_from AS direct_link, NULL AS indirect_link
-					FROM $table
-					{$this->createDirectCond($prefix, $flags)}
+					{$this->createDirectLTCond($table, $prefix, $hasFromNS)}
 					UNION ALL
 					SELECT DISTINCT NULL AS direct_link, {$prefix}_from AS indirect_link
-					FROM redirect
-					{$this->createIndirectCond($table, $prefix, $flags)}
+					{$this->createIndirectLTCond($table, $prefix, $hasFromNS)}
 				) AS temp
-			SQL
+				SQL
 		};
 	}
 
-	public function runQuery(string $table, string $prefix, CountQueryMode $mode, $flags = 0) {
-		$query = $this->createQuery($table, $prefix, $mode, $flags);
+	public function runQuery(string $table, string $prefix, CountQueryMode $mode, CountQueryFromNS $fromNS = CountQueryFromNS::Column) {
+		$query = $this->createQuery($table, $prefix, $mode, $fromNS);
 		$res = $this->db->query($query)->fetch();
 
 		return $mode == CountQueryMode::Redirect ? (int) $res[0] : [
