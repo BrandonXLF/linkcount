@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nike"
+		]
+	},
+	"description": "Näytä linkkien (wikilinkkien, ohjausten, sisällytysten, tiedostolinkkien ja luokkalinkkien) määrä mille tahansa sivulle missä tahansa Wikimedia-projektissa.",
+	"nav-skip": "Siirry tuloksiin",
+	"lang-select-label": "Valitse käyttöliittymän kieli",
+	"lang-select-submit": "Käytä",
+	"form-project": "Projekti",
+	"form-page": "Sivu",
+	"form-namespaces": "Nimiavaruudet",
+	"form-separate-using-commas": "Erota pilkuilla",
+	"form-submit": "Lähetä",
+	"table-header-type": "Tyyppi",
+	"table-header-all": "Kaikki",
+	"table-header-direct": "Suora",
+	"table-header-direct-tooltip": "Sivujen määrä, jotka linkittävät sivulle käyttäen sivun varsinaista nimeä",
+	"table-header-indirect": "Ohjaus",
+	"table-header-indirect-tooltip": "Sivulle ohjaussivujen kautta linkittävien sivujen määrä",
+	"action-link-to-row": "Linkki riviin",
+	"link-type-filelinks": "Tiedostolinkit",
+	"link-type-categorylinks": "Luokkalinkit",
+	"link-type-wikilinks": "Wikilinkit",
+	"link-type-redirects": "Ohjaukset",
+	"link-type-transclusions": "Sisällytykset",
+	"link-what-links-here": "Tänne viittaavat sivut",
+	"footer-form": "Lomake",
+	"footer-api": "API",
+	"footer-created-by": "Tämän työkalun on luonut $1",
+	"error": "Virhe",
+	"error-page-required": "Sivun nimi on pakollinen.",
+	"error-invalid-namespace-ids": "Virheelliset nimiavaruustunnukset.",
+	"error-nonexistent-project": "Tuota projektia ei ole olemassa..."
+}
