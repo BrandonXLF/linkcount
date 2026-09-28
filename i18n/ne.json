@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"बडा काजी"
+		]
+	},
+	"lang-select-submit": "लागु गर्नुहोस्",
+	"form-project": "परियोजना",
+	"form-page": "पृष्ठ",
+	"form-namespaces": "नामपद",
+	"form-submit": "पेस गर्नुहोस्",
+	"table-header-type": "प्रकार",
+	"table-header-all": "सबै",
+	"table-header-indirect": "अप्रत्यक्ष",
+	"link-type-redirects": "अनुप्रेषण",
+	"link-type-transclusions": "पारदर्शिता",
+	"link-what-links-here": "यहाँ के जोडिन्छ",
+	"footer-form": "फाराम",
+	"footer-created-by": "$1 द्वारा निर्मित",
+	"error": "त्रुटि"
+}

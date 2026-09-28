@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kly"
+		]
+	},
+	"description": "查看指向任何維基媒體專案上任何頁面的連結數量（wiki 連結、重新導向、嵌入、檔案連結和分類連結）。",
+	"nav-skip": "跳至結果",
+	"lang-select-label": "選擇介面語言",
+	"lang-select-submit": "套用",
+	"form-project": "專案",
+	"form-page": "頁面",
+	"form-namespaces": "命名空間",
+	"form-separate-using-commas": "使用逗號分隔",
+	"form-submit": "提交",
+	"table-header-type": "類型",
+	"table-header-all": "全部",
+	"table-header-direct": "直接",
+	"table-header-direct-tooltip": "使用實際頁面名稱連結到該頁面的頁面數量",
+	"table-header-indirect": "間接",
+	"table-header-indirect-tooltip": "透過重新導向連結到該頁面的頁面數量",
+	"action-link-to-row": "連結到列",
+	"link-type-filelinks": "檔案連結",
+	"link-type-categorylinks": "分類連結",
+	"link-type-wikilinks": "wiki 連結",
+	"link-type-redirects": "重新導向",
+	"link-type-transclusions": "嵌入",
+	"link-what-links-here": "此處的連結",
+	"footer-form": "表單",
+	"footer-api": "API",
+	"footer-created-by": "建立者：$1",
+	"error": "錯誤",
+	"error-page-required": "頁面名稱為必填。",
+	"error-invalid-namespace-ids": "無效命名空間 ID。",
+	"error-nonexistent-project": "該專案並不存在…"
+}

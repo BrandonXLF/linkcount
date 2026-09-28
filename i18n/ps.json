@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"شاه زمان پټان"
+		]
+	},
+	"description": "د ويکي‌رسنۍ هره پروژه کې د هر مخ لپاره د تړونو(ويکي‌تړونو، مخگرځو، رانغاړنو، دوتنې تړونو او وېشنيزې تړونو) شمېر کتل.",
+	"nav-skip": "پايل ته ورشئ",
+	"lang-select-label": "مخبڼې ژبه غوره کړئ",
+	"lang-select-submit": "پلي‌کول",
+	"form-project": "پروژه",
+	"form-page": "مخ",
+	"form-namespaces": "نوم‌تشيالونه",
+	"form-separate-using-commas": "د کامې کارولو سره يې بېل کړئ",
+	"form-submit": "سپارل",
+	"table-header-type": "ډول",
+	"table-header-all": "ټول",
+	"table-header-direct": "نېغ",
+	"table-header-direct-tooltip": "د هغه مخونو شمېر چې د رښتيني مخ نوم کارولو سره له مخ سره تړوني شوي",
+	"table-header-indirect": "له بلې لارې",
+	"table-header-indirect-tooltip": "د هغه مخونو شمېر چې د يو مخگرځ له لارې له مخ سره تړوني شوې",
+	"action-link-to-row": "کتار سره تړونی ورکول",
+	"link-type-filelinks": "د دوتنې تړوني",
+	"link-type-categorylinks": "د وېشنيزې تړوني",
+	"link-type-wikilinks": "ويکي‌تړوني",
+	"link-type-redirects": "مخگرځي",
+	"link-type-transclusions": "رانغاړنې",
+	"link-what-links-here": "دلته کوم تړوني دي",
+	"footer-form": "فورمه",
+	"footer-api": "کاريال‌بهير‌مخبڼه",
+	"footer-created-by": "د $1 له‌خوا جوړ شوی",
+	"error": "تېروتنه",
+	"error-page-required": "د مخ نوم اړين دی.",
+	"error-invalid-namespace-ids": "ناچله نوم‌تشيال پېژندپاڼې.",
+	"error-nonexistent-project": "دا پروژه هېڅ شتون نلري..."
+}

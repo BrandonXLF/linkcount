@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Volvox"
+		]
+	},
+	"form-project": "Projet",
+	"form-page": "Säit",
+	"form-namespaces": "Nummraim",
+	"table-header-type": "Typ",
+	"link-type-wikilinks": "Wikilinken",
+	"link-type-redirects": "Viruleedungen",
+	"link-what-links-here": "Linken op dës Säit",
+	"footer-api": "API",
+	"error": "Feeler",
+	"error-invalid-namespace-ids": "Ongülteg Nummraum-IDen."
+}

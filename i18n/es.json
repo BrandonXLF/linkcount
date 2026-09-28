@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"A.jalate"
+		]
+	},
+	"lang-select-label": "Seleccione el idioma de la interfaz",
+	"form-project": "Proyecto:",
+	"form-page": "Página",
+	"form-separate-using-commas": "Separe con comas",
+	"form-submit": "Enviar",
+	"table-header-type": "Tipo",
+	"table-header-all": "Todo",
+	"table-header-direct": "Directo",
+	"table-header-indirect": "Indirecto",
+	"link-type-filelinks": "enlace de archivo",
+	"link-type-redirects": "Redirigir",
+	"footer-form": "Formularios",
+	"footer-created-by": "Creado por $1",
+	"error": "Error",
+	"error-nonexistent-project": "Ese proyecto no existe..."
+}

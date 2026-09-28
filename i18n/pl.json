@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"PanWor"
+		]
+	},
+	"description": "Wyświetl liczbę linków (wikilinków, przekierowań, dołączeń, linków do plików i kategorii) do dowolnej strony w dowolnym projekcie Wikimediów.",
+	"nav-skip": "Przejdź do wyników",
+	"lang-select-label": "Wybierz język interfejsu",
+	"lang-select-submit": "Zastosuj",
+	"form-project": "Projekt",
+	"form-page": "Strona",
+	"form-namespaces": "Przestrzenie nazw",
+	"form-separate-using-commas": "Rozdziel przecinkami",
+	"form-submit": "Wyślij",
+	"table-header-type": "Typ",
+	"table-header-all": "Wszystkie",
+	"table-header-direct": "Bezpośrednie",
+	"table-header-direct-tooltip": "Liczba stron linkujących do strony przy użyciu jej właściwej nazwy",
+	"table-header-indirect": "Pośrednie",
+	"table-header-indirect-tooltip": "Liczba stron linkujących do strony poprzez przekierowanie",
+	"action-link-to-row": "Link do wiersza",
+	"link-type-filelinks": "Linki do plików",
+	"link-type-categorylinks": "Linki do kategorii",
+	"link-type-wikilinks": "Wikilinki",
+	"link-type-redirects": "Przekierowania",
+	"link-type-transclusions": "Dołączenia",
+	"link-what-links-here": "Linkujące",
+	"footer-form": "Formularz",
+	"footer-api": "API",
+	"footer-created-by": "Narzędzie stworzone przez $1",
+	"error": "Błąd",
+	"error-page-required": "Nazwa strony jest wymagana.",
+	"error-invalid-namespace-ids": "Nieprawidłowe identyfikatory przestrzeni nazw.",
+	"error-nonexistent-project": "Ten projekt nie istnieje…"
+}

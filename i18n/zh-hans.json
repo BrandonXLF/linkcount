@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"GuoPC"
+		]
+	},
+	"description": "查看指向任何维基媒体计划上任何页面的链接数量（wiki链接、重定向、嵌入、文件链接和分类链接）。",
+	"nav-skip": "跳至结果",
+	"lang-select-label": "选择界面语言",
+	"lang-select-submit": "应用",
+	"form-project": "计划",
+	"form-page": "页面",
+	"form-namespaces": "命名空间",
+	"form-separate-using-commas": "用逗号分隔",
+	"form-submit": "提交",
+	"table-header-type": "类型",
+	"table-header-all": "全部",
+	"table-header-direct": "直接",
+	"table-header-direct-tooltip": "使用实际页面名称链接到该页面的页面数量",
+	"table-header-indirect": "间接",
+	"table-header-indirect-tooltip": "通过重定向链接到该页面的页面数量",
+	"action-link-to-row": "链接到行",
+	"link-type-filelinks": "文件链接",
+	"link-type-categorylinks": "分类链接",
+	"link-type-wikilinks": "wiki链接",
+	"link-type-redirects": "重定向",
+	"link-type-transclusions": "嵌入",
+	"link-what-links-here": "链入页面",
+	"footer-form": "表单",
+	"footer-api": "API",
+	"footer-created-by": "由$1创建",
+	"error": "错误",
+	"error-page-required": "页面名称为必填。",
+	"error-invalid-namespace-ids": "命名空间ID无效。",
+	"error-nonexistent-project": "该计划并不存在…"
+}

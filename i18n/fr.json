@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Brandon Fowler"
+			"Brandon Fowler",
+			"NClara"
 		]
 	},
 	"description": "Voir le nombre de liens (wikiliens, redirections, transclusions, liens de fichiers et liens de catégories) vers n'importe quelle page d'un projet Wikimedia.",
@@ -32,5 +33,5 @@
 	"error": "Erreur",
 	"error-page-required": "Le nom de la page est requis.",
 	"error-invalid-namespace-ids": "Identifiants d'espace de noms invalides.",
-	"error-nonexistent-project": "Ce projet n'existe pas...."
+	"error-nonexistent-project": "Ce projet n'existe pas..."
 }

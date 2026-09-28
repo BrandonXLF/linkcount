@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"description": "Преглед на бројот на врски (викиврски, пренасочувања, превметнувања, податотечни врски и категориски врски) до било која страница на било кој Викимедиин проект.",
+	"nav-skip": "Прејди на исходот",
+	"lang-select-label": "Изберете јазик на посредникот",
+	"lang-select-submit": "Примени",
+	"form-project": "Проект",
+	"form-page": "Страница",
+	"form-namespaces": "Именски простори",
+	"form-separate-using-commas": "Одделувајте со запирки",
+	"form-submit": "Поднеси",
+	"table-header-type": "Вид",
+	"table-header-all": "Сите",
+	"table-header-direct": "Непосредни",
+	"table-header-direct-tooltip": "Број на страници што водат до страницата со фактичкото име на страницата",
+	"table-header-indirect": "Посредни",
+	"table-header-indirect-tooltip": "Број на страници што водат до страницата преку пренасочување",
+	"action-link-to-row": "Врска до ред",
+	"link-type-filelinks": "Податотечни врски",
+	"link-type-categorylinks": "Категориски врски",
+	"link-type-wikilinks": "Викиврски",
+	"link-type-redirects": "Пренасочувања",
+	"link-type-transclusions": "Превметнувања",
+	"link-what-links-here": "Што води овде",
+	"footer-form": "Образец",
+	"footer-api": "Приложник",
+	"footer-created-by": "Создадено од $1",
+	"error": "Грешка",
+	"error-page-required": "Се бара име на страница.",
+	"error-invalid-namespace-ids": "Неважечка назнака за именски простор.",
+	"error-nonexistent-project": "Таков проект не постои..."
+}

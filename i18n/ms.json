@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hakimi97"
+		]
+	},
+	"description": "Lihat bilangan pautan (pautan wiki, lencongan, transklusi, pautan fail dan pautan kategori) ke mana-mana laman di mana-mana projek Wikimedia.",
+	"nav-skip": "Langkau ke hasil carian",
+	"lang-select-label": "Pilih bahasa antara muka",
+	"lang-select-submit": "Terapkan",
+	"form-project": "Projek",
+	"form-page": "Laman",
+	"form-namespaces": "Ruang nama",
+	"form-separate-using-commas": "Pisahkan dengan koma",
+	"form-submit": "Hantar",
+	"table-header-type": "Jenis",
+	"table-header-all": "Semua",
+	"table-header-direct": "Langsung",
+	"table-header-direct-tooltip": "Bilangan laman yang berpaut ke laman tersebut menggunakan nama sebenar laman tersebut",
+	"table-header-indirect": "Tidak langsung",
+	"table-header-indirect-tooltip": "Bilangan laman yang berpaut ke laman tersebut melalui lencongan",
+	"action-link-to-row": "Pautan ke baris",
+	"link-type-filelinks": "Pautan fail",
+	"link-type-categorylinks": "Pautan kategori",
+	"link-type-wikilinks": "Pautan wiki",
+	"link-type-redirects": "Lencongan",
+	"link-type-transclusions": "Transklusi",
+	"link-what-links-here": "Apa yang berpaut ke sini",
+	"footer-form": "Borang",
+	"footer-api": "API",
+	"footer-created-by": "Dicipta oleh $1",
+	"error": "Ralat",
+	"error-page-required": "Nama laman diperlukan.",
+	"error-invalid-namespace-ids": "ID ruang nama tidak sah.",
+	"error-nonexistent-project": "Projek tersebut memang tak wujud..."
+}
