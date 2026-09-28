@@ -5,10 +5,11 @@
 		"krinkle/intuition": "^2.3"
 	},
 	"scripts": {
-		"post-autoload-dump": "BuildStatic::build",
+		"build-static": "BuildStatic::build",
 		"test-win": "vendor\\bin\\phpunit.bat tests",
 		"test-lin": "./vendor/bin/phpunit tests",
-		"createdb": "php tests/createdb.php"
+		"createdb": "php tests/createdb.php",
+		"post-autoload-dump": "@build-static"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~9"

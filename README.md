@@ -10,6 +10,10 @@ Before running, you first need to install JS and CSS dependencies using `cd stat
 
 Copy the file `config-example.ini` to `config.ini` and fill in the fields with values from your `replica.my.cnf` file.
 
+## Building
+
+After making changes to JavaScript files, the combined static JS file needs to be rebuilt with `composer build-static`.
+
 ## Testing
 
 Test are run using `composer test-win` on windows and `composer test-lin` on linux etc. When testing, the `linkcounttest` table is created. You can also run `composer createdb` to create the `linkcounttest` table for manual testing from a browser. When manual testing, `en.wikipedia.org` is linked to the `linkcounttest` database. Wikis with a url starting with `e` are also added to the `wiki` table to allow for testing of the project input autocomplete.
