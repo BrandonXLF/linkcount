@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Saraiki"
+		]
+	},
+	"lang-select-submit": "اطلاق",
+	"form-project": "منصوبہ",
+	"form-page": "ورقہ",
+	"form-submit": "جمع کرواؤ",
+	"table-header-type": "قسم",
+	"table-header-all": "یکے",
+	"link-type-filelinks": "فائل دے لنک",
+	"link-type-wikilinks": "وکی لنکس",
+	"footer-form": "شکل",
+	"footer-created-by": "$1 دا خلقیا",
+	"error": "نقص"
+}

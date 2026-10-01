@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"description": "Ver o número de ligazóns (ligazóns wiki, redireccións, transclusións, ligazóns a ficheiros e ligazóns a categorías) a calquera páxina de calquera proxecto da Wikimedia.",
+	"nav-skip": "Saltar aos resultados",
+	"lang-select-label": "Selecciona a lingua da interface",
+	"lang-select-submit": "Aplicar",
+	"form-project": "Proxecto",
+	"form-page": "Páxina",
+	"form-namespaces": "Espazos de nomes",
+	"form-separate-using-commas": "Separar con comas",
+	"form-submit": "Enviar",
+	"table-header-type": "Tipo",
+	"table-header-all": "Todas",
+	"table-header-direct": "Directas",
+	"table-header-direct-tooltip": "Número de páxinas que ligan cara a páxina usando o nome real da páxina",
+	"table-header-indirect": "Indirectas",
+	"table-header-indirect-tooltip": "Número de páxinas que ligan cara a páxina a través dunha redirección",
+	"action-link-to-row": "Ligazón á fila",
+	"link-type-filelinks": "Ligazóns a ficheiros",
+	"link-type-categorylinks": "Ligazóns a categorías",
+	"link-type-wikilinks": "Ligazóns wiki",
+	"link-type-redirects": "Redireccións",
+	"link-type-transclusions": "Transclusións",
+	"link-what-links-here": "Páxinas que ligan con esta",
+	"footer-form": "Formulario",
+	"footer-api": "API",
+	"footer-created-by": "Creado por $1",
+	"error": "Erro",
+	"error-page-required": "Cómpre o nome da páxina.",
+	"error-invalid-namespace-ids": "Os identificadores dos espazos de nomes non son válidos.",
+	"error-nonexistent-project": "Ese proxecto non existe..."
+}
