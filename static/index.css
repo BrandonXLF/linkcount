@@ -42,15 +42,36 @@ h1 {
 	margin: 0;
 }
 
-.lang-select-form {
+#lang-form,
+#lang-layout .oo-ui-fieldLayout-body {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	line-height: 1;
 }
 
-#lang,
-#lang .oo-ui-dropdownWidget {
+#lang-layout .oo-ui-fieldLayout-header {
+	flex: 0;
+	padding: 0;
+}
+
+#lang-layout .oo-ui-labelElement-label {
+	display: flex;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+}
+
+#lang-layout .oo-ui-fieldLayout-field {
+	flex: 1;
+	width: 100%;
+}
+
+#lang-layout .oo-ui-dropdownInputWidget {
+	max-width: 11em;
+}
+
+#lang-layout .oo-ui-dropdownInputWidget,
+#lang-layout .oo-ui-dropdownWidget {
 	margin-right: 0;
 }
 

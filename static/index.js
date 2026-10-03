@@ -1,13 +1,18 @@
-let langSelect = OO.ui.infuse($('#lang')),
-	projectLookup = OO.ui.infuse($('#project')),
-	pageLookup = OO.ui.infuse($('#page'), {
+let langSelect = OO.ui.infuse($('#lang-layout')).fieldWidget,
+	projectLookup = OO.ui.infuse($('#project-layout')).fieldWidget,
+	pageLookup = OO.ui.infuse($('#page-layout'), {
+		domain: projectLookup.getDomain()
+	}).fieldWidget,
+	namespacesInputLayout = OO.ui.infuse($('#namespaces-layout')),
+	namespacesInput = namespacesInputLayout.fieldWidget,
+	button = OO.ui.infuse($('#submit-layout')).fieldWidget,
+	namespacesLookup = new NamespaceLookupWidget({
+		value: namespacesInput.getValue().split(','),
 		domain: projectLookup.getDomain()
 	}),
-	namespacesInput = OO.ui.infuse($('#namespaces')),
-	button = OO.ui.infuse($('#submit')),
-	namespacesSelect = new NamespaceLookupWidget({
-		value: namespacesInput.getValue() && namespacesInput.getValue().split(','),
-		domain: projectLookup.getDomain()
+	namespacesLookupLayout = new OO.ui.FieldLayout(namespacesLookup, {
+		align: 'top',
+		label: namespacesInputLayout.getLabel(),
 	}),
 	progressWidget = new OO.ui.ProgressBarWidget(),
 	progressLayout = new OO.ui.FieldLayout(progressWidget, {
@@ -21,7 +26,7 @@ function submitForm(pushState) {
 	let params = {
 			project: projectLookup.getValue(),
 			page: pageLookup.getValue(),
-			namespaces: namespacesSelect.getValue().join(',')
+			namespaces: namespacesLookup.getValue().join(',')
 		},
 		query = Object.keys(params)
 			.filter(param => params[param])
@@ -59,7 +64,7 @@ function submitForm(pushState) {
 
 projectLookup.on('domain', function (domain) {
 	pageLookup.setDomain(domain);
-	namespacesSelect.setDomain(domain);
+	namespacesLookup.setDomain(domain);
 });
 
 button.on('click', function() {
@@ -82,7 +87,7 @@ window.addEventListener('popstate', function() {
 
 	projectLookup.setValue(params.project || '');
 	pageLookup.setValue(params.page || '');
-	namespacesSelect.setValue((params.namespaces || '').split(','));
+	namespacesLookup.setValue((params.namespaces || '').split(','));
 
 	submitForm(false);
 });
@@ -98,4 +103,4 @@ langSelect.on('change', function() {
 	input.form.submit();
 }).$input.removeAttr('onchange');
 
-namespacesInput.$element.replaceWith(namespacesSelect.$element);
+namespacesInputLayout.$element.replaceWith(namespacesLookupLayout.$element);

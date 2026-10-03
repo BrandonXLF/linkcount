@@ -6,49 +6,49 @@ class Form implements HtmlProducer {
 			new OOUI\FieldLayout(
 				new ProjectLookupWidget([
 					'name' => 'project',
-					'id' => 'project',
 					'value' => get('project'),
 					'default' => Config::get('default-project'),
 					'autocomplete' => false,
-					'infusable' => true
 				]), [
+					'id' => 'project-layout',
 					'align' => 'top',
-					'label' => rawmsg('form-project')
+					'label' => rawmsg('form-project'),
+					'infusable' => true
 				]
 			),
 			new OOUI\FieldLayout(
 				new PageLookupWidget([
 					'name' => 'page',
-					'id' => 'page',
 					'value' => get('page'),
-					'autocomplete' => false,
-					'infusable' => true
+					'autocomplete' => false
 				]), [
+					'id' => 'page-layout',
 					'align' => 'top',
-					'label' => rawmsg('form-page')
+					'label' => rawmsg('form-page'),
+					'infusable' => true
 				]
 			),
 			new OOUI\FieldLayout(
 				new OOUI\TextInputWidget([
 					'name' => 'namespaces',
-					'id' => 'namespaces',
 					'value' => get('namespaces'),
-					'placeholder' => rawmsg('form-separate-using-commas'),
-					'infusable' => true
+					'placeholder' => rawmsg('form-separate-using-commas')
 				]), [
+					'id' => 'namespaces-layout',
 					'align' => 'top',
-					'label' => rawmsg('form-namespaces')
+					'label' => rawmsg('form-namespaces'),
+					'infusable' => true
 				]
 			),
 			new OOUI\FieldLayout(
 				new OOUI\ButtonInputWidget([
-					'id' => 'submit',
 					'type' => 'submit',
 					'label' => rawmsg('form-submit'),
 					'flags' => ['primary', 'progressive'],
-					'infusable' => true
 				]), [
-					'align' => 'top'
+					'id' => 'submit-layout',
+					'align' => 'top',
+					'infusable' => true
 				]
 			)
 		];
