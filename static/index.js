@@ -1,4 +1,10 @@
-let langSelect = OO.ui.infuse($('#lang-layout')).fieldWidget,
+let langSelect = OO.ui.infuse($('#lang-layout'), {
+		dropdown: {
+			menu: {
+				horizontalPosition: 'end'
+			}
+		}
+	}).fieldWidget,
 	projectLookup = OO.ui.infuse($('#project-layout')).fieldWidget,
 	pageLookup = OO.ui.infuse($('#page-layout'), {
 		domain: projectLookup.getDomain()
