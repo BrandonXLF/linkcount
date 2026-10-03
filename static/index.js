@@ -97,10 +97,10 @@ $('#skip').on('click', function(e) {
 	out.trigger('focus');
 });
 
-langSelect.on('change', function() {
-	const input = langSelect.$input[0];
-	input.form.action = './setlang/' + location.search
-	input.form.submit();
-}).$input.removeAttr('onchange');
+langSelect.enhance(function() {
+	const form = langSelect.$input[0].form;
+	form.action = './setlang/' + location.search
+	form.submit();
+});
 
 namespacesInputLayout.$element.replaceWith(namespacesLookupLayout.$element);
