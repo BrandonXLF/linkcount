@@ -29,6 +29,7 @@
 	"footer-form": "Link to the form page for Link Count.",
 	"footer-api": "Link to the API page for Link Count.",
 	"footer-created-by": "Text indicating who authored/created Link Count. $1 is a placeholder for the author's name.",
+	"footer-translate": "Link to a page that allows users to help translate Link Count.",
 	"error": "Title for an error state.",
 	"error-page-required": "Error shown when the user submits the form without entering a page name.",
 	"error-invalid-namespace-ids": "Error shown when the user submits the form with invalid namespace IDs.",

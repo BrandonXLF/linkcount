@@ -26,7 +26,10 @@ class Footer implements HtmlProducer {
 			(new OOUI\Tag('a'))->setAttributes(['href' => "./{$this->rel}/"])->appendContent(rawmsg('footer-form')),
 			(new OOUI\Tag('a'))->setAttributes(['href' => "./{$this->rel}/api/"])->appendContent(rawmsg('footer-api')),
 			"$gitHubLink ($revLink)",
-			escmsg('footer-created-by', [ 'variables' => [ $authorLink ], 'raw-variables' => true ])
+			escmsg('footer-created-by', [ 'variables' => [ $authorLink ], 'raw-variables' => true ]),
+			(new OOUI\Tag('a'))
+				->setAttributes(['href' => "https://translatewiki.net/wiki/Special:Translate?group=linkcount"])
+				->appendContent(rawmsg('footer-translate')),
 		];
 
 		$content = new OOUI\HtmlSnippet(implode(' | ', $parts));

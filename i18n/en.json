@@ -29,6 +29,7 @@
 	"footer-form": "Form",
 	"footer-api": "API",
 	"footer-created-by": "Created by $1",
+	"footer-translate": "Help translate",
 	"error": "Error",
 	"error-page-required": "Page name is required.",
 	"error-invalid-namespace-ids": "Invalid namespace IDs.",
