@@ -10,6 +10,7 @@ class BuildStatic {
 			'static/NamespaceLookupWidget.js',
 			'static/PageLookupWidget.js',
 			'static/ProjectLookupWidget.js',
+			'static/SelfSubmittingDropdownInputWidget.js',
 			'static/index.js'
 		];
 

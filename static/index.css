@@ -49,8 +49,8 @@ h1 {
 	line-height: 1;
 }
 
-.lang-select-cnt {
-	max-width: 8.5rem;
+#lang,
+#lang .oo-ui-dropdownWidget {
 	margin-right: 0;
 }
 

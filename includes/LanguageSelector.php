@@ -12,13 +12,15 @@ class LanguageSelector implements HtmlProducer {
 
 		$dropdown = (new SelfSubmittingDropdownInputWidget([
 			'name' => 'lang',
+			'id' => 'lang',
 			'value' => $I18N->getLang(),
 			'options' => array_map(function($name, $key) {
 				return [
 					'data' => $key,
 					'label' => $name,
 				];
-			}, $langs, array_keys($langs))
+			}, $langs, array_keys($langs)),
+			'infusable' => true
 		]))->addClasses(['lang-select-cnt']);
 
 		$params = $_GET;

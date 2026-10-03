@@ -1,4 +1,5 @@
-let projectLookup = OO.ui.infuse($('#project')),
+let langSelect = OO.ui.infuse($('#lang')),
+	projectLookup = OO.ui.infuse($('#project')),
 	pageLookup = OO.ui.infuse($('#page'), {
 		domain: projectLookup.getDomain()
 	}),
@@ -91,9 +92,10 @@ $('#skip').on('click', function(e) {
 	out.trigger('focus');
 });
 
-$('.lang-select-cnt select').removeAttr('onchange').on('change', function() {
-	this.form.action = './setlang/' + location.search
-	this.form.submit();
-});
+langSelect.on('change', function() {
+	const input = langSelect.$input[0];
+	input.form.action = './setlang/' + location.search
+	input.form.submit();
+}).$input.removeAttr('onchange');
 
 namespacesInput.$element.replaceWith(namespacesSelect.$element);
