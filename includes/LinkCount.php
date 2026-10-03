@@ -92,7 +92,7 @@ class LinkCount implements HtmlProducer, JsonProducer {
 		$parts = [];
 
 		if (isset($this->error)) {
-			array_push($parts, 'Error');
+			array_push($parts, rawmsg('error'));
 		} elseif (isset($this->counts)) {
 			array_push($parts, $this->title->getFullText());
 		}
