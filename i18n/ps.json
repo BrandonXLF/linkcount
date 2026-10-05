@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Wadan.ss",
 			"شاه زمان پټان"
 		]
 	},
@@ -29,6 +30,7 @@
 	"footer-form": "فورمه",
 	"footer-api": "کاريال‌بهير‌مخبڼه",
 	"footer-created-by": "د $1 له‌خوا جوړ شوی",
+	"footer-translate": "په ژباړلو کې مرسته وکړئ",
 	"error": "تېروتنه",
 	"error-page-required": "د مخ نوم اړين دی.",
 	"error-invalid-namespace-ids": "ناچله نوم‌تشيال پېژندپاڼې.",

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Brandon Fowler"
+			"Brandon Fowler",
+			"BrandonXLF"
 		]
 	},
 	"description": "Description of Link Count's functionality. Shown as a short description at the top of the page and in search results.",
@@ -25,7 +26,7 @@
 	"link-type-wikilinks": "Label for the row that shows the number of wikilinks (standard internal links). Should be concise.",
 	"link-type-redirects": "Label for the row that shows the number of redirects. Should be concise.",
 	"link-type-transclusions": "Label for the row that shows the number of transclusions (pages that use this page as a template). Should be concise.",
-	"link-what-links-here": "Link to the MediaWiki '{{msg-mw|whatlinkshere-title}}' special page for the analyzed page. Should probably be '{{msg-mw|whatlinkshere}}'.",
+	"link-what-links-here": "Link to the MediaWiki \"What links here\" special page for the analyzed page. Should probably match {{msg-mw|whatlinkshere}}.",
 	"footer-form": "Link to the form page for Link Count.",
 	"footer-api": "Link to the API page for Link Count.",
 	"footer-created-by": "Text indicating who authored/created Link Count. $1 is a placeholder for the author's name.",

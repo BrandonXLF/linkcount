@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Brandon Fowler",
+			"BrandonXLF",
 			"NClara"
 		]
 	},
@@ -30,6 +31,7 @@
 	"footer-form": "Formulaire",
 	"footer-api": "API",
 	"footer-created-by": "Créé par $1",
+	"footer-translate": "Aider à traduire",
 	"error": "Erreur",
 	"error-page-required": "Le nom de la page est requis.",
 	"error-invalid-namespace-ids": "Identifiants d'espace de noms invalides.",

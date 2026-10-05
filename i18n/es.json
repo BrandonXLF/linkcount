@@ -1,12 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"A.jalate"
+			"A.jalate",
+			"BrandonXLF"
 		]
 	},
 	"lang-select-label": "Seleccione el idioma de la interfaz",
 	"form-project": "Proyecto:",
 	"form-page": "Página",
+	"form-namespaces": "Espacios de nombres",
 	"form-separate-using-commas": "Separe con comas",
 	"form-submit": "Enviar",
 	"table-header-type": "Tipo",
@@ -15,6 +17,7 @@
 	"table-header-indirect": "Indirecto",
 	"link-type-filelinks": "enlace de archivo",
 	"link-type-redirects": "Redirigir",
+	"link-what-links-here": "Lo que enlaza aquí",
 	"footer-form": "Formularios",
 	"footer-created-by": "Creado por $1",
 	"error": "Error",

@@ -29,6 +29,7 @@
 	"footer-form": "Образец",
 	"footer-api": "Приложник",
 	"footer-created-by": "Создадено од $1",
+	"footer-translate": "Помогнете со преводот",
 	"error": "Грешка",
 	"error-page-required": "Се бара име на страница.",
 	"error-invalid-namespace-ids": "Неважечка назнака за именски простор.",

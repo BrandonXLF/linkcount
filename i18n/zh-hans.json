@@ -29,6 +29,7 @@
 	"footer-form": "表单",
 	"footer-api": "API",
 	"footer-created-by": "由$1创建",
+	"footer-translate": "协助翻译",
 	"error": "错误",
 	"error-page-required": "页面名称为必填。",
 	"error-invalid-namespace-ids": "命名空间ID无效。",

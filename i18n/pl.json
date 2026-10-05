@@ -29,6 +29,7 @@
 	"footer-form": "Formularz",
 	"footer-api": "API",
 	"footer-created-by": "Narzędzie stworzone przez $1",
+	"footer-translate": "Pomóż w tłumaczeniu",
 	"error": "Błąd",
 	"error-page-required": "Nazwa strony jest wymagana.",
 	"error-invalid-namespace-ids": "Nieprawidłowe identyfikatory przestrzeni nazw.",
