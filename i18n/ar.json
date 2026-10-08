@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Meno25"
+		]
+	},
+	"description": "عرض عدد الروابط (روابط ويكي، وإعادة التوجيه، والتضمينات، وروابط الملفات، وروابط الفئات) إلى أي صفحة في أي مشروع من مشاريع ويكيميديا.",
+	"nav-skip": "انتقل إلى النتائج",
+	"lang-select-label": "اختر لغة الواجهة",
+	"lang-select-submit": "تطبيق",
+	"form-project": "مشروع",
+	"form-page": "صفحة",
+	"form-namespaces": "نطاقات",
+	"form-separate-using-commas": "افصل باستخدام الفواصل",
+	"form-submit": "إرسال",
+	"table-header-type": "النوع",
+	"table-header-all": "الكل",
+	"table-header-direct": "مباشر",
+	"table-header-direct-tooltip": "عدد الصفحات التي ترتبط بالصفحة باستخدام اسم الصفحة الفعلي",
+	"table-header-indirect": "غير مباشر",
+	"table-header-indirect-tooltip": "عدد الصفحات التي ترتبط بالصفحة من خلال إعادة التوجيه",
+	"action-link-to-row": "رابط إلى الصف",
+	"link-type-filelinks": "روابط الملفات",
+	"link-type-categorylinks": "روابط الفئات",
+	"link-type-wikilinks": "روابط ويكي",
+	"link-type-redirects": "إعادة التوجيه",
+	"link-type-transclusions": "عمليات النقل",
+	"link-what-links-here": "ما هي الروابط هنا؟",
+	"footer-form": "استمارة",
+	"footer-api": "واجهة برمجة التطبيقات (API)",
+	"footer-created-by": "تم إنشاؤه بواسطة $1",
+	"footer-translate": "ساعد في الترجمة",
+	"error": "خطأ",
+	"error-page-required": "اسم الصفحة مطلوب.",
+	"error-invalid-namespace-ids": "معرفات مساحة الاسم غير صالحة.",
+	"error-nonexistent-project": "هذا المشروع غير موجود..."
+}
