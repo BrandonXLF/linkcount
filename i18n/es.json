@@ -2,24 +2,27 @@
 	"@metadata": {
 		"authors": [
 			"A.jalate",
-			"BrandonXLF"
+			"Amitie 10g",
+			"BrandonXLF",
+			"Luigi Nakano"
 		]
 	},
 	"lang-select-label": "Seleccione el idioma de la interfaz",
-	"form-project": "Proyecto:",
+	"form-project": "Proyecto",
 	"form-page": "Página",
 	"form-namespaces": "Espacios de nombres",
-	"form-separate-using-commas": "Separe con comas",
+	"form-separate-using-commas": "Separa usando comas",
 	"form-submit": "Enviar",
 	"table-header-type": "Tipo",
 	"table-header-all": "Todo",
 	"table-header-direct": "Directo",
 	"table-header-indirect": "Indirecto",
-	"link-type-filelinks": "enlace de archivo",
-	"link-type-redirects": "Redirigir",
+	"link-type-filelinks": "enlaces de archivo",
+	"link-type-redirects": "Redirecciones",
 	"link-what-links-here": "Lo que enlaza aquí",
-	"footer-form": "Formularios",
+	"footer-form": "Formulario",
 	"footer-created-by": "Creado por $1",
+	"footer-translate": "Ayúdanos a traducir",
 	"error": "Error",
 	"error-nonexistent-project": "Ese proyecto no existe..."
 }

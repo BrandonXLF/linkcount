@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Brandon Fowler",
-			"BrandonXLF"
+			"BrandonXLF",
+			"Luigi Nakano"
 		]
 	},
 	"description": "Description of Link Count's functionality. Shown as a short description at the top of the page and in search results.",
@@ -18,7 +19,7 @@
 	"table-header-all": "Header for the 'All' column in the results table. This column shows the total number of links for each type.",
 	"table-header-direct": "Header for the 'Direct' column in the results table. This column shows the number of pages that link to the analyzed page through a redirect.",
 	"table-header-direct-tooltip": "Tooltip that explains the 'Direct' column in the results table.",
-	"table-header-indirect": "Header for the 'Indirect' column in the results table. This column shows the number of pages that link to the analyzed page directly using it's name (rather than through a redirect).",
+	"table-header-indirect": "Header for the 'Indirect' column in the results table. This column shows the number of pages that link to the analyzed page directly using its name (rather than through a redirect).",
 	"table-header-indirect-tooltip": "Tooltip that explains the 'Indirect' column in the results table.",
 	"action-link-to-row": "Tooltip for a small button that allows users to add a link to the current table row to the clipboard.",
 	"link-type-filelinks": "Label for the row that shows the number of file links. Should be concise.",

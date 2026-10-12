@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nike"
+			"Nike",
+			"Wikipeedikko"
 		]
 	},
 	"description": "Näytä linkkien (wikilinkkien, ohjausten, sisällytysten, tiedostolinkkien ja luokkalinkkien) määrä mille tahansa sivulle missä tahansa Wikimedia-projektissa.",
@@ -29,6 +30,7 @@
 	"footer-form": "Lomake",
 	"footer-api": "API",
 	"footer-created-by": "Tämän työkalun on luonut $1",
+	"footer-translate": "Auta kääntämään",
 	"error": "Virhe",
 	"error-page-required": "Sivun nimi on pakollinen.",
 	"error-invalid-namespace-ids": "Virheelliset nimiavaruustunnukset.",
