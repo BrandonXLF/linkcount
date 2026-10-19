@@ -1,18 +1,38 @@
 {
 	"@metadata": {
 		"authors": [
-			"Saraiki"
+			"Saraiki",
+			"Tauqeerkhansurani"
 		]
 	},
+	"description": "کہیں وی Wikimedia منصوبے تے کہیں وی صفحے نال جڑے ہوئے لنکاں دی تعداد ݙیکھو (ویکی لنک، ری ڈائریکٹ، ٹرانسکلوزن، فائل لنک تے زمرہ لنک)۔",
+	"nav-skip": "نتائج تے ونجو",
+	"lang-select-label": "انٹرفیس زبان چݨو",
 	"lang-select-submit": "اطلاق",
 	"form-project": "منصوبہ",
 	"form-page": "ورقہ",
+	"form-namespaces": "ناں جائیں",
+	"form-separate-using-commas": "کامے نال انج کرو",
 	"form-submit": "جمع کرواؤ",
 	"table-header-type": "قسم",
 	"table-header-all": "یکے",
+	"table-header-direct": "ڈائریکٹ",
+	"table-header-direct-tooltip": "اوناں صفحیاں دی تعداد جیڑے اصل صفحے دے ناں نال اینوں لنک کریندن",
+	"table-header-indirect": "بالواسطہ",
+	"table-header-indirect-tooltip": "اوناں صفحیاں دی تعداد جیڑے ری ڈائریکٹ دے ذریعے صفحے نال جڑے ہوئے ہن",
+	"action-link-to-row": "قطار دا لنک",
 	"link-type-filelinks": "فائل دے لنک",
+	"link-type-categorylinks": "زمرہ لنک",
 	"link-type-wikilinks": "وکی لنکس",
+	"link-type-redirects": "ری ڈائریکٹ",
+	"link-type-transclusions": "ٹرانسکلوزن",
+	"link-what-links-here": "مربوط صفحے",
 	"footer-form": "شکل",
+	"footer-api": "API",
 	"footer-created-by": "$1 دا خلقیا",
-	"error": "نقص"
+	"footer-translate": "ترجمے دی مدد",
+	"error": "نقص",
+	"error-page-required": "صفحے دا ناں ضروری ہے۔",
+	"error-invalid-namespace-ids": "ناں جائیں دے IDs غلط ہن۔",
+	"error-nonexistent-project": "او منصوبہ موجود نی..."
 }

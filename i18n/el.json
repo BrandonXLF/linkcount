@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Fotis A."
+		]
+	},
+	"description": "Δείτε τον αριθμό των συνδέσμων (wikilinks, redirects, transclusions, file links, and category links) προς οποιαδήποτε σελίδα σε οποιοδήποτε έργο Wikimedia.",
+	"nav-skip": "Μετάβαση στα αποτελέσματα",
+	"lang-select-label": "Γλώσσα διεπαφής χρήστη",
+	"lang-select-submit": "Εφαρμογή",
+	"form-project": "Εγχείρημα",
+	"form-page": "Σελίδα",
+	"form-namespaces": "Ονοματοχώροι",
+	"form-separate-using-commas": "Διαχωρίστε χρησιμοποιώντας κόμματα",
+	"form-submit": "Υποβολή",
+	"table-header-type": "Τύπος",
+	"table-header-all": "Όλα",
+	"table-header-direct": "Απευθείας",
+	"table-header-direct-tooltip": "Αριθμός σελίδων που συνδέονται με τη σελίδα χρησιμοποιώντας το πραγματικό όνομα σελίδας",
+	"table-header-indirect": "Ανακατεύθυνση",
+	"table-header-indirect-tooltip": "Αριθμός σελίδων που συνδέονται με τη σελίδα μέσω ανακατεύθυνσης",
+	"action-link-to-row": "Σύνδεσμος προς τη σειρά",
+	"link-type-filelinks": "Σύνδεσμοι αρχείων",
+	"link-type-categorylinks": "Σύνδεσμοι κατηγορίας",
+	"link-type-wikilinks": "Βικισύνδεσμοι",
+	"link-type-redirects": "Ανακατευθύνσεις",
+	"link-type-transclusions": "Ενσωματώσεις",
+	"link-what-links-here": "Τι συνδέει εδώ",
+	"footer-form": "Φόρμα",
+	"footer-api": "API",
+	"footer-created-by": "Δημιουργήθηκε από τον $1",
+	"footer-translate": "Βοηθήστε στη μετάφραση",
+	"error": "Σφάλμα"
+}
