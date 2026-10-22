@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"description": "Zobrazte počet odkazov (wikiodkazov, presmerovaní, vložení, odkazov na súbory a kategórie) na ľubovoľnú stránku v ľubovoľnom projekte Wikimedia.",
+	"nav-skip": "Preskočiť na výsledky",
+	"lang-select-label": "Vyberte jazyk rozhrania",
+	"lang-select-submit": "Použiť",
+	"form-project": "Projekt",
+	"form-page": "Stránka",
+	"form-namespaces": "Menné priestory",
+	"form-separate-using-commas": "Oddeľte čiarkami",
+	"form-submit": "Odoslať",
+	"table-header-type": "Typ",
+	"table-header-all": "Všetky",
+	"table-header-direct": "Priame",
+	"table-header-direct-tooltip": "Počet stránok, ktoré odkazujú na stránku jej skutočným názvom",
+	"table-header-indirect": "Nepriame",
+	"table-header-indirect-tooltip": "Počet stránok, ktoré odkazujú na stránku cez presmerovanie",
+	"action-link-to-row": "Odkaz na riadok",
+	"link-type-filelinks": "Odkazy na súbory",
+	"link-type-categorylinks": "Odkazy na kategórie",
+	"link-type-wikilinks": "Wikiodkazy",
+	"link-type-redirects": "Presmerovania",
+	"link-type-transclusions": "Vloženia",
+	"link-what-links-here": "Odkazy sem",
+	"footer-form": "Formulár",
+	"footer-api": "API",
+	"footer-created-by": "Vytvoril(a) $1",
+	"footer-translate": "Pomôžte s prekladom",
+	"error": "Chyba",
+	"error-page-required": "Názov stránky je povinný.",
+	"error-invalid-namespace-ids": "Neplatné ID menných priestorov.",
+	"error-nonexistent-project": "Taký projekt neexistuje..."
+}
