@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Steenth"
+		]
+	},
+	"description": "Se antallet af links (wikilinks, omdirigeringer, transklusioner, fillinks og kategorilinks) til enhver side på ethvert Wikimedia-projekt.",
+	"nav-skip": "Spring til resultater",
+	"lang-select-label": "Vælg grænsefladesprog",
+	"lang-select-submit": "Anvend",
+	"form-project": "Projekt",
+	"form-page": "Side",
+	"form-namespaces": "Navnerum",
+	"form-separate-using-commas": "Adskil med kommaer",
+	"form-submit": "Udfør",
+	"table-header-type": "Type",
+	"table-header-all": "Alle",
+	"table-header-direct": "Direkte",
+	"table-header-direct-tooltip": "Antal sider, der linker til siden ved hjælp af det faktiske sidenavn",
+	"table-header-indirect": "Omdirigering",
+	"table-header-indirect-tooltip": "Antal sider, der linker til siden via en omdirigering",
+	"action-link-to-row": "Link til række",
+	"link-type-filelinks": "Fillinks",
+	"link-type-categorylinks": "Kategorilinks",
+	"link-type-wikilinks": "Wikihenvisninger",
+	"link-type-redirects": "Omdirigeringer",
+	"link-type-transclusions": "Transklusioner",
+	"link-what-links-here": "Hvad henviser hertil",
+	"footer-form": "Form",
+	"footer-api": "API",
+	"footer-created-by": "Oprettet af $1",
+	"footer-translate": "Hjælp til med at oversætte",
+	"error": "Fejl",
+	"error-page-required": "Sidenavn er påkrævet.",
+	"error-invalid-namespace-ids": "Ugyldige navneområde-ID'er.",
+	"error-nonexistent-project": "Det projekt findes ikke..."
+}

@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Sebastian Wallroth"
+		]
+	},
+	"description": "Zeige die Anzahl der Links (Wiki-Links, Weiterleitungen, Transklusionen, Dateilinks und Kategorie-Links) zu einer beliebigen Seite in einem beliebigen Wikimediaprojekt an.",
+	"nav-skip": "Zu den Ergebnissen springen",
+	"lang-select-label": "Sprache des Interfaces auswählen",
+	"lang-select-submit": "Anwenden",
+	"form-project": "Projekt",
+	"form-page": "Seite",
+	"form-namespaces": "Namensräume",
+	"form-separate-using-commas": "Durch Kommas trennen",
+	"form-submit": "Absenden",
+	"table-header-type": "Typ",
+	"table-header-all": "Alle",
+	"table-header-direct": "Direkt",
+	"table-header-direct-tooltip": "Anzahl der Seiten, die mit dem tatsächlichen Seitennamen auf die Seite verlinken",
+	"table-header-indirect": "Weiterleitung",
+	"table-header-indirect-tooltip": "Anzahl der Seiten, die über eine Weiterleitung auf diese Seite verlinken.",
+	"action-link-to-row": "Link zur Zeile",
+	"link-type-filelinks": "Dateilinks",
+	"link-type-categorylinks": "Kategorielinks",
+	"link-type-wikilinks": "Wikilinks",
+	"link-type-redirects": "Weiterleitungen",
+	"link-type-transclusions": "Einbindungen",
+	"link-what-links-here": "Links auf diese Seite",
+	"footer-form": "Formular",
+	"footer-api": "API",
+	"footer-created-by": "Erstellt von $1",
+	"footer-translate": "Hilf beim Übersetzen",
+	"error": "Fehler",
+	"error-page-required": "Die Angabe eines Seitennamens ist erforderlich.",
+	"error-invalid-namespace-ids": "Ungültige Namespace-IDs.",
+	"error-nonexistent-project": "Dieses Projekt existiert nicht..."
+}

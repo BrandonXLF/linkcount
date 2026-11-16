@@ -1,14 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Meno25"
+			"Meno25",
+			"Mohammed Qays"
 		]
 	},
-	"description": "عرض عدد الروابط (روابط ويكي، وإعادة التوجيه، والتضمينات، وروابط الملفات، وروابط الفئات) إلى أي صفحة في أي مشروع من مشاريع ويكيميديا.",
+	"description": "عرض عدد الروابط (روابط ويكي، والتحويلات، والتضمينات، وروابط الملفات، وروابط التصنيفات) إلى أي صفحة في أي مشروع من مشاريع ويكيميديا.",
 	"nav-skip": "انتقل إلى النتائج",
 	"lang-select-label": "اختر لغة الواجهة",
-	"lang-select-submit": "تطبيق",
-	"form-project": "مشروع",
+	"lang-select-submit": "تقدُّم",
+	"form-project": "المشروع",
 	"form-page": "صفحة",
 	"form-namespaces": "نطاقات",
 	"form-separate-using-commas": "افصل باستخدام الفواصل",
@@ -17,21 +18,21 @@
 	"table-header-all": "الكل",
 	"table-header-direct": "مباشر",
 	"table-header-direct-tooltip": "عدد الصفحات التي ترتبط بالصفحة باستخدام اسم الصفحة الفعلي",
-	"table-header-indirect": "غير مباشر",
-	"table-header-indirect-tooltip": "عدد الصفحات التي ترتبط بالصفحة من خلال إعادة التوجيه",
-	"action-link-to-row": "رابط إلى الصف",
-	"link-type-filelinks": "روابط الملفات",
-	"link-type-categorylinks": "روابط الفئات",
-	"link-type-wikilinks": "روابط ويكي",
-	"link-type-redirects": "إعادة التوجيه",
-	"link-type-transclusions": "عمليات النقل",
-	"link-what-links-here": "ما هي الروابط هنا؟",
-	"footer-form": "استمارة",
+	"table-header-indirect": "تحويلة",
+	"table-header-indirect-tooltip": "عدد الصفحات المرتبطة بالصفحة عبر التحويلة",
+	"action-link-to-row": "وصلة الصف",
+	"link-type-filelinks": "وصلة ملف",
+	"link-type-categorylinks": "وصلة التصنيف",
+	"link-type-wikilinks": "وصلات ويكي",
+	"link-type-redirects": "تحويلات",
+	"link-type-transclusions": "التضمينات",
+	"link-what-links-here": "ماذا يصل هنا",
+	"footer-form": "صيغة",
 	"footer-api": "واجهة برمجة التطبيقات (API)",
-	"footer-created-by": "تم إنشاؤه بواسطة $1",
+	"footer-created-by": "أنشأها $1",
 	"footer-translate": "ساعد في الترجمة",
 	"error": "خطأ",
 	"error-page-required": "اسم الصفحة مطلوب.",
-	"error-invalid-namespace-ids": "معرفات مساحة الاسم غير صالحة.",
+	"error-invalid-namespace-ids": "معرفات النطاق غير صالحة.",
 	"error-nonexistent-project": "هذا المشروع غير موجود..."
 }

@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Stjn"
+		]
+	},
+	"description": "Просмотр числа ссылок (вики-ссылок, перенаправлений, включений, ссылок на файлы и на категории) к любой странице в проектах Викимедиа.",
+	"nav-skip": "Перейти к результатам",
+	"lang-select-label": "Выбрать язык интерфейса",
+	"lang-select-submit": "Применить",
+	"form-project": "Проект",
+	"form-page": "Страница",
+	"form-namespaces": "Пространства имён",
+	"form-separate-using-commas": "Разделять запятыми",
+	"form-submit": "Отправить",
+	"table-header-type": "Тип",
+	"table-header-all": "Все",
+	"table-header-direct": "Прямые",
+	"table-header-direct-tooltip": "Число страниц, которые ссылаются на страницу, используя её реальное название",
+	"table-header-indirect": "Непрямые",
+	"table-header-indirect-tooltip": "Число страниц, которые ссылаются на страницу через перенаправление",
+	"action-link-to-row": "Ссылка на строку",
+	"link-type-filelinks": "Ссылки на файл",
+	"link-type-categorylinks": "Ссылки на категорию",
+	"link-type-wikilinks": "Вики-ссылки",
+	"link-type-redirects": "Перенаправления",
+	"link-type-transclusions": "Включения",
+	"link-what-links-here": "Ссылки сюда",
+	"footer-form": "Форма",
+	"footer-api": "API",
+	"footer-created-by": "Создано $1",
+	"footer-translate": "Помочь с переводом",
+	"error": "Ошибка",
+	"error-page-required": "Требуется название страницы.",
+	"error-invalid-namespace-ids": "Недопустимые идентификаторы пространств имён.",
+	"error-nonexistent-project": "Такого проекта не существует…"
+}

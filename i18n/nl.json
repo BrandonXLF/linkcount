@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Siebrand"
+		]
+	},
+	"description": "Bekijk het aantal koppelingen (wikikoppelingen, doorverwijzingen, transclusies, bestandskoppelingen en categoriekoppelingen) naar een pagina op een willekeurig Wikimediaproject.",
+	"nav-skip": "Naar de resultaten",
+	"lang-select-label": "Selecteer de interfacetaal",
+	"lang-select-submit": "Toepassen",
+	"form-project": "Project",
+	"form-page": "Pagina",
+	"form-namespaces": "Naamruimten",
+	"form-separate-using-commas": "Scheiden met komma's",
+	"form-submit": "Versturen",
+	"table-header-type": "Type",
+	"table-header-all": "Alle",
+	"table-header-direct": "Direct",
+	"table-header-direct-tooltip": "Aantal pagina's dat naar de pagina koppelt met de werkelijke paginanaam",
+	"table-header-indirect": "Indirect",
+	"table-header-indirect-tooltip": "Aantal pagina's dat naar de pagina koppelt via een doorverwijzing",
+	"action-link-to-row": "Koppeling naar rij",
+	"link-type-filelinks": "Bestandskoppelingen",
+	"link-type-categorylinks": "Categoriekoppelingen",
+	"link-type-wikilinks": "Wikikoppelingen",
+	"link-type-redirects": "Doorverwijzingen",
+	"link-type-transclusions": "Transclusies",
+	"link-what-links-here": "Wat koppelt hiernaartoe",
+	"footer-form": "Formulier",
+	"footer-api": "API",
+	"footer-created-by": "Gemaakt door $1",
+	"footer-translate": "Help met vertalen",
+	"error": "Fout",
+	"error-page-required": "Een paginanaam is verplicht.",
+	"error-invalid-namespace-ids": "Onjuiste naamruimte-id's.",
+	"error-nonexistent-project": "Dat project bestaat niet..."
+}

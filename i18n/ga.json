@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Aindriu80"
+		]
+	},
+	"description": "Féach ar líon na naisc (naisc vicí, atreoruithe, traschuimsithe, naisc comhaid, agus naisc catagóire) chuig aon leathanach ar aon tionscadal de chuid Wikimedia.",
+	"nav-skip": "Léim go dtí na torthaí",
+	"lang-select-label": "Roghnaigh teanga an chomhéadain",
+	"lang-select-submit": "Cuir i bhfeidhm",
+	"form-project": "Tionscadal",
+	"form-page": "Leathanach",
+	"form-namespaces": "Spásanna ainmneacha",
+	"form-separate-using-commas": "Déan idirscaradh le camóga",
+	"form-submit": "Cuir isteach",
+	"table-header-type": "Cineál",
+	"table-header-all": "Gach",
+	"table-header-direct": "Díreach",
+	"table-header-direct-tooltip": "Líon na leathanach a nascann leis an leathanach ag baint úsáide as ainm iarbhír an leathanaigh",
+	"table-header-indirect": "Indíreach",
+	"table-header-indirect-tooltip": "Líon na leathanach a nascann leis an leathanach trí atreorú",
+	"action-link-to-row": "Nasc chuig an ró",
+	"link-type-filelinks": "Naisc chomhaid",
+	"link-type-categorylinks": "Naisc chatagóire",
+	"link-type-wikilinks": "Naisc Vicí",
+	"link-type-redirects": "Atreoruithe",
+	"link-type-transclusions": "Traschuimsithe",
+	"link-what-links-here": "Cad a nascann anseo",
+	"footer-form": "Foirm",
+	"footer-api": "API",
+	"footer-created-by": "Cruthaithe ag $1",
+	"footer-translate": "Cabhraigh le haistriúchán",
+	"error": "Earráid",
+	"error-page-required": "Tá ainm an leathanaigh ag teastáil.",
+	"error-invalid-namespace-ids": "Aitheantais spásainmneacha neamhbhailí.",
+	"error-nonexistent-project": "Níl an tionscadal sin ann..."
+}

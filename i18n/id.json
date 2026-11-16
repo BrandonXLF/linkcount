@@ -1,0 +1,38 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hidayatsrf",
+			"Veracious"
+		]
+	},
+	"description": "Lihat jumlah pranala (pranala wiki, pengalihan, transklusi, pranala berkas dan pranala kategori) ke manapun situs di manapun proyek Wikimedia.",
+	"nav-skip": "Loncat ke hasil",
+	"lang-select-label": "Ubah bahasa antarmuka",
+	"lang-select-submit": "Terapkan",
+	"form-project": "Proyek",
+	"form-page": "Halaman",
+	"form-namespaces": "Ruang nama",
+	"form-separate-using-commas": "Pisahkan dengan koma",
+	"form-submit": "Kirim",
+	"table-header-type": "Jenis",
+	"table-header-all": "Semua",
+	"table-header-direct": "Langsung",
+	"table-header-direct-tooltip": "Jumlah halaman yang menautkan ke halaman tersebut menggunakan nama halaman sebenarnya.",
+	"table-header-indirect": "Tidak langsung",
+	"table-header-indirect-tooltip": "Jumlah halaman yang menautkan ke halaman ini melalui pengalihan",
+	"action-link-to-row": "Pranala ke baris",
+	"link-type-filelinks": "Pranala berkas",
+	"link-type-categorylinks": "Pranala kategori",
+	"link-type-wikilinks": "Pranala wiki",
+	"link-type-redirects": "Pengalihan",
+	"link-type-transclusions": "Transklusi",
+	"link-what-links-here": "Pranala balik",
+	"footer-form": "Formulir",
+	"footer-api": "API",
+	"footer-created-by": "Dibuat oleh $1",
+	"footer-translate": "Bantu terjemahkan",
+	"error": "Galat",
+	"error-page-required": "Nama halaman wajib diisi.",
+	"error-invalid-namespace-ids": "ID ruang nama tidak sah.",
+	"error-nonexistent-project": "Proyek tersebut tidak ada..."
+}
