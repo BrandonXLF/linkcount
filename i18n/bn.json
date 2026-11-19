@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"আফতাবুজ্জামান"
+		]
+	},
+	"nav-skip": "ফলাফলে চলুন",
+	"lang-select-label": "ইন্টারফেসের ভাষা নির্বাচন করুন",
+	"lang-select-submit": "প্রয়োগ করুন",
+	"form-project": "প্রকল্প",
+	"form-page": "পাতা",
+	"form-namespaces": "নামস্থান",
+	"form-separate-using-commas": "কমা ব্যবহার করে আলাদা করুন",
+	"form-submit": "জমা দিন",
+	"table-header-type": "ধরন",
+	"table-header-all": "সব",
+	"table-header-direct": "সরাসরি",
+	"table-header-indirect": "পুনর্নির্দেশ",
+	"link-type-wikilinks": "উইকিসংযোগ",
+	"link-type-redirects": "পুনর্নির্দেশ",
+	"link-type-transclusions": "অন্তর্ভুক্তি",
+	"link-what-links-here": "সংযোগকারী পাতা",
+	"footer-api": "এপিআই",
+	"footer-created-by": "তৈরি করেছেন $1",
+	"footer-translate": "অনুবাদে সাহায্য করুন",
+	"error": "ত্রুটি"
+}
