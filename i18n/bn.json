@@ -4,6 +4,7 @@
 			"আফতাবুজ্জামান"
 		]
 	},
+	"description": "যে কোনও উইকিমিডিয়া প্রকল্পের যে কোনও পাতার লিঙ্কের সংখ্যা (উইকিসংযোগ, পুনর্নির্দেশ, অন্তর্ভুক্তি, ফাইল সংযোগ এবং বিষয়শ্রেণী সংযোগ) দেখুন।",
 	"nav-skip": "ফলাফলে চলুন",
 	"lang-select-label": "ইন্টারফেসের ভাষা নির্বাচন করুন",
 	"lang-select-submit": "প্রয়োগ করুন",
@@ -16,12 +17,17 @@
 	"table-header-all": "সব",
 	"table-header-direct": "সরাসরি",
 	"table-header-indirect": "পুনর্নির্দেশ",
+	"link-type-filelinks": "ফাইল সংযোগ",
+	"link-type-categorylinks": "বিষয়শ্রেণী সংযোগ",
 	"link-type-wikilinks": "উইকিসংযোগ",
 	"link-type-redirects": "পুনর্নির্দেশ",
 	"link-type-transclusions": "অন্তর্ভুক্তি",
 	"link-what-links-here": "সংযোগকারী পাতা",
+	"footer-form": "ফরম",
 	"footer-api": "এপিআই",
 	"footer-created-by": "তৈরি করেছেন $1",
 	"footer-translate": "অনুবাদে সাহায্য করুন",
-	"error": "ত্রুটি"
+	"error": "ত্রুটি",
+	"error-page-required": "পাতার নাম প্রয়োজন।",
+	"error-invalid-namespace-ids": "অবৈধ নামস্থান আইডি।"
 }
